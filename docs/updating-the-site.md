@@ -26,3 +26,8 @@ At drop time, edit `data/drop.json`: set `"active": true`, the event slug, `reve
 
 ## Artists
 Names on lineups link to `data/artists.json` automatically (spelling variants go in `aliases`). The build warns about any lineup name with no record.
+
+## Pages for search engines
+The build also writes crawlable pages: `/events/`, one page per event, `/artists/` (plus a page for members, projects, and any guest with two or more shows or a link), `/rentals/` with the full gear list, a `404.html`, `sitemap.xml`, and `site.webmanifest`. Each page carries structured data (event, artist, rental service, and breadcrumb). A page's sitemap date only changes when its content does.
+
+After a deploy, submit `https://nononsensephilly.com/sitemap.xml` once in Google Search Console and Bing Webmaster Tools.

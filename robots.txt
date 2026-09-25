@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /tools/
 Disallow: /scores-api/
+Disallow: /docs/
 
 Sitemap: https://nononsensephilly.com/sitemap.xml
