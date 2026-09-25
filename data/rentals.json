@@ -1,0 +1,301 @@
+{
+  "_readme": "Rental cases on the Rentals screen. Gear comes from the inventory on linktr.ee/nononsensephl. Keep each case name stable: saved manifests on visitors' devices use it. tags: pair, amp (passive, needs an amp), tech (needs our technician), sourced (hired in per job, not owned). circuits is a rough count of 20A household circuits the case draws.",
+  "zones": [
+    {
+      "id": "audio",
+      "ref": "A1",
+      "name": "Audio + DJ",
+      "sub": "Booth · PA"
+    },
+    {
+      "id": "lighting",
+      "ref": "B2",
+      "name": "Lighting",
+      "sub": "Floor · laser"
+    },
+    {
+      "id": "video",
+      "ref": "C3",
+      "name": "Video",
+      "sub": "Projection · camera"
+    },
+    {
+      "id": "utility",
+      "ref": "D4",
+      "name": "Utility",
+      "sub": "Power · crew"
+    }
+  ],
+  "cases": [
+    {
+      "zone": "audio",
+      "ref": "A1 · 01",
+      "code": "DJ",
+      "name": "DJ booth package",
+      "blurb": "A club-standard booth for club nights, pop-ups, and afterparties.",
+      "circuits": 1,
+      "circuitLabel": "booth",
+      "gear": [
+        {
+          "qty": 2,
+          "model": "Pioneer CDJ-3000",
+          "tags": [
+            "pair"
+          ],
+          "note": "Extra decks for an added fee"
+        },
+        {
+          "qty": 1,
+          "model": "Pioneer DJM-A9 mixer"
+        },
+        {
+          "qty": 1,
+          "model": "Pioneer XDJ-XZ or Denon Prime 4 (standalone, instead of CDJs)"
+        },
+        {
+          "qty": 1,
+          "model": "Shure SM-58 mic"
+        }
+      ],
+      "chips": [
+        "2× CDJ-3000",
+        "DJM-A9",
+        "SM-58"
+      ]
+    },
+    {
+      "zone": "audio",
+      "ref": "A1 · 02",
+      "code": "PA",
+      "name": "Compact PA package",
+      "blurb": "Tops and subs sized to the room: speech, playback, or a full floor.",
+      "circuits": 2,
+      "circuitLabel": "PA",
+      "gear": [
+        {
+          "qty": 2,
+          "model": "EV ZLX-15BT 15\" 1000W powered",
+          "tags": [
+            "pair"
+          ]
+        },
+        {
+          "qty": 4,
+          "model": "EV S181 18\" 500W sub",
+          "tags": [
+            "amp"
+          ],
+          "note": "Up to 4, scaled to the room"
+        },
+        {
+          "qty": 2,
+          "model": "QSC GX7 2-ch 1000W amp with crossover",
+          "note": "One amp drives two subs"
+        },
+        {
+          "qty": 2,
+          "model": "Phonic SEM 715 15\" booth monitor",
+          "tags": [
+            "pair",
+            "amp"
+          ]
+        }
+      ],
+      "chips": [
+        "2× ZLX-15BT",
+        "Up to 4× S181",
+        "QSC GX7"
+      ]
+    },
+    {
+      "zone": "lighting",
+      "ref": "B2 · 01",
+      "code": "LX",
+      "name": "Dance-floor lighting package",
+      "blurb": "Movement, color, and coverage for DJ rooms and late-night floors.",
+      "circuits": 1,
+      "circuitLabel": "lighting",
+      "gear": [
+        {
+          "qty": 2,
+          "model": "Epsilon Minibeam 600 moving head",
+          "tags": [
+            "pair"
+          ]
+        },
+        {
+          "qty": 3,
+          "model": "ADJ Vertigo Tri LED"
+        },
+        {
+          "qty": 1,
+          "model": "Chauvet J-Six"
+        },
+        {
+          "qty": 1,
+          "model": "MBT moving disco ball"
+        }
+      ],
+      "chips": [
+        "2× Minibeam 600",
+        "3× Vertigo Tri",
+        "J-Six"
+      ],
+      "addon": {
+        "name": "Laser add-on (LaserCube 1.2W + tech)",
+        "label": "Add laser",
+        "gear": "X-Laser LaserCube 1.2W",
+        "circuits": 0
+      }
+    },
+    {
+      "zone": "lighting",
+      "ref": "B2 · 02",
+      "code": "FX",
+      "name": "Atmosphere + accent package",
+      "blurb": "Haze and uplight for rooms that need shape without a full show rig.",
+      "circuits": 1,
+      "circuitLabel": "haze + uplights",
+      "gear": [
+        {
+          "qty": 1,
+          "model": "Hurricane Haze 1DX"
+        },
+        {
+          "qty": null,
+          "model": "Music-responsive uplights",
+          "note": "Count to the room"
+        }
+      ],
+      "chips": [
+        "Haze 1DX",
+        "Uplights"
+      ]
+    },
+    {
+      "zone": "video",
+      "ref": "C3 · 01",
+      "code": "VJ",
+      "name": "Projection / display package",
+      "blurb": "Projection mapping and live VJ from Double Vision, or plain loops and sponsor content.",
+      "circuits": 1,
+      "circuitLabel": "video",
+      "video": true,
+      "gear": [
+        {
+          "qty": 1,
+          "model": "Live VJ + projection mapping (Double Vision)",
+          "tags": [
+            "tech"
+          ]
+        },
+        {
+          "qty": 1,
+          "model": "Projector or display to fit the room",
+          "tags": [
+            "sourced"
+          ]
+        },
+        {
+          "qty": 1,
+          "model": "Scaler, cable, and spares",
+          "tags": [
+            "sourced"
+          ]
+        }
+      ],
+      "chips": [
+        "Live VJ",
+        "Mapping",
+        "Display to fit"
+      ]
+    },
+    {
+      "zone": "video",
+      "ref": "C3 · 02",
+      "code": "CAM",
+      "name": "Camera + IMAG starter package",
+      "blurb": "Cameras on the booth and floor, switched to a screen, a recording, or a stream.",
+      "circuits": 1,
+      "circuitLabel": "camera",
+      "video": true,
+      "gear": [
+        {
+          "qty": null,
+          "model": "Camera(s), switcher, and program display",
+          "tags": [
+            "sourced"
+          ],
+          "note": "Count set by the signal path below"
+        },
+        {
+          "qty": 1,
+          "model": "Operator",
+          "tags": [
+            "tech"
+          ],
+          "note": "Optional for one locked-off camera"
+        }
+      ],
+      "chips": [
+        "1–2 cameras",
+        "Switcher",
+        "Operator opt."
+      ]
+    },
+    {
+      "zone": "utility",
+      "ref": "D4 · 01",
+      "code": "PWR",
+      "name": "Event utility package",
+      "blurb": "Generator, truss, and the cable that keeps the rest of the rig running.",
+      "circuits": 0,
+      "provides": "3300W generator",
+      "gear": [
+        {
+          "qty": 1,
+          "model": "Generac 3300W generator",
+          "note": "About one 20A circuit of load"
+        },
+        {
+          "qty": null,
+          "model": "12\" aluminum box truss"
+        },
+        {
+          "qty": null,
+          "model": "Distro, extension, and cable management"
+        }
+      ],
+      "chips": [
+        "3300W Generac",
+        "12\" truss",
+        "Distro"
+      ]
+    },
+    {
+      "zone": "utility",
+      "ref": "D4 · 02",
+      "code": "RM",
+      "name": "Room support package",
+      "blurb": "Stage and crew for temporary rooms, private events, and pop-ups.",
+      "circuits": 0,
+      "gear": [
+        {
+          "qty": 1,
+          "model": "NNC inflatable stage"
+        },
+        {
+          "qty": null,
+          "model": "Load-in, run-of-show, and strike crew",
+          "tags": [
+            "tech"
+          ]
+        }
+      ],
+      "chips": [
+        "Inflatable stage",
+        "Crew to scope"
+      ]
+    }
+  ]
+}

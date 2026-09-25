@@ -1,0 +1,584 @@
+{
+  "_readme": "One record per show. tools/build.mjs turns this into the Events cards, the Home next-show line, /events/<slug>/ pages, share images, and sitemap.xml. status: announced | on-sale | sold-out | cancelled. Past is worked out from the end time, so you never need to set it. venue.public=false keeps the street off the site: only the area shows until data/drop.json reveals it on show day.",
+  "events": [
+    {
+      "slug": "afterbreak-2026",
+      "title": "AfterBreak 2026",
+      "category": "afterparty",
+      "status": "announced",
+      "start": "2026-09-12T00:00:00-04:00",
+      "end": "2026-09-13T06:00:00-04:00",
+      "dateLabel": "Sep 11 + 12, 2026",
+      "summary": "Unofficial Breakaway Philly afterparties, midnight to sunrise.",
+      "presenters": [],
+      "venue": {
+        "name": null,
+        "area": "Secret Philly location",
+        "public": false
+      },
+      "flyer": "afterbreak-2026",
+      "extraFlyers": [
+        {
+          "label": "Night 1 flyer",
+          "file": "afterbreak-2026-night-1"
+        }
+      ],
+      "door": {
+        "age": "18+ with valid ID · 21+ to drink",
+        "reentry": "Yes, back through the security checkpoint",
+        "bring": "Two sealed waters or snacks are fine. No weapons, outside drinks, or N2O."
+      },
+      "notice": "Night 2 was cancelled for weather. Ticket holders were refunded.",
+      "nights": [
+        {
+          "label": "Night 1 · Fri Sep 11",
+          "area": "South Philly waterfront",
+          "sets": [
+            [
+              "12:00",
+              "Double Vision"
+            ],
+            [
+              "12:45",
+              "Venomixx"
+            ],
+            [
+              "1:30",
+              "DJ Tweak"
+            ],
+            [
+              "2:30",
+              "Le Voile"
+            ],
+            [
+              "3:30",
+              "Face My Flow feat. Stehreo"
+            ],
+            [
+              "4:30",
+              "DusteeHD"
+            ],
+            [
+              "5:30",
+              "Acidic Dreams b2b Tethra64"
+            ]
+          ]
+        },
+        {
+          "label": "Night 2 · Sat Sep 12",
+          "status": "cancelled",
+          "note": "Cancelled for weather · refunded"
+        }
+      ],
+      "lineup": [
+        "Face My Flow feat. Stehreo",
+        "Acidic Dreams b2b Tethra64",
+        "Double Vision",
+        "DJ Tweak",
+        "DusteeHD",
+        "Le Voile",
+        "Venomixx"
+      ],
+      "production": "No Nonsense stage lighting and laser system, plus projection mapping with live VJ from Double Vision. PA: 2× EV ZLX-15BT, EV S181 sub, QSC GX7 amp.",
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "endpoint-connections-2",
+      "title": "Endpoint Connections 2.0",
+      "category": "club",
+      "status": "announced",
+      "start": "2026-05-15T23:45:00-04:00",
+      "end": "2026-05-16T05:00:00-04:00",
+      "dateLabel": "Fri, May 15, 2026",
+      "summary": "Advanced after-hours with Unpopular Opinion. 11:45 PM to 5 AM.",
+      "presenters": [
+        "Unpopular Opinion"
+      ],
+      "venue": {
+        "name": "The Arts Loft",
+        "area": "Callowhill",
+        "public": true
+      },
+      "flyer": "endpoint-connections-2",
+      "door": {
+        "age": "21+"
+      },
+      "lineup": [
+        "Dragon Drop",
+        "ILLIXIR",
+        "Quackz",
+        "Orem",
+        "Zektr"
+      ],
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "park-rave-005-2026",
+      "title": "Park Rave 005: Bicycle Day Banger Part Two",
+      "category": "outdoor",
+      "status": "announced",
+      "start": "2026-04-19T12:00:00-04:00",
+      "end": "2026-04-19T20:00:00-04:00",
+      "dateLabel": "Sun, Apr 19, 2026",
+      "summary": "A free two-stage, multi-genre park rave with Massive. Open decks and vendors. Noon until dark.",
+      "presenters": [
+        "Massive"
+      ],
+      "venue": {
+        "name": null,
+        "area": "Philly park",
+        "public": false
+      },
+      "flyer": "park-rave-005-2026",
+      "door": {
+        "age": "Free entry"
+      },
+      "lineup": [],
+      "lineupNote": "Two stages and open decks. The lineup was announced after the flyer.",
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "endpoint-connections-1",
+      "title": "Endpoint Connections 1.0",
+      "category": "club",
+      "status": "announced",
+      "start": null,
+      "end": null,
+      "sortDate": "2026-04-18",
+      "dateLabel": "Apr 18",
+      "summary": "The first Endpoint, with Unpopular Opinion.",
+      "presenters": [
+        "Unpopular Opinion"
+      ],
+      "venue": {
+        "name": "The Arts Loft",
+        "area": "Callowhill",
+        "public": true
+      },
+      "flyer": "endpoint-connections-1",
+      "door": {
+        "age": "21+"
+      },
+      "lineup": [
+        "Chehz",
+        "G-Nick",
+        "illGmusic",
+        "Orem",
+        "Spin Doctaz",
+        "Tunk"
+      ],
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "aftertronics-2026",
+      "title": "Aftertronics",
+      "category": "afterparty",
+      "status": "announced",
+      "start": "2026-03-06T23:45:00-05:00",
+      "end": "2026-03-08T05:15:00-05:00",
+      "dateLabel": "Mar 6 + 7, 2026",
+      "summary": "Two nights of unofficial afters. 11:45 PM to 5:15 AM.",
+      "presenters": [],
+      "venue": {
+        "name": null,
+        "area": "Near The Met",
+        "public": false
+      },
+      "flyer": "aftertronics-2026",
+      "door": {
+        "age": "21+ with ID"
+      },
+      "lineup": [
+        "The Riddim Ranch",
+        "Figmvnt",
+        "Acidic Dreams b2b Dragon Drop",
+        "Bluhtii",
+        "illGmusic",
+        "ILLIXIR",
+        "Moppy",
+        "Opifex",
+        "Orem",
+        "Quackz"
+      ],
+      "audio": [],
+      "videos": [
+        {
+          "youtube": "CTwXR94xCoQ",
+          "title": "Figmvnt visuals, part 1"
+        },
+        {
+          "youtube": "ofaY-b8rMy4",
+          "title": "Figmvnt visuals, part 2"
+        },
+        {
+          "youtube": "dXDAtTCNQUw",
+          "title": "Figmvnt visuals, part 3"
+        },
+        {
+          "youtube": "Amp6U_WoPZ8",
+          "title": "Visuals: Orem"
+        },
+        {
+          "youtube": "iB39ObrtEZE",
+          "title": "Visuals: Quackz"
+        }
+      ]
+    },
+    {
+      "slug": "justin-hawkes-2026",
+      "title": "Justin Hawkes",
+      "category": "club",
+      "status": "announced",
+      "start": "2026-01-17T21:00:00-05:00",
+      "end": "2026-01-18T02:00:00-05:00",
+      "dateLabel": "Sat, Jan 17, 2026",
+      "summary": "Drum and bass with Hostile City and XTRA DnB. 9 PM to 2 AM.",
+      "presenters": [
+        "Hostile City",
+        "XTRA DnB"
+      ],
+      "venue": {
+        "name": null,
+        "area": "Warehouse near The Met",
+        "public": false
+      },
+      "flyer": "justin-hawkes-2026",
+      "door": {
+        "age": "21+"
+      },
+      "lineup": [
+        "Justin Hawkes",
+        "GhostInRealLife",
+        "boxplot",
+        "Neuromancy",
+        "Skuzz"
+      ],
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "afterjinx-2025",
+      "title": "AfterJinx",
+      "category": "afterparty",
+      "status": "announced",
+      "start": "2025-12-28T00:00:00-05:00",
+      "end": "2025-12-29T08:00:00-05:00",
+      "dateLabel": "Dec 28 + 29, 2025",
+      "summary": "Two nights of unofficial HIJINX Festival afterparties, midnight to 8 AM.",
+      "presenters": [],
+      "venue": {
+        "name": "905 N Broad St",
+        "area": "North Broad",
+        "public": true
+      },
+      "flyer": "afterjinx-2025",
+      "extraFlyers": [
+        {
+          "label": "Set times",
+          "file": "afterjinx-2025-set-times"
+        },
+        {
+          "label": "Night 2 flyer",
+          "file": "afterjinx-2025-night-2"
+        }
+      ],
+      "door": {
+        "age": "21+"
+      },
+      "nights": [
+        {
+          "label": "Night 1 · Dec 28",
+          "sets": [
+            [
+              "12:00",
+              "Doors"
+            ],
+            [
+              "12:15",
+              "Open Decks"
+            ],
+            [
+              "1:00",
+              "Space Heaters"
+            ],
+            [
+              "1:45",
+              "Dragon Drop"
+            ],
+            [
+              "2:30",
+              "Fresh Bvked"
+            ],
+            [
+              "3:30",
+              "JamL"
+            ],
+            [
+              "4:30",
+              "Trowl"
+            ],
+            [
+              "5:30",
+              "illGmusic b2b Zacharia"
+            ],
+            [
+              "6:30",
+              "G-Nick"
+            ],
+            [
+              "7:15",
+              "Acidic Dreams b2b Tethra64"
+            ],
+            [
+              "8:00",
+              "Close"
+            ]
+          ]
+        },
+        {
+          "label": "Night 2 · Dec 29",
+          "sets": [
+            [
+              "12:00",
+              "Doors"
+            ],
+            [
+              "12:15",
+              "Open Decks"
+            ],
+            [
+              "1:00",
+              "SAP"
+            ],
+            [
+              "1:45",
+              "Bishop. b2b Bluhtii"
+            ],
+            [
+              "2:45",
+              "Dr. Funkle"
+            ],
+            [
+              "3:45",
+              "Defunk (extended set)"
+            ],
+            [
+              "5:15",
+              "TheBusiness. b2b Tygris"
+            ],
+            [
+              "6:15",
+              "Neuromancy"
+            ],
+            [
+              "7:15",
+              "Spin Doctaz"
+            ],
+            [
+              "8:00",
+              "Close"
+            ]
+          ]
+        }
+      ],
+      "lineup": [
+        "Defunk",
+        "Fresh Bvked",
+        "JamL",
+        "Dr. Funkle",
+        "Neuromancy",
+        "TheBusiness.",
+        "Trowl",
+        "Dragon Drop",
+        "G-Nick",
+        "illGmusic",
+        "Acidic Dreams",
+        "Tethra64",
+        "SAP",
+        "Bishop.",
+        "Bluhtii",
+        "Space Heaters",
+        "Spin Doctaz",
+        "Tygris",
+        "Zacharia"
+      ],
+      "audio": [
+        {
+          "title": "AfterJinx Set 12/29/2025",
+          "artist": "SAP",
+          "url": "https://soundcloud.com/erosynmusic/sap-afterjinx-set-12292025"
+        }
+      ],
+      "videos": []
+    },
+    {
+      "slug": "city-rave-round-2-2025",
+      "title": "City Rave: Round 2",
+      "category": "afterparty",
+      "status": "announced",
+      "start": "2025-11-15T23:45:00-05:00",
+      "end": "2025-11-16T06:45:00-05:00",
+      "dateLabel": "Sat, Nov 15, 2025",
+      "summary": "A South Park-themed after party. 11:45 PM to 6:45 AM.",
+      "presenters": [],
+      "venue": {
+        "name": "905 N Broad St",
+        "area": "North Broad",
+        "public": true
+      },
+      "flyer": "city-rave-round-2-2025",
+      "door": {
+        "age": "21+"
+      },
+      "lineup": [
+        "Mystery headliner",
+        "Chehz",
+        "Chow",
+        "Dragon Drop",
+        "Quackz",
+        "DJ Tweak"
+      ],
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "sub-kulture-2025",
+      "title": "Sub Kulture Festival Takeover",
+      "category": "outdoor",
+      "status": "announced",
+      "start": "2025-09-26",
+      "end": null,
+      "dateLabel": "Fri, Sep 26, 2025",
+      "summary": "No Nonsense took over a stage at Kulture Cru’s Sub Kulture Festival.",
+      "presenters": [
+        "Kulture Cru"
+      ],
+      "venue": {
+        "name": "The Feral Dungeon stage",
+        "area": "Sub Kulture Festival",
+        "public": true
+      },
+      "flyer": "sub-kulture-2025",
+      "door": {
+        "age": "18+"
+      },
+      "lineup": [
+        "Neuromancy",
+        "illGmusic",
+        "Spin Doctaz"
+      ],
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "afterbreak-2025",
+      "title": "AfterBreak 2025",
+      "category": "afterparty",
+      "status": "announced",
+      "start": "2025-09-13T00:00:00-04:00",
+      "end": null,
+      "dateLabel": "Sep 12 + 13, 2025",
+      "summary": "Unofficial Breakaway after parties, midnight to sunrise.",
+      "presenters": [],
+      "venue": {
+        "name": null,
+        "area": "Secret Philly location",
+        "public": false
+      },
+      "flyer": "afterbreak-2025",
+      "door": {},
+      "lineup": [
+        "Mystery headliner",
+        "Trowl",
+        "Alex Makin",
+        "G-Nick",
+        "illGmusic",
+        "ILLIXIR",
+        "Orem",
+        "Quackz",
+        "Spin Doctaz"
+      ],
+      "lineupNote": "Plus more names on the flyer.",
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "kandi-island-2025",
+      "title": "Kandi Island",
+      "category": "outdoor",
+      "status": "announced",
+      "start": "2025-08-02T21:00:00-04:00",
+      "end": null,
+      "dateLabel": "Sat, Aug 2, 2025",
+      "summary": "With Chaos & Kandi. 9 PM until late.",
+      "presenters": [
+        "Chaos & Kandi"
+      ],
+      "venue": {
+        "name": null,
+        "area": "Secret outdoor location",
+        "public": false
+      },
+      "flyer": "kandi-island-2025",
+      "door": {},
+      "lineup": [
+        "Mighty Mike Saga",
+        "Terrence Powers",
+        "Acidic Dreams",
+        "Dragon Drop",
+        "G-Nick"
+      ],
+      "lineupNote": "Plus more names on the flyer.",
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "rooftop-nonsense-2025",
+      "title": "Rooftop Nonsense",
+      "category": "outdoor",
+      "status": "announced",
+      "start": "2025-06-07",
+      "end": null,
+      "dateLabel": "Sat, Jun 7, 2025",
+      "summary": "One year of No Nonsense. Free with RSVP.",
+      "presenters": [],
+      "venue": {
+        "name": null,
+        "area": "Secret Fishtown rooftop",
+        "public": false
+      },
+      "flyer": "rooftop-nonsense-2025",
+      "door": {
+        "age": "Free with RSVP"
+      },
+      "lineup": [
+        "Viberium",
+        "Face My Flow b2b ILLIXIR",
+        "Neurotoxin"
+      ],
+      "lineupNote": "Neurotoxin (Acidic Dreams b2b ILLIXIR) made its debut here.",
+      "audio": [],
+      "videos": [
+        {
+          "youtube": "v5LKsgSmvn4",
+          "title": "Live stream, part 1"
+        },
+        {
+          "youtube": "T9SorIa2Yi4",
+          "title": "Live stream, part 2"
+        }
+      ]
+    }
+  ],
+  "recaps": [
+    {
+      "youtube": "eHZVeRInlFE",
+      "title": "AfterJinx 2024 recap",
+      "note": "HiJinx Festival 2024 afters"
+    }
+  ]
+}
