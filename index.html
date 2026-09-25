@@ -1002,6 +1002,7 @@ form[hidden]{display:none}
 .nn-footer-clear{white-space:nowrap;min-height:36px;padding:0;border:0;background:none;color:var(--muted);font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 [data-theme="light"] .evv-sets time,[data-theme="light"] .ss-qty{color:#8a5a00}
 .panel-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.nn-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
 /* ---- Top 10: event records, flyer viewer, artist sheets, real rack, quote packet, drop ---- */
 button.text-link{background:none;border:0;padding:0;cursor:pointer}
 .nn-link-button{background:none;border:0;padding:0 2px;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit}
@@ -1848,6 +1849,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
           <h2>Tell us what you’re planning</h2>
           <p class="lede">Include the date, venue, headcount, and what you need. For rentals, list the package types, and link a reference photo or sketch if you have one.</p>
           <form id="contact-form" novalidate>
+            <input type="text" name="website" id="c-website" class="nn-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div>
               <label for="c-name">Name</label>
               <input id="c-name" name="name" type="text" autocomplete="name" required>
@@ -1878,12 +1880,12 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
               <p class="field-error" id="err-message" role="alert"></p>
             </div>
             <div class="full form-actions">
-              <button class="btn btn-primary" type="submit">Review Request</button>
+              <button class="btn btn-primary" type="submit">Send request</button>
             </div>
           </form>
           <div id="contact-success" class="success" hidden tabindex="-1">
-            <strong>Almost sent.</strong>
-            <p>Your email app just opened with the request addressed to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Hit send there. If nothing opened, email that address directly.</p>
+            <strong id="contact-success-title">Almost sent.</strong>
+            <p id="contact-success-text">Your email app just opened with the request addressed to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Hit send there. If nothing opened, email that address directly.</p>
           </div>
         </div>
       </div>
@@ -1948,6 +1950,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     <h2 id="news-title">Get the drop</h2>
     <p>Event announcements, location releases, and on-sale alerts. Only when there is something worth sending.</p>
     <form id="news-form" novalidate>
+      <input type="text" name="website" id="n-website" class="nn-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <div>
         <label for="n-email">Email</label>
         <input id="n-email" type="email" autocomplete="email" inputmode="email" required>
@@ -1956,8 +1959,8 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
       <button class="btn btn-primary" type="submit">Join the list</button>
     </form>
     <div id="news-success" class="success" hidden tabindex="-1">
-      <strong>One more tap.</strong>
-      <p>Your email app opened with a sign-up request to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Send it and you’re on the list. Drops also post on <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+      <strong id="news-success-title">One more tap.</strong>
+      <p id="news-success-text">Your email app opened with a sign-up request to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Send it and you’re on the list. Drops also post on <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
     </div>
   </div>
 </div>
@@ -2121,6 +2124,35 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
 
   /* Umami (cookieless). Only counts on nononsensephilly.com; a no-op anywhere else or when blocked. */
   function nnTrack(name,data){ try{ if(window.umami && typeof window.umami.track==='function') window.umami.track(name,data); }catch(e){} }
+
+  /* Signups and requests go to the scores-api service (Upstash + Resend). If it fails or email
+     isn't configured, the old email-app route still delivers the message. */
+  var NN_API='https://nononsense-scores.vercel.app/api/';
+  function nnSource(){
+    var s=null;
+    try{ s=sessionStorage.getItem('nn-source'); }catch(e){}
+    if(s) return s;
+    var q=(location.search.match(/[?&]utm_source=([^&]+)/)||[])[1], host='';
+    try{ host=document.referrer?new URL(document.referrer).hostname:''; }catch(e){}
+    if(q) s=decodeURIComponent(q);
+    else if(/instagram/.test(host)) s='instagram';
+    else if(/linktr\.ee/.test(host)) s='linktree';
+    else if(/(^|\.)ra\.co$/.test(host)) s='ra';
+    else if(/dice\.fm/.test(host)) s='dice';
+    else if(/facebook|fb\.com/.test(host)) s='facebook';
+    else if(/google\./.test(host)) s='google';
+    else if(host && !/nononsensephilly\.com$/.test(host)) s=host.replace(/^www\./,'');
+    else s='direct';
+    s=String(s).toLowerCase().replace(/[^a-z0-9._-]/g,'').slice(0,40)||'direct';
+    try{ sessionStorage.setItem('nn-source',s); }catch(e){}
+    return s;
+  }
+  nnSource();
+  function nnPost(path,data){
+    if(!window.fetch) return Promise.reject(new Error('no fetch'));
+    return fetch(NN_API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j && j.error || ('HTTP '+r.status)); return j; }); });
+  }
 
   /* ---- Site data: tools/build.mjs writes data/*.json into #nn-data. ---- */
   var NN={events:[],artists:[],rentals:[],recaps:[]};
@@ -2768,15 +2800,33 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
       if(first) first.focus();
       return;
     }
-    var body='Name: '+name.value.trim()+'\nEmail: '+email.value.trim()+'\nSubject: '+subject.value+'\n\n'+message.value.trim();
+    var form=e.currentTarget, btn=form.querySelector('button[type="submit"]');
+    function finish(title,text){
+      clearContactDraft(); showSubjectNote(null); hideDraftNote();
+      form.setAttribute('hidden','');
+      var done=document.getElementById('contact-success');
+      if(title) document.getElementById('contact-success-title').textContent=title;
+      if(text) document.getElementById('contact-success-text').textContent=text;
+      done.removeAttribute('hidden');
+      done.focus();
+    }
+    function viaEmailApp(ref){
+      var body='Name: '+name.value.trim()+'\nEmail: '+email.value.trim()+'\nSubject: '+subject.value+(ref?'\nReference: '+ref:'')+'\n\n'+message.value.trim();
+      window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('[nononsensephilly.com] '+subject.value+' · '+name.value.trim()+(ref?' · '+ref:''))+'&body='+encodeURIComponent(body);
+      finish(null,null);
+    }
     nnTrack('contact-submit',{subject:subject.value});
-    window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('[nononsensephilly.com] '+subject.value+' · '+name.value.trim())+'&body='+encodeURIComponent(body);
-    clearContactDraft(); showSubjectNote(null); hideDraftNote();
-    e.currentTarget.setAttribute('hidden','');
-    var done=document.getElementById('contact-success');
-    done.removeAttribute('hidden');
-    done.focus();
+    if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+    nnPost('request',{name:name.value.trim(),email:email.value.trim(),subject:subject.value,message:message.value.trim(),source:nnSource(),website:document.getElementById('c-website').value})
+      .then(function(j){
+        if(!j.notified) return viaEmailApp(j.ref);
+        nnTrack('contact-sent',{subject:subject.value});
+        finish(j.ref?'Request '+j.ref+' received.':'Sent.', (j.ref?'Keep that reference. ':'')+'A copy is on its way to '+email.value.trim()+'. We reply from nononsensephl@gmail.com.');
+      })
+      .catch(function(){ viaEmailApp(''); })
+      .then(function(){ if(btn){ btn.disabled=false; btn.textContent='Send request'; } });
   });
+
 
   var yearEl=document.getElementById('year');
   if(yearEl) yearEl.textContent=String(new Date().getFullYear());
@@ -2840,12 +2890,30 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     err.textContent='';
     input.removeAttribute('aria-invalid');
     nnTrack('drop-signup');
-    window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('Add me to the No Nonsense drop list')+'&body='+encodeURIComponent('Please add '+input.value.trim()+' to event and location-drop emails.');
-    e.currentTarget.setAttribute('hidden','');
-    var done=document.getElementById('news-success');
-    done.removeAttribute('hidden');
-    done.focus();
+    var form=e.currentTarget, addr=input.value.trim(), btn=form.querySelector('button[type="submit"]');
+    function finish(title,text){
+      form.setAttribute('hidden','');
+      var done=document.getElementById('news-success');
+      if(title) document.getElementById('news-success-title').textContent=title;
+      if(text) document.getElementById('news-success-text').textContent=text;
+      done.removeAttribute('hidden');
+      done.focus();
+    }
+    function viaEmailApp(){
+      window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('Add me to the No Nonsense drop list')+'&body='+encodeURIComponent('Please add '+addr+' to event and location-drop emails.');
+      finish(null,null);
+    }
+    var m=location.hash.match(/^#event\/([a-z0-9-]+)$/);
+    if(btn){ btn.disabled=true; btn.textContent='Joining…'; }
+    nnPost('signup',{email:addr,source:nnSource(),event:m?m[1]:'',website:document.getElementById('n-website').value})
+      .then(function(j){
+        nnTrack('drop-signup-saved',{returning:j.returning?'yes':'no'});
+        finish(j.returning?'Already on the list.':"You're on the list.", j.returning?'Nothing else to do. Drops also post on Instagram.':(j.emailed?'A confirmation is on its way to '+addr+'.':'Drops go out by email first, then Instagram.'));
+      })
+      .catch(function(){ viaEmailApp(); })
+      .then(function(){ if(btn){ btn.disabled=false; btn.textContent='Join the list'; } });
   });
+
   if(!seen()){
     var mobile=matchMedia('(max-width: 767px)').matches;
     if(mobile) window.setTimeout(openModal, 30000);
