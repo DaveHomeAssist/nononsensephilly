@@ -2155,11 +2155,12 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     }).join('');
   }
 
-  /* Day-of drop: data/drop.json is pushed at drop time; nothing shows before revealAt. */
+  /* Day-of drop: the address lives on the server (scores-api /api/drop), which only returns it after revealAt. */
+  var DROP_API='https://nononsense-scores.vercel.app/api/drop';
   function liveDrop(slug){
     var d=DROP;
-    if(!d || d.active!==true || !d.revealAt || !EV[d.event]) return null;
-    if(new Date(d.revealAt)>new Date() || eventPhase(EV[d.event])==='past') return null;
+    if(!d || d.active!==true || d.revealed!==true || !d.address || !EV[d.event]) return null;
+    if(eventPhase(EV[d.event])==='past') return null;
     if(slug && d.event!==slug) return null;
     return d;
   }
@@ -2320,7 +2321,8 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
         lab.textContent='Tonight · '+(drop.venue||nx.title); sub.textContent=drop.address||'Address is live';
       } else if(nx){
         lab.textContent='Next · '+nx.title;
-        sub.textContent=nx.venue && nx.venue.public ? (nx.venue.name||'') : ((nx.venue && nx.venue.area) ? nx.venue.area+' · ' : '')+'Address at 6 PM day of show';
+        var pending=DROP && DROP.active && !DROP.revealed && DROP.event===nx.slug ? new Date(DROP.revealAt) : null;
+        sub.textContent=nx.venue && nx.venue.public ? (nx.venue.name||'') : ((nx.venue && nx.venue.area) ? nx.venue.area+' · ' : '')+(pending?'Address drops '+pending.toLocaleString([], {weekday:'short',hour:'numeric',minute:'2-digit'}):'Address at 6 PM day of show');
       }
     }
     paintDropCta(new Date().getHours()<6);
@@ -2356,13 +2358,15 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
   }
   function loadDrop(){
     if(!window.fetch) return;
-    fetch('data/drop.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
+    fetch(DROP_API,{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
       if(!d || d.active!==true) return;
       DROP=d; renderNext();
+      /* Before the reveal the server withholds the address, so ask again once it's due. */
       var wait=new Date(d.revealAt)-new Date();
-      if(wait>0 && wait<12*3600*1000) setTimeout(renderNext,wait+500);
+      if(!d.revealed && wait<12*3600*1000) setTimeout(loadDrop,Math.max(wait,0)+2000);
     }).catch(function(){});
   }
+
 
   /* Rentals: power, video signal path, and the laser rule travel with the manifest. */
   var MF={};

@@ -1,5 +1,5 @@
 {
-  "_readme": "One record per show. tools/build.mjs turns this into the Events cards, the Home next-show line, /events/<slug>/ pages, share images, and sitemap.xml. status: announced | on-sale | sold-out | cancelled. Past is worked out from the end time, so you never need to set it. venue.public=false keeps the street off the site: only the area shows until data/drop.json reveals it on show day.",
+  "_readme": "One record per show. tools/build.mjs turns this into the Events cards, the Home next-show line, /events/<slug>/ pages, share images, and sitemap.xml. status: announced | on-sale | sold-out | cancelled. Past is worked out from the end time, so you never need to set it. venue.public=false keeps the street off the site: only the area shows until the day-of drop (scores-api /api/drop) reveals it.",
   "events": [
     {
       "slug": "afterbreak-2026",

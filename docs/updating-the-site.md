@@ -23,7 +23,18 @@ For `--og`, point at Playwright if it isn't installed in the repo: `PLAYWRIGHT_M
 Cancelled: set `"status": "cancelled"` and a `"notice"`. For one night of a run, set `"status": "cancelled"` on that night.
 
 ## Day-of address drop
-At drop time, edit `data/drop.json`: set `"active": true`, the event slug, `revealAt`, venue, address, and optionally `mapX`/`mapY` and crew load-in notes. Then push. Nothing shows before `revealAt`. Anyone can read the file once it's pushed, so push at drop time, not earlier. Set `"active": false` after the show.
+The address never goes in this repo. It's stored in Upstash and served by `scores-api/api/drop.js`, which hides it until the reveal time on the server's clock. Before then the site only learns that a drop is coming and when.
+
+**To set a drop:** open `https://nononsense-scores.vercel.app/drop-admin.html`, paste the admin token (the `DROP_ADMIN_TOKEN` value in Vercel → nononsense-scores → Settings → Environment Variables), and fill in the event slug, reveal time, venue, and address. You can do this days ahead: nothing is public until the reveal time. Optional: map X/Y for the pin, and crew notes (load-in door, truck path, power). Crew notes are never public; they only come back to the admin token or `DROP_CREW_TOKEN`.
+
+The drop clears itself 36 hours after the reveal. "Clear drop" removes it early.
+
+From a terminal instead:
+```
+curl -X POST https://nononsense-scores.vercel.app/api/drop \
+  -H "Authorization: Bearer $DROP_ADMIN_TOKEN" -H "Content-Type: application/json" \
+  -d '{"event":"afterbreak-2026","revealAt":"2026-10-09T18:00:00-04:00","venue":"…","address":"…"}'
+```
 
 ## Artists
 Names on lineups link to `data/artists.json` automatically (spelling variants go in `aliases`). The build warns about any lineup name with no record.
