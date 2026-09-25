@@ -86,6 +86,15 @@ for (const a of artists) for (const m of a.members || []) {
 for (const [slug, list] of showsByArtist) list.sort((x, y) => sortKey(events.find((e) => e.slug === y)).localeCompare(sortKey(events.find((e) => e.slug === x))));
 const unknown = new Set();
 for (const e of events) for (const act of actsOf(e)) for (const seg of splitAct(act)) if (seg.artist === null && !/^(doors|open decks|close|mystery headliner)$/i.test(seg.text.trim())) unknown.add(seg.text);
+const gaps = [];
+for (const e of events) {
+  if (!e.start) gaps.push(`${e.slug}: no date with a year (start is empty)`);
+  if (!(e.lineup || []).length && !e.lineupNote) gaps.push(`${e.slug}: no lineup`);
+  if (/more names/i.test(e.lineupNote || '')) gaps.push(`${e.slug}: lineup is partial`);
+  if (phase(e) === 'past' && !(e.nights || []).some((n) => (n.sets || []).length)) gaps.push(`${e.slug}: no set times`);
+  if (phase(e) === 'on-sale' && !e.ticketUrl) gaps.push(`${e.slug}: on sale but no ticketUrl`);
+}
+if (gaps.length) console.warn(`Content gaps (${gaps.length}):\n  ` + gaps.join('\n  '));
 if (unknown.size) console.warn('Names on lineups with no artist record:', [...unknown].join(', '));
 
 function actHTML(act, linkMode) {
@@ -105,8 +114,8 @@ function eventCard(e, ph) {
   const more = (e.lineup || []).length > 6 || e.lineupNote;
   const statusPill = ph === 'past' ? '' : `<span class="ev-state ev-state--${ph}">${STATUS[ph]}</span>`;
   const tickets = (ph === 'on-sale' && e.ticketUrl) ? `<a class="btn btn-primary ev-tix" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener noreferrer" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : '';
-  const vids = (e.videos || []).length ? `<span class="ev-has">▶ ${e.videos.length} video${e.videos.length > 1 ? 's' : ''}</span>` : '';
-  const sets = (e.nights || []).some((n) => (n.sets || []).length) ? '<span class="ev-has">Set times</span>' : '';
+  const vids = (e.videos || []).length ? `<li class="ev-has">▶ ${e.videos.length} video${e.videos.length > 1 ? 's' : ''}</li>` : '';
+  const sets = (e.nights || []).some((n) => (n.sets || []).length) ? '<li class="ev-has">Set times</li>' : '';
   return `            <article class="card" data-cat="${e.category}" data-year="${yearOf(e)}" data-event="${e.slug}" data-phase="${ph}">
               <button type="button" class="card-open" data-event-open="${e.slug}" aria-label="${esc(e.title)}: flyer, lineup, and details"><img class="thumb" src="${flyerCard(e)}" alt="${esc(e.title)} flyer" width="720" height="900" loading="lazy" decoding="async"></button>
               <div class="card-body">
@@ -134,11 +143,12 @@ blocks['upcoming'] = '\n' + (upcoming.length
 const years = [...new Set(archive.map(yearOf).filter(Boolean))].sort().reverse();
 blocks['event-years'] = '\n' + [`<option value="all">All years</option>`, ...years.map((y) => `<option value="${y}">${y}</option>`)].map((o) => '              ' + o).join('\n') + '\n            ';
 
+/* Recaps lead; set visuals and streams follow. */
 const recapItems = [
-  ...events.flatMap((e) => (e.videos || []).map((v) => ({ ...v, event: e.slug, eventTitle: e.title }))),
-  ...(eventsData.recaps || []).map((v) => ({ ...v, eventTitle: v.note || '' }))
+  ...(eventsData.recaps || []).map((v) => ({ ...v, eventTitle: v.note || '' })),
+  ...events.flatMap((e) => (e.videos || []).map((v) => ({ ...v, event: e.slug, eventTitle: e.title })))
 ];
-blocks['recaps'] = '\n' + recapItems.map((v) => `            <li><button type="button" class="rc-item" data-video="${esc(v.youtube)}" data-video-title="${esc(v.title)}"><img src="https://i.ytimg.com/vi/${esc(v.youtube)}/mqdefault.jpg" alt="" width="320" height="180" loading="lazy" decoding="async" onerror="this.style.visibility='hidden'"><span class="rc-play" aria-hidden="true">▶</span><b>${esc(v.title)}</b><small>${esc(v.eventTitle)}</small></button></li>`).join('\n') + '\n          ';
+blocks['recaps'] = '\n' + recapItems.map((v) => `            <li><button type="button" class="rc-item" data-video="${esc(v.youtube)}" data-video-title="${esc(v.title)}"><img src="https://i.ytimg.com/vi/${esc(v.youtube)}/hqdefault.jpg" alt="" width="480" height="360" loading="lazy" decoding="async" onerror="this.style.visibility='hidden'"><span class="rc-play" aria-hidden="true">▶</span><b>${esc(v.title)}</b><small>${esc(v.eventTitle)}</small></button></li>`).join('\n') + '\n          ';
 
 const members = artists.filter((a) => a.role === 'member');
 blocks['members'] = '\n' + members.map((a) => {
