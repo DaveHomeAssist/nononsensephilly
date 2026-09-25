@@ -953,6 +953,8 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 .hs-save{background:#ffb23e;color:#1c1204}
 .hs-skip{min-height:44px;padding:0 10px;border:0;background:transparent;color:#c8c0d4;font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
 .hs-msg{min-height:1.2em;margin:8px 0 0;font:500 11px var(--font-mono);color:#ffb0c9}
+/* The global form grid rule beats [hidden] too. */
+form[hidden]{display:none}
 </style>
 <script>
 (function(){
@@ -1074,7 +1076,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
         <nav class="waypoints" aria-label="Where to next">
           <a href="#events" data-go="events"><small>01</small><b>Events</b><span>Past rooms + flyers</span></a>
           <a href="#rentals" data-go="rentals"><small>02</small><b>Rentals</b><span>Audio · light · video</span></a>
-          <a href="#contact" data-go="contact"><small>03</small><b>Booking</b><span>Artists · rooms</span></a>
+          <a href="#contact" data-go="contact" data-subject="Booking &amp; Talent"><small>03</small><b>Booking</b><span>Artists · rooms</span></a>
         </nav>
       </div>
       <form id="hs-entry" class="hs-entry" hidden novalidate>
@@ -1362,7 +1364,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
               <ul id="quote-items" class="quote-items"><li class="quote-empty">Nothing on the manifest yet.</li></ul>
               <div class="quote-fields">
                 <div class="qf-date"><label for="rent-date">Event date</label><input id="rent-date" type="date"></div>
-                <div><label for="rent-duration">Duration</label><select id="rent-duration"><option>Single event / day</option><option>Weekend</option><option>Multi-day</option><option>Not sure yet</option></select></div>
+                <div><label for="rent-duration">Duration</label><select id="rent-duration"><option>Single day</option><option>Weekend</option><option>Multi-day</option><option>Not sure yet</option></select></div>
                 <div><label for="rent-fulfillment">Logistics</label><select id="rent-fulfillment"><option>Pickup</option><option>Delivery</option><option>Delivery + setup</option><option>Need recommendation</option></select></div>
               </div>
               <div class="quote-actions">
@@ -1395,12 +1397,12 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
             <article class="artist">
               <div class="who"><div class="avatar" aria-hidden="true">IX</div><div><div class="name">ILLIXIR</div><div class="role">Collective member</div></div></div>
               <p>Plays solo and as Neuromancy, a GRiZ neurofunk tribute with Acidic Dreams. On the bill for Endpoint Connections 2.0, Aftertronics, AfterBreak 2025, and Rooftop Nonsense.</p>
-              <div class="card-links"><a class="text-link" href="https://soundcloud.com/illixirbass" target="_blank" rel="noopener noreferrer">SoundCloud</a><a class="text-link" href="https://open.spotify.com/track/2EO3bNmyE6GKPqWOd8AseL" target="_blank" rel="noopener noreferrer">Listen: Welcome Home</a></div>
+              <div class="card-links"><a class="text-link" href="https://soundcloud.com/illixirbass" target="_blank" rel="noopener noreferrer">SoundCloud</a><a class="text-link" href="https://open.spotify.com/track/2EO3bNmyE6GKPqWOd8AseL" target="_blank" rel="noopener noreferrer">Welcome Home (ILLIXIR x Acidic Dreams)</a></div>
             </article>
             <article class="artist">
               <div class="who"><div class="avatar" aria-hidden="true">AD</div><div><div class="name">ACIDIC DREAMS</div><div class="role">Collective member</div></div></div>
               <p>Plays solo, in b2b sets, and as Neuromancy with ILLIXIR. On the bill for AfterBreak 2026, Aftertronics, AfterJinx, and Kandi Island.</p>
-              <div class="card-links"><a class="text-link" href="https://soundcloud.com/acidicdreams" target="_blank" rel="noopener noreferrer">SoundCloud</a><a class="text-link" href="https://open.spotify.com/track/2EO3bNmyE6GKPqWOd8AseL" target="_blank" rel="noopener noreferrer">Listen: Welcome Home</a></div>
+              <div class="card-links"><a class="text-link" href="https://soundcloud.com/acidicdreams" target="_blank" rel="noopener noreferrer">SoundCloud</a><a class="text-link" href="https://open.spotify.com/track/2EO3bNmyE6GKPqWOd8AseL" target="_blank" rel="noopener noreferrer">Welcome Home (ILLIXIR x Acidic Dreams)</a></div>
             </article>
             <article class="artist">
               <div class="who"><div class="avatar" aria-hidden="true">DV</div><div><div class="name">DOUBLE VISION</div><div class="role">Collective member</div></div></div>
@@ -1614,7 +1616,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
         <div>
           <p class="kicker">Contact</p>
           <h2>Tell us what you’re planning</h2>
-          <p class="lede">Include the date, venue, headcount, and what you need. For rentals, list the package types or reference image that fits the job.</p>
+          <p class="lede">Include the date, venue, headcount, and what you need. For rentals, list the package types, and link a reference photo or sketch if you have one.</p>
           <form id="contact-form" novalidate>
             <div>
               <label for="c-name">Name</label>
@@ -1648,8 +1650,8 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
             </div>
           </form>
           <div id="contact-success" class="success" hidden tabindex="-1">
-            <strong>Request ready.</strong>
-            <p>This preview build is not connected to an inbox yet, so nothing has been sent. Connect the production email endpoint before publishing the form.</p>
+            <strong>Almost sent.</strong>
+            <p>Your email app just opened with the request addressed to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Hit send there. If nothing opened, email that address directly.</p>
           </div>
         </div>
       </div>
@@ -1721,8 +1723,8 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
       <button class="btn btn-primary" type="submit">Join the list</button>
     </form>
     <div id="news-success" class="success" hidden tabindex="-1">
-      <strong>Saved for this preview.</strong>
-      <p>This preview does not send or store addresses yet. Connect the mailing-list endpoint before publishing.</p>
+      <strong>One more tap.</strong>
+      <p>Your email app opened with a sign-up request to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Send it and you’re on the list. Drops also post on <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
     </div>
   </div>
 </div>
@@ -2006,6 +2008,8 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
       if(first) first.focus();
       return;
     }
+    var body='Name: '+name.value.trim()+'\nEmail: '+email.value.trim()+'\nSubject: '+subject.value+'\n\n'+message.value.trim();
+    window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('[nononsensephilly.com] '+subject.value+' · '+name.value.trim())+'&body='+encodeURIComponent(body);
     e.currentTarget.setAttribute('hidden','');
     var done=document.getElementById('contact-success');
     done.removeAttribute('hidden');
@@ -2073,6 +2077,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
     }
     err.textContent='';
     input.removeAttribute('aria-invalid');
+    window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('Add me to the No Nonsense drop list')+'&body='+encodeURIComponent('Please add '+input.value.trim()+' to event and location-drop emails.');
     e.currentTarget.setAttribute('hidden','');
     var done=document.getElementById('news-success');
     done.removeAttribute('hidden');
@@ -2425,6 +2430,11 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
     layout();
     requestAnimationFrame(frame);
   })();
+
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-subject]'), sel=document.getElementById('c-subject');
+    if(a && sel) sel.value=a.getAttribute('data-subject');
+  });
 
   function panelFromHash(){
     var id=location.hash.replace(/^#/,'');
