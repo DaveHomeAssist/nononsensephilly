@@ -2356,16 +2356,23 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     });
     if(!up.querySelector('.card')) up.outerHTML='<div class="ev-empty"><p><b>Nothing on sale right now.</b> The next show goes to the drop list first, then Instagram.</p><button type="button" class="btn btn-primary" data-open-news>Get the drop</button></div>';
   }
+  var dropTries=0;
   function loadDrop(){
     if(!window.fetch) return;
-    fetch(DROP_API,{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
+    fetch(DROP_API,{cache:'no-store'}).then(function(r){ if(!r.ok) throw new Error('drop '+r.status); return r.json(); }).then(function(d){
+      dropTries=0;
       if(!d || d.active!==true) return;
       DROP=d; renderNext();
-      /* Before the reveal the server withholds the address, so ask again once it's due. */
+      /* Before the reveal the server withholds the address, so ask again once it's due
+         (and every 10 s after that if this device's clock runs ahead of the server's). */
       var wait=new Date(d.revealAt)-new Date();
-      if(!d.revealed && wait<12*3600*1000) setTimeout(loadDrop,Math.max(wait,0)+2000);
-    }).catch(function(){});
+      if(!d.revealed && wait<12*3600*1000) setTimeout(loadDrop,wait>0?wait+2000:10000);
+    }).catch(function(){
+      /* A failed check near the reveal must not strand the page on the countdown. */
+      if(DROP && DROP.active && !DROP.revealed && dropTries<20){ dropTries++; setTimeout(loadDrop,Math.min(60000,5000*dropTries)); }
+    });
   }
+
 
 
   /* Rentals: power, video signal path, and the laser rule travel with the manifest. */

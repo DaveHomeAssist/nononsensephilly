@@ -80,6 +80,13 @@ export default async function handler(req, res) {
   const crew = admin || matches(token, env.DROP_CREW_TOKEN);
 
   try {
+    // A token that matches neither role is an error, not a quiet fall-back to the public view.
+    if (token && !crew) {
+      const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+      const first = await redis(['SET', `nn:drop:fail:${ip}`, '1', 'EX', '5', 'NX']);
+      if (first !== 'OK') return res.status(429).json({ error: 'slow down' });
+      return res.status(401).json({ error: 'wrong admin token' });
+    }
     if (req.method === 'GET') {
       const raw = await redis(['GET', KEY]);
       if (!raw) return res.status(200).json({ active: false });
@@ -93,13 +100,7 @@ export default async function handler(req, res) {
     }
     if (req.method !== 'POST' && req.method !== 'DELETE') return res.status(405).json({ error: 'method not allowed' });
     if (!env.DROP_ADMIN_TOKEN) return res.status(503).json({ error: 'DROP_ADMIN_TOKEN is not set on the server' });
-    if (!admin) {
-      const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
-      // One wrong guess per IP every 5 seconds.
-      const first = await redis(['SET', `nn:drop:fail:${ip}`, '1', 'EX', '5', 'NX']);
-      if (first !== 'OK') return res.status(429).json({ error: 'slow down' });
-      return res.status(401).json({ error: 'wrong or missing admin token' });
-    }
+    if (!admin) return res.status(401).json({ error: 'wrong or missing admin token' });
     if (req.method === 'DELETE') { await redis(['DEL', KEY]); return res.status(200).json({ active: false }); }
 
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
