@@ -1,8 +1,9 @@
 // Global arcade leaderboard for the No Nonsense splash game, stored in Upstash Redis.
 const KEY = 'nn:crowd:scores';
 const ORIGINS = ['https://nononsensephilly.com', 'https://www.nononsensephilly.com'];
-const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+const env = process.env;
+const URL_ = env.nononsense_scores_KV_REST_API_URL || env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL;
+const TOKEN = env.nononsense_scores_KV_REST_API_TOKEN || env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN;
 
 async function redis(cmd) {
   const r = await fetch(URL_, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });

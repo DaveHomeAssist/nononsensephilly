@@ -2245,7 +2245,10 @@ form[hidden]{display:none}
         .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
         .then(function(res){
           if(!res.ok){ entryMsg.textContent=res.j && res.j.error ? res.j.error : 'Could not save.'; return; }
-          board=res.j.scores; hilite={initials:ini,score:got};
+          board=res.j.scores||[]; hilite={initials:ini,score:got};
+          if(!board.some(function(r){ return r.initials===ini && r.score===got; })){
+            board.push({initials:ini,score:got}); board.sort(function(a,b){ return b.score-a.score; }); board=board.slice(0,10);
+          }
           closeEntry(); showBoard(performance.now(),7000);
         })
         .catch(function(){ entryMsg.textContent='Could not reach the scoreboard.'; });
