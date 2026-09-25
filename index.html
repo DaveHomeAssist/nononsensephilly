@@ -974,6 +974,15 @@ form[hidden]{display:none}
 .nn-label-row label{margin:0}
 .nn-inline-note{display:inline-flex;align-items:center;gap:2px;font:500 10px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#ffb23e}
 .nn-inline-note .nn-link-button{min-height:32px;margin:-6px 0;padding:0 4px}
+.nn-remember{margin-top:-6px}
+@media (max-height:700px){#contact-form{row-gap:4px}.nn-check{min-height:34px}}
+.nn-check{display:inline-flex;align-items:center;gap:10px;min-height:40px;margin:0;cursor:pointer;text-transform:none;letter-spacing:.02em;font-size:12px;color:var(--muted)}
+.nn-check input{width:20px;height:20px;margin:0;padding:0;accent-color:#ffb23e;flex:0 0 auto}
+.filter.nn-usual{position:relative}
+.filter.nn-usual::after{content:"";position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:#ffb23e;box-shadow:0 0 0 2px var(--bg)}
+.nn-used{padding:4px 7px;border:1px solid #ffb23e;border-radius:999px;font:500 9px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:#ffb23e;white-space:nowrap}
+.nn-used[hidden]{display:none}
+.case-top{align-items:center}
 .nn-footer-clear{white-space:nowrap;min-height:36px;padding:0;border:0;background:none;color:var(--muted);font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 </style>
 <script>
@@ -1651,6 +1660,7 @@ form[hidden]{display:none}
               <input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" required>
               <p class="field-error" id="err-email" role="alert"></p>
             </div>
+            <div class="full nn-remember"><label class="nn-check" for="c-remember"><input type="checkbox" id="c-remember" data-contact-remember> Remember my name and email on this device</label></div>
             <div class="full">
               <div class="nn-label-row"><label for="c-subject">Subject</label><span class="nn-inline-note" data-contact-subject-note hidden><span data-contact-subject-note-text>Set from Rentals</span> · <button type="button" class="nn-link-button" data-contact-subject-change>change</button></span></div>
               <select id="c-subject" name="subject" required>
@@ -1766,7 +1776,8 @@ form[hidden]{display:none}
     function freshDraft(){ return {subject:null,message:null,savedAt:0}; }
     function fresh(){
       return {v:1,updated:0,theme:null,nav:{last:null,visits:{}},rentals:freshRentals(),
-        contact:{subject:null,subjectSource:null,draft:freshDraft()},game:{best:null,plays:0},meta:{migratedLegacyKeys:false}};
+        contact:{subject:null,subjectSource:null,remember:false,name:null,email:null,draft:freshDraft()},events:{filter:null,filterCounts:{}},
+        affinity:{zones:{},lastUsed:[],lastUsedAt:0},game:{best:null,plays:0},meta:{migratedLegacyKeys:false}};
     }
     function obj(x){ return x && typeof x==='object' && !Array.isArray(x); }
     function str(x,max){ return typeof x==='string' ? (max?x.slice(0,max):x) : null; }
@@ -1780,6 +1791,8 @@ form[hidden]{display:none}
       if(expired(n.rentals.savedAt)) n.rentals=freshRentals();
       if(expired(n.contact.draft.savedAt)) n.contact.draft=freshDraft();
       if(pastDate(n.rentals.date)) n.rentals.date=null;
+      if(!n.contact.remember){ n.contact.name=null; n.contact.email=null; }
+      if(!n.affinity.lastUsedAt || Date.now()-n.affinity.lastUsedAt>90*24*60*60*1000){ n.affinity.lastUsed=[]; n.affinity.lastUsedAt=0; }
       if(!Object.keys(n.rentals.items).length){ n.rentals.date=null; n.rentals.duration=null; n.rentals.logistics=null; n.rentals.savedAt=0; }
     }
     function normalize(raw){
@@ -1795,7 +1808,15 @@ form[hidden]{display:none}
       if(obj(raw.contact)){
         n.contact.subject=str(raw.contact.subject,120);
         n.contact.subjectSource=str(raw.contact.subjectSource,30);
+        n.contact.remember=raw.contact.remember===true;
+        if(n.contact.remember){ n.contact.name=str(raw.contact.name,80); n.contact.email=str(raw.contact.email,120); }
         if(obj(raw.contact.draft)) n.contact.draft={subject:str(raw.contact.draft.subject,120),message:str(raw.contact.draft.message,NN_DRAFT_MAX),savedAt:Number(raw.contact.draft.savedAt)||0};
+      }
+      if(obj(raw.events)){ n.events.filter=str(raw.events.filter,20); n.events.filterCounts=counts(raw.events.filterCounts); }
+      if(obj(raw.affinity)){
+        n.affinity.zones=counts(raw.affinity.zones);
+        n.affinity.lastUsed=Array.isArray(raw.affinity.lastUsed)?raw.affinity.lastUsed.filter(function(x){ return typeof x==='string'; }).slice(0,12):[];
+        n.affinity.lastUsedAt=Number(raw.affinity.lastUsedAt)||0;
       }
       if(obj(raw.game)){ n.game.best=Number.isFinite(raw.game.best)?raw.game.best:null; n.game.plays=Number(raw.game.plays)||0; }
       if(obj(raw.meta)) n.meta.migratedLegacyKeys=!!raw.meta.migratedLegacyKeys;
@@ -1846,14 +1867,14 @@ form[hidden]{display:none}
   function saveRentalManifest(o){
     nnStore.mutate(function(s){
       if(o.items) s.rentals.items=JSON.parse(JSON.stringify(o.items));
-      if(o.zone) s.rentals.zoneCounts[o.zone]=(s.rentals.zoneCounts[o.zone]||0)+1;
+      if(o.zone){ s.rentals.zoneCounts[o.zone]=(s.rentals.zoneCounts[o.zone]||0)+1; s.affinity.zones[o.zone]=(s.affinity.zones[o.zone]||0)+1; }
       if(o.date!==undefined) s.rentals.date=o.date||null;
       if(o.duration!==undefined) s.rentals.duration=o.duration||null;
       if(o.logistics!==undefined) s.rentals.logistics=o.logistics||null;
       s.rentals.savedAt=Object.keys(s.rentals.items).length?Date.now():0;
     });
   }
-  function clearRentalManifest(){ nnStore.mutate(function(s){ s.rentals={items:{},zoneCounts:{},date:null,duration:null,logistics:null,savedAt:0}; },{flush:true}); }
+  function clearRentalManifest(){ nnStore.mutate(function(s){ s.rentals={items:{},zoneCounts:{},date:null,duration:null,logistics:null,savedAt:0}; s.affinity.lastUsed=[]; s.affinity.lastUsedAt=0; },{flush:true}); if(typeof renderUsedBadges==='function') renderUsedBadges(); }
   function setContactSubject(subject,src){ nnStore.mutate(function(s){ s.contact.subject=subject||null; s.contact.subjectSource=src||null; }); }
   function markContactSubjectManual(subject){ nnStore.mutate(function(s){ s.contact.subject=subject||null; s.contact.subjectSource='manual'; }); }
   function saveContactDraft(o){
@@ -2072,6 +2093,8 @@ form[hidden]{display:none}
     if(subject) subject.value=inferSubjectFromSource('rentals-handoff');
     if(message) message.value=lines.join('\n');
     setContactSubject(subject.value,'rentals-handoff');
+    nnStore.mutate(function(st){ st.affinity.lastUsed=names.slice(0,12); st.affinity.lastUsedAt=Date.now(); });
+    renderUsedBadges();
     showSubjectNote('rentals-handoff');
     saveContactDraft({subject:subject.value,message:message.value});
     setManifest(false);
@@ -2111,7 +2134,7 @@ form[hidden]{display:none}
     rentalSelections={}; renderRentalQuote(); clearRentalManifest(); dismissRestoreBanner(); renderContinueChip();
     announceStoredState('Saved rental manifest cleared.');
   });
-  document.querySelectorAll('.rental-filter').forEach(function(b){ b.addEventListener('click',dismissRestoreBanner); });
+  document.querySelectorAll('.rental-filter').forEach(function(b){ b.addEventListener('click',function(){ if(!restoringUI) dismissRestoreBanner(); }); });
 
   /* Home: continue chip for a saved manifest. */
   var continueChip=document.querySelector('[data-continue-chip]'), continueUsed=false;
@@ -2684,6 +2707,85 @@ form[hidden]{display:none}
       var old=btn.textContent; btn.textContent='Cleared'; setTimeout(function(){ btn.textContent=old; },2000);
     });
   });
+
+  /* ---- Slice 2: opt-in contact memory, event filter memory, rental affinity. ---- */
+  var cName=document.getElementById('c-name'), cEmail=document.getElementById('c-email'), cRemember=document.querySelector('[data-contact-remember]');
+  function saveIdentity(){
+    if(!cRemember || !cRemember.checked) return;
+    nnStore.mutate(function(s){ s.contact.remember=true; s.contact.name=(cName.value||'').trim().slice(0,80)||null; s.contact.email=(cEmail.value||'').trim().slice(0,120)||null; });
+  }
+  if(cRemember && cName && cEmail){
+    var c0=nnStore.get().contact;
+    if(c0.remember){
+      cRemember.checked=true;
+      if(c0.name && !cName.value) cName.value=c0.name;
+      if(c0.email && !cEmail.value) cEmail.value=c0.email;
+    }
+    cRemember.addEventListener('change',function(){
+      if(cRemember.checked){ saveIdentity(); announceStoredState('Name and email will be remembered on this device.'); }
+      else { nnStore.mutate(function(s){ s.contact.remember=false; s.contact.name=null; s.contact.email=null; },{flush:true}); announceStoredState('Name and email removed from this device.'); }
+    });
+    cName.addEventListener('input',saveIdentity);
+    cEmail.addEventListener('input',saveIdentity);
+  }
+
+  var restoringUI=false;
+  var eventFilters=[].slice.call(document.querySelectorAll('#events .filter'));
+  function renderUsualFilter(){
+    var fc=nnStore.get().events.filterCounts, top=null, n=1;
+    Object.keys(fc).forEach(function(k){ if(k!=='all' && fc[k]>n){ n=fc[k]; top=k; } });
+    eventFilters.forEach(function(b){
+      var on=b.getAttribute('data-filter')===top;
+      b.classList.toggle('nn-usual',on);
+      var sr=b.querySelector('.nn-usual-sr');
+      if(on && !sr){ sr=document.createElement('span'); sr.className='sr-only nn-usual-sr'; sr.textContent=' (your usual)'; b.appendChild(sr); }
+      if(!on && sr) sr.remove();
+    });
+  }
+  eventFilters.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(restoringUI) return;
+      var f=b.getAttribute('data-filter');
+      nnStore.mutate(function(s){ s.events.filter=f; s.events.filterCounts[f]=(s.events.filterCounts[f]||0)+1; });
+      renderUsualFilter();
+    });
+  });
+  (function restoreEventFilter(){
+    var f=nnStore.get().events.filter;
+    renderUsualFilter();
+    if(!f || f==='all') return;
+    var btn=eventFilters.filter(function(b){ return b.getAttribute('data-filter')===f; })[0];
+    if(!btn) return;
+    restoringUI=true; btn.click(); restoringUI=false;
+    if(filterStatus) filterStatus.textContent='';
+  })();
+
+  var zoneButtons=[].slice.call(document.querySelectorAll('.rental-filter'));
+  function renderUsedBadges(){
+    var used=nnStore.get().affinity.lastUsed;
+    rentalCards.forEach(function(c){
+      var btn=c.querySelector('.rental-add'), top=c.querySelector('.case-top'), badge=c.querySelector('.nn-used');
+      if(!btn || !top) return;
+      if(!badge){ badge=document.createElement('span'); badge.className='nn-used'; badge.textContent='Used last time'; badge.hidden=true; top.insertBefore(badge,top.lastElementChild); }
+      badge.hidden=used.indexOf(btn.getAttribute('data-rental'))<0;
+    });
+  }
+  (function restoreZone(){
+    renderUsedBadges();
+    var st=nnStore.get(), zones=st.affinity.zones, top=null, n=1;
+    Object.keys(zones).forEach(function(k){ if(zones[k]>n){ n=zones[k]; top=k; } });
+    var restored=Object.keys(rentalSelections);
+    if(restored.length){
+      var first=rentalCards.filter(function(c){ var b=c.querySelector('.rental-add'); return b && rentalSelections[b.getAttribute('data-rental')]; })[0];
+      if(first) top=first.getAttribute('data-rental-cat');
+    }
+    if(!top || top==='audio') return;
+    var zb=zoneButtons.filter(function(b){ return b.getAttribute('data-rental-filter')===top; })[0];
+    if(!zb) return;
+    restoringUI=true; zb.click(); restoringUI=false;
+    if(rentalFilterStatus) rentalFilterStatus.textContent='';
+    if(!restored.length && rentalBanner) rentalBanner.hidden=true;
+  })();
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') nnStore.flush(); });
   window.addEventListener('pagehide',function(){ nnStore.flush(); });
   (function announceRestore(){
