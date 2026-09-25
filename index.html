@@ -33,6 +33,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="media/fonts/unbounded-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="media/fonts/plex-mono-500.woff2" as="font" type="font/woff2" crossorigin>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="b366ee05-3f6a-4249-87e3-0f11c3f1e50a" data-domains="nononsensephilly.com"></script>
 <!-- nn:home-ld --><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://nononsensephilly.com/#org","name":"No Nonsense Collective","alternateName":"No Nonsense","url":"https://nononsensephilly.com/","logo":{"@type":"ImageObject","url":"https://nononsensephilly.com/media/icon-512.png","width":512,"height":512},"image":"https://nononsensephilly.com/media/og-card.jpg","description":"Philadelphia collective producing after-hours events, renting DJ, sound, lighting, and video gear, and booking artists.","foundingDate":"2024","email":"nononsensephl@gmail.com","areaServed":{"@type":"City","name":"Philadelphia"},"sameAs":["https://instagram.com/nononsensephl","https://www.youtube.com/@NoNonsensePHL","https://linktr.ee/nononsensephl"],"member":[{"@type":"MusicGroup","name":"ILLIXIR","url":"https://nononsensephilly.com/artists/illixir/"},{"@type":"MusicGroup","name":"Acidic Dreams","url":"https://nononsensephilly.com/artists/acidic-dreams/"},{"@type":"MusicGroup","name":"Double Vision","url":"https://nononsensephilly.com/artists/double-vision/"}]},{"@type":"WebSite","@id":"https://nononsensephilly.com/#website","url":"https://nononsensephilly.com/","name":"No Nonsense Collective","inLanguage":"en-US","publisher":{"@id":"https://nononsensephilly.com/#org"}}]}</script><!-- /nn:home-ld -->
 <!-- BRAND COLOR SWAP: accent tokens live in the style block as --accent -->
 <style>
@@ -1259,7 +1260,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
         <!-- nn:hero-next --><p class="nn-next is-quiet" data-next><i class="nn-next-dot"></i><b>Next show</b> <span>Announced to the drop list first</span></p><!-- /nn:hero-next -->
         <div class="map-ctas">
           <a class="btn map-cta" href="#" data-open-news data-drop-cta>Get the drop</a>
-          <a class="btn map-cta-ghost" href="#rentals" data-go="rentals">Rent the rig</a>
+          <a class="btn map-cta-ghost" href="#rentals" data-go="rentals" data-umami-event="home-rent-the-rig">Rent the rig</a>
         </div>
         <nav class="waypoints" aria-label="Where to next">
           <a href="#events" data-go="events"><small>01</small><b>Events</b><span>Past rooms + flyers</span></a>
@@ -1504,57 +1505,57 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
               <h3>DJ booth package</h3>
               <p>A club-standard booth for club nights, pop-ups, and afterparties.</p>
               <ul class="case-specs"><li>2× CDJ-3000</li><li>DJM-A9</li><li>SM-58</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="DJ booth package" aria-label="Full gear list: DJ booth package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="DJ booth package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="DJ booth package" data-umami-event="rental-add" data-umami-event-package="DJ booth package">Add to manifest</button>
             </article>
             <article class="rental-card" data-rental-cat="audio">
               <div class="case-top"><span class="case-code" aria-hidden="true">PA</span><span class="case-ref">A1 · 02</span></div>
               <h3>Compact PA package</h3>
               <p>Tops and subs sized to the room: speech, playback, or a full floor.</p>
               <ul class="case-specs"><li>2× ZLX-15BT</li><li>Up to 4× S181</li><li>QSC GX7</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Compact PA package" aria-label="Full gear list: Compact PA package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Compact PA package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="Compact PA package" data-umami-event="rental-add" data-umami-event-package="Compact PA package">Add to manifest</button>
             </article>
             <article class="rental-card" data-rental-cat="lighting" hidden>
               <div class="case-top"><span class="case-code" aria-hidden="true">LX</span><span class="case-ref">B2 · 01</span></div>
               <h3>Dance-floor lighting package</h3>
               <p>Movement, color, and coverage for DJ rooms and late-night floors.</p>
               <ul class="case-specs"><li>2× Minibeam 600</li><li>3× Vertigo Tri</li><li>J-Six</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Dance-floor lighting package" aria-label="Full gear list: Dance-floor lighting package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Dance-floor lighting package">Add to manifest</button>
-              <button type="button" class="case-addon rental-add" data-rental="Laser add-on (LaserCube 1.2W + tech)" data-addon>+ Add laser <span>tech required</span></button>
+              <button type="button" class="btn case-add rental-add" data-rental="Dance-floor lighting package" data-umami-event="rental-add" data-umami-event-package="Dance-floor lighting package">Add to manifest</button>
+              <button type="button" class="case-addon rental-add" data-rental="Laser add-on (LaserCube 1.2W + tech)" data-addon data-umami-event="rental-add" data-umami-event-package="Laser add-on (LaserCube 1.2W + tech)">+ Add laser <span>tech required</span></button>
             </article>
             <article class="rental-card" data-rental-cat="lighting" hidden>
               <div class="case-top"><span class="case-code" aria-hidden="true">FX</span><span class="case-ref">B2 · 02</span></div>
               <h3>Atmosphere + accent package</h3>
               <p>Haze and uplight for rooms that need shape without a full show rig.</p>
               <ul class="case-specs"><li>Haze 1DX</li><li>Uplights</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Atmosphere + accent package" aria-label="Full gear list: Atmosphere + accent package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Atmosphere + accent package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="Atmosphere + accent package" data-umami-event="rental-add" data-umami-event-package="Atmosphere + accent package">Add to manifest</button>
             </article>
             <article class="rental-card" data-rental-cat="video" hidden>
               <div class="case-top"><span class="case-code" aria-hidden="true">VJ</span><span class="case-ref">C3 · 01</span></div>
               <h3>Projection / display package</h3>
               <p>Projection mapping and live VJ from Double Vision, or plain loops and sponsor content.</p>
               <ul class="case-specs"><li>Live VJ</li><li>Mapping</li><li>Display to fit</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Projection / display package" aria-label="Full gear list: Projection / display package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Projection / display package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="Projection / display package" data-umami-event="rental-add" data-umami-event-package="Projection / display package">Add to manifest</button>
             </article>
             <article class="rental-card" data-rental-cat="video" hidden>
               <div class="case-top"><span class="case-code" aria-hidden="true">CAM</span><span class="case-ref">C3 · 02</span></div>
               <h3>Camera + IMAG starter package</h3>
               <p>Cameras on the booth and floor, switched to a screen, a recording, or a stream.</p>
               <ul class="case-specs"><li>1–2 cameras</li><li>Switcher</li><li>Operator opt.</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Camera + IMAG starter package" aria-label="Full gear list: Camera + IMAG starter package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Camera + IMAG starter package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="Camera + IMAG starter package" data-umami-event="rental-add" data-umami-event-package="Camera + IMAG starter package">Add to manifest</button>
             </article>
             <article class="rental-card" data-rental-cat="utility" hidden>
               <div class="case-top"><span class="case-code" aria-hidden="true">PWR</span><span class="case-ref">D4 · 01</span></div>
               <h3>Event utility package</h3>
               <p>Generator, truss, and the cable that keeps the rest of the rig running.</p>
               <ul class="case-specs"><li>3300W Generac</li><li>12&quot; truss</li><li>Distro</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Event utility package" aria-label="Full gear list: Event utility package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Event utility package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="Event utility package" data-umami-event="rental-add" data-umami-event-package="Event utility package">Add to manifest</button>
             </article>
             <article class="rental-card" data-rental-cat="utility" hidden>
               <div class="case-top"><span class="case-code" aria-hidden="true">RM</span><span class="case-ref">D4 · 02</span></div>
               <h3>Room support package</h3>
               <p>Stage and crew for temporary rooms, private events, and pop-ups.</p>
               <ul class="case-specs"><li>Inflatable stage</li><li>Crew to scope</li><li class="case-spec-li"><button type="button" class="case-spec" data-spec="Room support package" aria-label="Full gear list: Room support package">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="Room support package">Add to manifest</button>
+              <button type="button" class="btn case-add rental-add" data-rental="Room support package" data-umami-event="rental-add" data-umami-event-package="Room support package">Add to manifest</button>
             </article>
           <!-- /nn:rental-cases -->
           </div>
@@ -1949,19 +1950,19 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
       <ul class="social">
         <li>
           <!-- BRAND SWAP: Instagram URL -->
-          <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer" aria-label="Instagram" data-umami-event="social-instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor"/></svg>
           </a>
         </li>
         <li>
           <!-- BRAND SWAP: YouTube URL -->
-          <a href="https://www.youtube.com/@NoNonsensePHL" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <a href="https://www.youtube.com/@NoNonsensePHL" target="_blank" rel="noopener noreferrer" aria-label="YouTube" data-umami-event="social-youtube">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor"/></svg>
           </a>
         </li>
         <li>
           <!-- BRAND SWAP: Linktree URL -->
-          <a href="https://linktr.ee/nononsensephl" target="_blank" rel="noopener noreferrer" aria-label="Linktree">
+          <a href="https://linktr.ee/nononsensephl" target="_blank" rel="noopener noreferrer" aria-label="Linktree" data-umami-event="social-linktree">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="6.5" cy="18" r="2" fill="currentColor"/><circle cx="17.5" cy="18" r="2" fill="currentColor"/><path d="M12 7v5M12 12L7.2 16.4M12 12l4.8 4.4" fill="none" stroke="currentColor" stroke-width="1.75"/></svg>
           </a>
         </li>
@@ -2162,6 +2163,9 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
   nnStore.load();
   nnStore.migrateLegacyKeys();
 
+  /* Umami (cookieless). Only counts on nononsensephilly.com; a no-op anywhere else or when blocked. */
+  function nnTrack(name,data){ try{ if(window.umami && typeof window.umami.track==='function') window.umami.track(name,data); }catch(e){} }
+
   /* ---- Site data: tools/build.mjs writes data/*.json into #nn-data. ---- */
   var NN={events:[],artists:[],rentals:[],recaps:[]};
   try{ NN=JSON.parse(document.getElementById('nn-data').textContent); }catch(e){}
@@ -2249,7 +2253,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     if(drop) h.push(dropHTML(drop));
     if(e.notice) h.push('<p class="ev-notice">'+nnEsc(e.notice)+'</p>');
     h.push('<p>'+nnEsc(e.summary)+'</p>');
-    h.push('<div class="evv-actions">'+(ph==='on-sale' && e.ticketUrl?'<a class="btn btn-primary" href="'+nnEsc(e.ticketUrl)+'" target="_blank" rel="noopener noreferrer">Tickets</a>':'')+
+    h.push('<div class="evv-actions">'+(ph==='on-sale' && e.ticketUrl?'<a class="btn btn-primary" href="'+nnEsc(e.ticketUrl)+'" target="_blank" rel="noopener noreferrer" data-umami-event="ticket-click" data-umami-event-event="'+e.slug+'">Tickets</a>':'')+
       '<a class="btn btn-ghost" href="events/'+e.slug+'/">Event page</a><button type="button" class="btn btn-ghost" data-copy-link="'+e.slug+'">Copy link</button></div>');
     var rows=[['Age',door.age],['Re-entry',door.reentry],['Bring',door.bring],['Floor',door.floor]].filter(function(r){ return r[1]; });
     h.push('<h3>At the door</h3>'+(rows.length?'<dl class="evv-door">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+nnEsc(r[1])+'</dd>'; }).join('')+'</dl>':'')+'<p class="evv-fine">Anything not listed follows the <a href="#faq" data-go="faq">house rules</a>.</p>');
@@ -2265,6 +2269,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     if((e.audio||[]).length) h.push('<h3>Listen</h3><ul class="evv-audio">'+e.audio.map(function(t){ return '<li><a class="text-link" href="'+nnEsc(t.url)+'" target="_blank" rel="noopener noreferrer">'+nnEsc(t.artist)+': '+nnEsc(t.title)+'</a></li>'; }).join('')+'</ul>');
     document.getElementById('evv-sheet').innerHTML=h.join('');
     openDialog(dlg,'event/'+slug);
+    nnTrack('event-open',{event:slug});
   }
   function openArtist(slug){
     var a=AR[slug], dlg=document.getElementById('artist-sheet');
@@ -2280,6 +2285,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     h.push(shows.length?'<ul class="as-shows">'+shows.map(function(e){ return '<li><button type="button" data-event-open="'+e.slug+'"><img src="media/flyers/'+e.flyer+'-card.webp" alt="" width="72" height="90" loading="lazy"><span><b>'+nnEsc(e.title)+'</b><small>'+nnEsc(e.dateLabel)+' · '+nnEsc(eventWhere(e))+'</small></span></button></li>'; }).join('')+'</ul>':'<p class="evv-fine">No shows on file yet.</p>');
     document.getElementById('as-body').innerHTML=h.join('');
     openDialog(dlg,'artist/'+slug);
+    nnTrack('artist-open',{artist:slug});
   }
   function openSpec(name){
     var c=RC[name], dlg=document.getElementById('spec-sheet');
@@ -2290,6 +2296,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
       '<p class="evv-fine">'+(c.circuits?'Draws about '+c.circuits+' × 20A circuit'+(c.circuits>1?'s':'')+'.':(c.provides?'Provides a '+nnEsc(c.provides)+'.':'No power draw of its own.'))+' Final models and counts are confirmed in your written quote.</p>'+
       (Object.keys(tags).length?'<p class="evv-fine">'+Object.keys(tags).map(function(t){ return '<i class="ss-tag ss-tag--'+t+'">'+TAG_LABEL[t]+'</i>'; }).join(' ')+'</p>':'');
     openDialog(dlg);
+    nnTrack('spec-open',{package:name});
   }
   function openVideo(id,title){
     var dlg=document.getElementById('video-sheet'); if(!dlg) return;
@@ -2306,14 +2313,16 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     else if(t.hasAttribute('data-spec')){ openSpec(t.getAttribute('data-spec')); }
     else if(t.hasAttribute('data-video')){
       var id=t.getAttribute('data-video'), title=t.getAttribute('data-video-title')||'Video';
+      nnTrack('video-play',{video:title});
       if(t.closest('#evv-sheet')){ var li=t.parentNode; li.classList.add('is-playing'); li.innerHTML='<div class="vs-frame">'+videoFrame(id,title)+'</div>'; }
       else openVideo(id,title);
     }
     else if(t.hasAttribute('data-copy-link')){
+      nnTrack('copy-link',{event:t.getAttribute('data-copy-link')});
       var url=location.origin+'/events/'+t.getAttribute('data-copy-link')+'/', done=function(){ t.textContent='Copied'; setTimeout(function(){ t.textContent='Copy link'; },1800); };
       if(navigator.clipboard) navigator.clipboard.writeText(url).then(done,function(){ window.prompt('Copy this link',url); }); else window.prompt('Copy this link',url);
     }
-    else if(t.hasAttribute('data-open-news')){ e.preventDefault(); openModal(true); }
+    else if(t.hasAttribute('data-open-news')){ e.preventDefault(); openModal(true); nnTrack('drop-list-open',{from:t.hasAttribute('data-drop-cta')?'home':(t.closest('.panel')||{}).id||'page'}); }
   });
   /* A panel link inside a dialog (e.g. house rules) closes the dialog on the way out. */
   document.addEventListener('click',function(e){
@@ -2330,9 +2339,9 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
   function paintDropCta(night){
     var cta=document.querySelector('[data-drop-cta]'); if(!cta) return;
     var nx=nextEvent(), drop=liveDrop(nx && nx.slug);
-    cta.removeAttribute('target'); cta.removeAttribute('rel'); cta.removeAttribute('data-event-open'); cta.removeAttribute('data-open-news');
+    cta.removeAttribute('target'); cta.removeAttribute('rel'); cta.removeAttribute('data-event-open'); cta.removeAttribute('data-open-news'); cta.removeAttribute('data-umami-event'); cta.removeAttribute('data-umami-event-event');
     if(drop){ cta.textContent='Get the address'; cta.href='#event/'+drop.event; cta.setAttribute('data-event-open',drop.event); }
-    else if(nx && eventPhase(nx)==='on-sale' && nx.ticketUrl){ cta.textContent='Get tickets'; cta.href=nx.ticketUrl; cta.target='_blank'; cta.rel='noopener noreferrer'; }
+    else if(nx && eventPhase(nx)==='on-sale' && nx.ticketUrl){ cta.textContent='Get tickets'; cta.href=nx.ticketUrl; cta.target='_blank'; cta.rel='noopener noreferrer'; cta.setAttribute('data-umami-event','ticket-click'); cta.setAttribute('data-umami-event-event',nx.slug); }
     else { cta.textContent='Get the drop'; cta.href='#'; cta.setAttribute('data-open-news',''); }
     cta.classList.toggle('is-night',!!night);
   }
@@ -2364,8 +2373,8 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
   function paintTiers(nx){
     [].forEach.call(document.querySelectorAll('#access .tier .btn'),function(b){
       if(!b.hasAttribute('data-label')) b.setAttribute('data-label',b.textContent);
-      if(nx && eventPhase(nx)==='on-sale' && nx.ticketUrl){ b.href=nx.ticketUrl; b.target='_blank'; b.rel='noopener noreferrer'; b.textContent=b.getAttribute('data-label'); b.removeAttribute('data-open-news'); }
-      else { b.href='#'; b.removeAttribute('target'); b.setAttribute('data-open-news',''); b.textContent='Nothing on sale · get the drop'; }
+      if(nx && eventPhase(nx)==='on-sale' && nx.ticketUrl){ b.href=nx.ticketUrl; b.target='_blank'; b.rel='noopener noreferrer'; b.textContent=b.getAttribute('data-label'); b.removeAttribute('data-open-news'); b.setAttribute('data-umami-event','ticket-click'); b.setAttribute('data-umami-event-event',nx.slug); }
+      else { b.removeAttribute('data-umami-event'); b.href='#'; b.removeAttribute('target'); b.setAttribute('data-open-news',''); b.textContent='Nothing on sale · get the drop'; }
     });
   }
   /* A build can go stale: shows that have ended move from Up next into the archive. */
@@ -2671,6 +2680,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     renderUsedBadges();
     showSubjectNote('rentals-handoff');
     saveContactDraft({subject:subject.value,message:message.value});
+    nnTrack('rental-request',{packages:names.length,laser:hasFlag('laser')?'yes':'no',video:hasFlag('video')?'yes':'no',power:detailVal('power')||'unanswered'});
     setManifest(false);
     showPanel('contact',true,true,true);
     window.setTimeout(function(){ if(message) message.focus(); },0);
@@ -2802,6 +2812,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
       return;
     }
     var body='Name: '+name.value.trim()+'\nEmail: '+email.value.trim()+'\nSubject: '+subject.value+'\n\n'+message.value.trim();
+    nnTrack('contact-submit',{subject:subject.value});
     window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('[nononsensephilly.com] '+subject.value+' · '+name.value.trim())+'&body='+encodeURIComponent(body);
     clearContactDraft(); showSubjectNote(null); hideDraftNote();
     e.currentTarget.setAttribute('hidden','');
@@ -2871,6 +2882,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     }
     err.textContent='';
     input.removeAttribute('aria-invalid');
+    nnTrack('drop-signup');
     window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('Add me to the No Nonsense drop list')+'&body='+encodeURIComponent('Please add '+input.value.trim()+' to event and location-drop emails.');
     e.currentTarget.setAttribute('hidden','');
     var done=document.getElementById('news-success');
@@ -3003,7 +3015,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
     plRender();
     if(plWidget){ plWatch(); plWidget.load(PL_TRACKS[plIdx].u,{auto_play:true,visual:false,show_artwork:false,hide_related:true,show_comments:false,show_user:false,sharing:false,buying:false,download:false}); }
   }
-  plPlay.addEventListener('click',function(){ if(plPlaying && plWidget) plWidget.pause(); else plStart(); });
+  plPlay.addEventListener('click',function(){ if(plPlaying && plWidget) plWidget.pause(); else { plStart(); nnTrack('player-play',{track:PL_TRACKS[plIdx].t}); } });
   document.getElementById('pl-next').addEventListener('click',function(){ plGo(1); });
   document.getElementById('pl-prev').addEventListener('click',function(){ plGo(-1); });
   if(plResuming) plRender();
@@ -3031,7 +3043,7 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
       playKey=key; playBtn.hidden=!show;
       if(show){ playBtn.style.left=(ox+cols*cell/2)+'px'; playBtn.style.top=(oy+rows*cell/2)+'px'; }
     }
-    if(playBtn) playBtn.addEventListener('click',function(){ if(!enabled) return; reset('play'); syncPlay(); home.focus({preventScroll:true}); });
+    if(playBtn) playBtn.addEventListener('click',function(){ if(!enabled) return; nnTrack('game-play'); reset('play'); syncPlay(); home.focus({preventScroll:true}); });
     var entry=document.getElementById('hs-entry'), entryInput=document.getElementById('hs-initials'), entryMsg=document.getElementById('hs-msg');
     function loadBoard(){
       if(!window.fetch) return;

@@ -104,7 +104,7 @@ function eventCard(e, ph) {
   const lineupText = (e.lineup || []).filter((x) => !/mystery/i.test(x)).slice(0, 6);
   const more = (e.lineup || []).length > 6 || e.lineupNote;
   const statusPill = ph === 'past' ? '' : `<span class="ev-state ev-state--${ph}">${STATUS[ph]}</span>`;
-  const tickets = (ph === 'on-sale' && e.ticketUrl) ? `<a class="btn btn-primary ev-tix" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener noreferrer">Tickets</a>` : '';
+  const tickets = (ph === 'on-sale' && e.ticketUrl) ? `<a class="btn btn-primary ev-tix" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener noreferrer" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : '';
   const vids = (e.videos || []).length ? `<span class="ev-has">▶ ${e.videos.length} video${e.videos.length > 1 ? 's' : ''}</span>` : '';
   const sets = (e.nights || []).some((n) => (n.sets || []).length) ? '<span class="ev-has">Set times</span>' : '';
   return `            <article class="card" data-cat="${e.category}" data-year="${yearOf(e)}" data-event="${e.slug}" data-phase="${ph}">
@@ -159,13 +159,13 @@ blocks['guests'] = '\n' + guests.map((a) => {
 blocks['rental-zones'] = '\n' + rentalsData.zones.map((z, i) => `            <button type="button" class="rig-zone rental-filter" data-rental-filter="${z.id}" aria-pressed="${i === 0}"><span class="ref">${z.ref}</span><b>${esc(z.name)}</b><small>${esc(z.sub)}</small></button>`).join('\n') + '\n          ';
 blocks['rental-cases'] = '\n' + rentalsData.cases.map((c) => {
   const first = c.zone === rentalsData.zones[0].id;
-  const addon = c.addon ? `\n              <button type="button" class="case-addon rental-add" data-rental="${esc(c.addon.name)}" data-addon>+ ${esc(c.addon.label)} <span>tech required</span></button>` : '';
+  const addon = c.addon ? `\n              <button type="button" class="case-addon rental-add" data-rental="${esc(c.addon.name)}" data-addon data-umami-event="rental-add" data-umami-event-package="${esc(c.addon.name)}">+ ${esc(c.addon.label)} <span>tech required</span></button>` : '';
   return `            <article class="rental-card" data-rental-cat="${c.zone}"${first ? '' : ' hidden'}>
               <div class="case-top"><span class="case-code" aria-hidden="true">${esc(c.code)}</span><span class="case-ref">${esc(c.ref)}</span></div>
               <h3>${esc(c.name)}</h3>
               <p>${esc(c.blurb)}</p>
               <ul class="case-specs">${c.chips.map((x) => `<li>${esc(x)}</li>`).join('')}<li class="case-spec-li"><button type="button" class="case-spec" data-spec="${esc(c.name)}" aria-label="Full gear list: ${esc(c.name)}">Full spec</button></li></ul>
-              <button type="button" class="btn case-add rental-add" data-rental="${esc(c.name)}">Add to manifest</button>${addon}
+              <button type="button" class="btn case-add rental-add" data-rental="${esc(c.name)}" data-umami-event="rental-add" data-umami-event-package="${esc(c.name)}">Add to manifest</button>${addon}
             </article>`;
 }).join('\n') + '\n          ';
 
@@ -282,6 +282,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/media/fonts/unbounded-900.woff2" as="font" type="font/woff2" crossorigin>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="b366ee05-3f6a-4249-87e3-0f11c3f1e50a" data-domains="nononsensephilly.com"></script>
 ${allLd.map(ldJson).join('\n')}
 <style>
 @font-face{font-family:"Unbounded";font-weight:900;font-display:swap;src:url("/media/fonts/unbounded-900.woff2") format("woff2")}
@@ -401,7 +402,7 @@ function eventPage(e) {
     <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}, Philadelphia</p>
     ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}
     <p>${esc(e.summary)}${(e.presenters || []).length ? ` With ${esc(e.presenters.join(' and '))}.` : ''}</p>
-    ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}">Tickets</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>
+    ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>
     ${acts.length ? `<h2>Lineup</h2><ul class="chips">${e.lineup.map((a) => `<li>${actLinks(a)}</li>`).join('')}</ul>` : ''}
     ${e.lineupNote ? `<p>${esc(e.lineupNote)}</p>` : ''}
     ${nights ? `<h2>Set times</h2>${nights}` : ''}
@@ -482,7 +483,7 @@ writePage('rentals/index.html', shell({
   trail: [['Home', '/'], ['Rentals', '/rentals/']],
   body: `<p class="kicker">Production rentals · Philadelphia</p><h1>DJ, sound + lighting rentals</h1>
 <p class="lede">The gear we run our own nights on, for your room: Pioneer CDJ-3000s and a DJM-A9, EV tops and 18" subs, moving heads, haze, a laser (always with our tech), projection with live VJ, and a 3300W generator. Pickup, delivery, or delivery with setup. Nothing is reserved until you accept the written quote.</p>
-<a class="btn" href="/#rentals">Build a request</a><a class="btn ghost" href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Rental request')}">Email us</a>
+<a class="btn" href="/#rentals" data-umami-event="rentals-page-build">Build a request</a><a class="btn ghost" href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Rental request')}">Email us</a>
 ${rentalsData.zones.map((z) => `<h2>${esc(z.ref)} · ${esc(z.name)}</h2>${rentalsData.cases.filter((c) => c.zone === z.id).map((c) => `<section class="case"><h3>${esc(c.name)} <small class="tag">${esc(c.ref)}</small></h3><p>${esc(c.blurb)}</p><table class="gear"><thead><tr><th>Qty</th><th>Gear</th><th>Notes</th></tr></thead><tbody>${gearRows(c.gear)}${c.addon ? gearRows([{ qty: 1, model: c.addon.gear + ' (add-on)', tags: ['tech'], note: 'Only with our laser technician. Beams stay above the crowd unless the venue holds an approved variance.' }]) : ''}</tbody></table><p><small>${c.circuits ? `Draws about ${c.circuits} × 20A circuit${c.circuits > 1 ? 's' : ''}.` : c.provides ? `Provides a ${esc(c.provides)}.` : 'No power draw of its own.'}</small></p></section>`).join('')}`).join('')}
 <h2>How it works</h2><ol><li>Build the manifest on the <a href="/#rentals">rentals screen</a>. It adds power, video path, and rider questions to your request.</li><li>We confirm exact gear, crew, delivery, and price in writing.</li><li>You accept the quote and we lock the date.</li></ol>
 <p>Full inventory: ${owned.map((g) => esc(g.model)).join(' · ')}.</p>`
