@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Drop admin · No Nonsense</title>
+<style>
+:root{color-scheme:dark;--bg:#07060c;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--amber:#ffb23e;--rose:#ff4f8b;--border:#322c3e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:24px 16px 48px}
+h1{margin:0 0 4px;font-size:1.6rem}
+p.lede{margin:0 0 20px;color:var(--muted)}
+fieldset{margin:0 0 18px;padding:14px;border:1px solid var(--border);border-radius:12px}
+legend{padding:0 6px;color:var(--amber);font:600 12px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}
+label{display:block;margin:10px 0 4px;font:500 12px/1.3 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:600 12px/1 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+button.go{background:var(--amber);border-color:var(--amber);color:#1c1204}
+button.danger{border-color:var(--rose);color:var(--rose)}
+#status{margin-top:16px;padding:12px 14px;border-radius:10px;background:var(--surface);white-space:pre-wrap;font:13px/1.5 ui-monospace,monospace}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Day-of drop</h1>
+  <p class="lede">The address is stored on the server and only shown on nononsensephilly.com after the reveal time. Nothing here is public.</p>
+  <fieldset>
+    <legend>Access</legend>
+    <label for="tok">Admin token</label>
+    <input id="tok" type="password" autocomplete="off" spellcheck="false">
+    <small>Kept in this tab only. It's the DROP_ADMIN_TOKEN value in Vercel.</small>
+    <div class="btns"><button type="button" id="load">Load current drop</button></div>
+  </fieldset>
+  <form id="f">
+    <fieldset>
+      <legend>Show</legend>
+      <label for="event">Event slug</label>
+      <input id="event" required placeholder="afterbreak-2026" pattern="[a-z0-9-]+">
+      <label for="reveal">Reveal at (your local time)</label>
+      <input id="reveal" type="datetime-local" required>
+      <label for="venue">Venue name</label>
+      <input id="venue" required maxlength="120">
+      <label for="address">Address</label>
+      <input id="address" required maxlength="200">
+      <div class="row">
+        <div><label for="mx">Map X (0–2000, optional)</label><input id="mx" type="number" min="0" max="2000"></div>
+        <div><label for="my">Map Y (0–1600, optional)</label><input id="my" type="number" min="0" max="1600"></div>
+      </div>
+      <small>City Hall is 1150, 700 on the Home map. Leave blank to keep the X where it is.</small>
+    </fieldset>
+    <fieldset>
+      <legend>Crew only (never public)</legend>
+      <label for="loadIn">Load-in door</label><input id="loadIn" maxlength="200">
+      <label for="truck">Truck path</label><input id="truck" maxlength="200">
+      <label for="power">Power</label><input id="power" maxlength="200">
+    </fieldset>
+    <div class="btns"><button class="go" type="submit">Save drop</button><button class="danger" type="button" id="clear">Clear drop</button></div>
+  </form>
+  <div id="status" role="status" aria-live="polite">Enter the token, then load or save.</div>
+</main>
+<script>
+(function(){
+  var $=function(id){ return document.getElementById(id); }, st=$('status');
+  try{ $('tok').value=sessionStorage.getItem('nn-drop-token')||''; }catch(e){}
+  $('tok').addEventListener('change',function(){ try{ sessionStorage.setItem('nn-drop-token',$('tok').value.trim()); }catch(e){} });
+  function call(method,body){
+    return fetch('/api/drop',{method:method,headers:{'Authorization':'Bearer '+$('tok').value.trim(),'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined})
+      .then(function(r){ return r.json().then(function(j){ if(!r.ok) throw new Error(j.error||('HTTP '+r.status)); return j; }); });
+  }
+  function local(iso){ var d=new Date(iso), p=function(n){ return (n<10?'0':'')+n; }; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
+  function show(d){
+    if(!d.active){ st.textContent='No drop is set.'; return; }
+    st.textContent=(d.revealed?'LIVE: the address is public now.':'Waiting: reveals '+new Date(d.revealAt).toLocaleString()+'.')+'\n'+d.venue+' · '+d.address+'\nExpires '+new Date(d.expiresAt).toLocaleString()+'.';
+  }
+  $('load').addEventListener('click',function(){
+    st.textContent='Loading…';
+    call('GET').then(function(d){
+      if(d.active && d.address){
+        $('event').value=d.event; $('reveal').value=local(d.revealAt); $('venue').value=d.venue; $('address').value=d.address;
+        $('mx').value=d.mapX==null?'':d.mapX; $('my').value=d.mapY==null?'':d.mapY;
+        var c=d.crew||{}; $('loadIn').value=c.loadIn||''; $('truck').value=c.truckPath||''; $('power').value=c.power||'';
+      }
+      show(d);
+    }).catch(function(e){ st.textContent='Error: '+e.message; });
+  });
+  $('f').addEventListener('submit',function(e){
+    e.preventDefault(); st.textContent='Saving…';
+    call('POST',{event:$('event').value.trim(),revealAt:new Date($('reveal').value).toISOString(),venue:$('venue').value,address:$('address').value,
+      mapX:$('mx').value,mapY:$('my').value,crew:{loadIn:$('loadIn').value,truckPath:$('truck').value,power:$('power').value}})
+      .then(show).catch(function(e){ st.textContent='Error: '+e.message; });
+  });
+  $('clear').addEventListener('click',function(){
+    if(!confirm('Clear the drop? The address disappears from the site.')) return;
+    call('DELETE').then(show).catch(function(e){ st.textContent='Error: '+e.message; });
+  });
+})();
+</script>
+</body>
+</html>
