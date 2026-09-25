@@ -14,6 +14,7 @@ For `--og`, point at Playwright if it isn't installed in the repo: `PLAYWRIGHT_M
 1. Put the flyer in `media/flyers/` as `<slug>.webp` (1440×1800) and `<slug>-card.webp` (720×900).
 2. Add a record to the top of `data/events.json`. Copy an existing one. For a sale:
    - `"status": "on-sale"` and `"ticketUrl": "https://…"`. That one link feeds the Home button, the Tickets page, the event card, and the event page.
+   - Tickets panel tiers (optional): `"tiers": [ { "name": "General Admission", "price": 25, "perks": ["Entry for one night"] } ]`. Use `"price": 0` for a free RSVP. Without `tiers`, the panel shows one button to the sale page and no price. The site never shows a price that isn't in this file.
    - Quiet room: `"venue": { "name": null, "area": "Kensington", "public": false }`. Only the area shows.
    - Door rules: `"door": { "age": "21+ with ID", "reentry": "…", "bring": "…", "floor": "Phone-free floor" }`.
    - Set times: `"nights": [ { "label": "Night 1 · Fri", "sets": [["12:00","Artist"], …] } ]`.
