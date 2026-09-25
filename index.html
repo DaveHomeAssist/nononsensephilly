@@ -905,6 +905,16 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 /* Let the hero grow past the viewport so centered content never overflows above the scroll origin. */
 .hero-inner{flex:0 0 auto;height:auto;min-height:100%}
 @media (max-width:480px){.copy{white-space:normal;text-align:right;line-height:1.3}}
+/* The img height attribute beats aspect-ratio unless height is reset. */
+.thumb,.about-photo{height:auto}
+/* .card p outranks the badge rules, so restate badge color and spacing at card specificity. */
+.card .badge{margin:0 0 8px}
+.card .badge-warehouse{color:#062126}
+.card .badge-afterparty{color:#1a0612}
+.card .badge-booking{color:#171a06}
+.card .badge-private{color:#f4efe6}
+/* The page footer rule also matches the pull-quote attribution footer. */
+.pull footer{flex:none;height:auto;border-top:0;background:none}
 
 </style>
 <script>
