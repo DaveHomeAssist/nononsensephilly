@@ -80,6 +80,9 @@ small{color:var(--muted)}
   $('load').addEventListener('click',function(){
     st.textContent='Loading…';
     call('GET').then(function(d){
+      /* Only the admin view carries expiresAt; anything else means the token is wrong, and
+         saving from a partial record would wipe the crew notes. */
+      if(d.active && !d.expiresAt) throw new Error('that is not the admin token');
       if(d.active && d.address){
         $('event').value=d.event; $('reveal').value=local(d.revealAt); $('venue').value=d.venue; $('address').value=d.address;
         $('mx').value=d.mapX==null?'':d.mapX; $('my').value=d.mapY==null?'':d.mapY;
