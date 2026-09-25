@@ -943,6 +943,16 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 @media (max-width:480px){.pl-main{width:36px;height:36px}.pl-btn{width:32px;height:32px}.pl-text small{display:none}}
 /* Splash game canvas sits over the map, under the copy scrim. */
 .rave-game{position:absolute;inset:0;pointer-events:none}
+/* The global form rule is a two-column grid that also beats [hidden]. */
+.hs-entry[hidden]{display:none}
+.hs-entry{display:block;margin:0;position:absolute;z-index:6;width:min(320px,calc(100% - 32px));padding:16px;border:1px solid #ff4f8b;border-radius:14px;background:rgba(6,5,11,.94);box-shadow:0 0 40px rgba(255,79,139,.35);color:#f6f1ea;text-align:center}
+.hs-title{margin:0 0 10px;font:900 1rem/1.1 var(--font-display);letter-spacing:-.02em;text-transform:uppercase;color:#ffb23e}
+.hs-entry label{margin-bottom:8px;color:#c8c0d4}
+.hs-row{display:flex;gap:8px;align-items:center;justify-content:center}
+.hs-row input{width:7ch;text-align:center;font:900 1.6rem/1 var(--font-display);letter-spacing:.2em;text-transform:uppercase;padding:8px 4px 8px 12px;background:#06050b;border:1px solid #ffb23e;border-radius:10px;color:#ffb23e}
+.hs-save{background:#ffb23e;color:#1c1204}
+.hs-skip{min-height:44px;padding:0 10px;border:0;background:transparent;color:#c8c0d4;font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+.hs-msg{min-height:1.2em;margin:8px 0 0;font:500 11px var(--font-mono);color:#ffb0c9}
 </style>
 <script>
 (function(){
@@ -1067,6 +1077,12 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
           <a href="#contact" data-go="contact"><small>03</small><b>Booking</b><span>Artists · rooms</span></a>
         </nav>
       </div>
+      <form id="hs-entry" class="hs-entry" hidden novalidate>
+        <p class="hs-title">New high score · <span id="hs-score">0</span></p>
+        <label for="hs-initials">Enter your initials</label>
+        <div class="hs-row"><input id="hs-initials" maxlength="3" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="hs-msg"><button class="btn hs-save" type="submit">Save</button><button class="hs-skip" type="button" id="hs-skip">Skip</button></div>
+        <p class="hs-msg" id="hs-msg" aria-live="polite"></p>
+      </form>
       <p class="map-legend" aria-hidden="true"><span><i class="lg-pin"></i>Past rooms</span><span><i class="lg-x"></i>Next drop</span><span><i class="lg-ring"></i>Search zone</span><span>Not to scale</span></p>
     </section>
 
@@ -2192,6 +2208,41 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
     var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     var W=0,H=0,cell=22,cols=0,rows=0,ox=0,oy=0,enabled=false;
     var snake=[],dir={x:1,y:0},next={x:1,y:0},food=null,mode='demo',score=0,best=0,acc=0,last=0,deadAt=0,winAt=0,won=false,touch=null;
+    var API='https://nononsense-scores.vercel.app/api/scores', board=null, startAt=0, boardFrom=0, boardUntil=0, hilite=null;
+    var entry=document.getElementById('hs-entry'), entryInput=document.getElementById('hs-initials'), entryMsg=document.getElementById('hs-msg');
+    function loadBoard(){
+      if(!window.fetch) return;
+      fetch(API).then(function(r){ return r.ok?r.json():null; }).then(function(j){ if(j && j.scores) board=j.scores; }).catch(function(){});
+    }
+    function qualifies(){ return board && score>0 && (board.length<10 || score>board[board.length-1].score); }
+    function showBoard(now,ms){ if(board && board.length){ boardFrom=now; boardUntil=now+ms; } }
+    function openEntry(){
+      mode='entry';
+      document.getElementById('hs-score').textContent=score;
+      entryInput.value=''; entryMsg.textContent='';
+      entry.style.left=Math.max(16,ox+(cols*cell)/2-160)+'px';
+      entry.style.top=Math.max(16,oy+(rows*cell)/2-80)+'px';
+      entry.hidden=false; entryInput.focus();
+    }
+    function closeEntry(){ entry.hidden=true; reset('demo'); }
+    entry.addEventListener('submit',function(e){
+      e.preventDefault();
+      var ini=entryInput.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+      if(ini.length!==3){ entryMsg.textContent='Three letters or numbers.'; entryInput.focus(); return; }
+      entryMsg.textContent='Saving…';
+      var payload={initials:ini,score:score,ms:Math.round(deadAt-startAt)}, got=score;
+      fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+        .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
+        .then(function(res){
+          if(!res.ok){ entryMsg.textContent=res.j && res.j.error ? res.j.error : 'Could not save.'; return; }
+          board=res.j.scores; hilite={initials:ini,score:got};
+          closeEntry(); showBoard(performance.now(),7000);
+        })
+        .catch(function(){ entryMsg.textContent='Could not reach the scoreboard.'; });
+    });
+    document.getElementById('hs-skip').addEventListener('click',closeEntry);
+    entry.addEventListener('keydown',function(e){ if(e.key==='Escape'){ e.stopPropagation(); closeEntry(); } });
+    loadBoard();
     try{ best=parseInt(localStorage.getItem('nononsense-crowd-best'),10)||0; }catch(e){}
 
     function layout(){
@@ -2223,6 +2274,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
     }
     function reset(m){
       mode=m; score=0; won=false; acc=0;
+      if(m==='play'){ startAt=performance.now(); boardUntil=0; }
       var cx=Math.floor(cols/2), cy=Math.floor(rows/2);
       snake=[{x:cx,y:cy},{x:cx-1,y:cy},{x:cx-2,y:cy},{x:cx-3,y:cy}];
       dir={x:1,y:0}; next={x:1,y:0};
@@ -2259,6 +2311,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
         if(mode==='play'){
           mode='dead'; deadAt=now;
           if(score>best){ best=score; try{ localStorage.setItem('nononsense-crowd-best',String(best)); }catch(e){} }
+          if(qualifies()) openEntry();
         } else reset('demo');
         return;
       }
@@ -2306,22 +2359,45 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
         ctx.fillText('YOU FOUND THE RAVE',ox+gw/2,oy+gh/2);
         ctx.shadowBlur=0; ctx.textAlign='left';
       }
+      if(board && board.length && now<boardUntil && mode!=='play' && mode!=='entry') drawBoard(now,gw,gh);
+    }
+    function drawBoard(now,gw,gh){
+      var fade=Math.min(1,(now-boardFrom)/250,(boardUntil-now)/250);
+      ctx.globalAlpha=fade;
+      ctx.fillStyle='rgba(6,5,11,.88)'; ctx.fillRect(ox-4,oy-4,gw+8,gh+8);
+      var lh=Math.max(14,Math.min(22,(gh-50)/11)), n=Math.min(board.length,Math.floor((gh-44)/lh)), cx=ox+gw/2, y=oy+Math.max(10,(gh-(n+2)*lh)/2);
+      ctx.textAlign='center'; ctx.textBaseline='top';
+      ctx.font='900 '+Math.round(lh*1.05)+'px Unbounded, sans-serif';
+      ctx.fillStyle='#ff4f8b'; ctx.shadowColor='rgba(255,79,139,.7)'; ctx.shadowBlur=12;
+      ctx.fillText('HIGH SCORES',cx,y); ctx.shadowBlur=0;
+      ctx.font='500 '+Math.round(lh*0.72)+'px "IBM Plex Mono", ui-monospace, monospace';
+      var sfx=['ST','ND','RD'];
+      for(var i=0;i<n;i++){
+        var row=board[i], yy=y+(i+1.6)*lh, me=hilite && row.initials===hilite.initials && row.score===hilite.score;
+        ctx.fillStyle=me?'#f6f1ea':(i===0?'#ffb23e':'#c8c0d4');
+        if(me && Math.floor(now/300)%2) ctx.fillStyle='#ffb23e';
+        ctx.textAlign='right'; ctx.fillText((i+1)+(sfx[i]||'TH'),cx-46,yy);
+        ctx.textAlign='left'; ctx.fillText(row.initials,cx-30,yy);
+        ctx.textAlign='right'; ctx.fillText(String(row.score),cx+70,yy);
+      }
+      ctx.textAlign='left'; ctx.globalAlpha=1;
     }
     function frame(now){
       requestAnimationFrame(frame);
       if(!home.classList.contains('is-active') || document.hidden){ last=now; return; }
       if(!enabled){ ctx.clearRect(0,0,W,H); return; }
       var dt=Math.min(now-(last||now),250); last=now;
-      if(mode==='dead' && now-deadAt>1800) reset('demo');
+      if(mode==='dead' && now-deadAt>1800){ reset('demo'); if(board && board.length) showBoard(now,5000); }
+      if(mode==='demo' && board && board.length && now>boardUntil+14000) showBoard(now,5000);
       var interval = mode==='play' ? Math.max(70,125-score*3) : 115;
-      if(!(reduce && mode==='demo') && mode!=='dead'){
+      if(!(reduce && mode==='demo') && mode!=='dead' && mode!=='entry' && !(mode==='demo' && now<boardUntil)){
         acc+=dt;
         while(acc>=interval){ acc-=interval; step(now); if(mode!=='play' && mode!=='demo') break; }
       }
       draw(now);
     }
     function turn(d){
-      if(!enabled) return false;
+      if(!enabled || mode==='entry') return false;
       if(mode!=='play'){ reset('play'); }
       if(d.x===-dir.x && d.y===-dir.y) return true;
       next=d; return true;
