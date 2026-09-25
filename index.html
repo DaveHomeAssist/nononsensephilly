@@ -960,6 +960,21 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 .hs-msg{min-height:1.2em;margin:8px 0 0;font:500 11px var(--font-mono);color:#ffb0c9}
 /* The global form grid rule beats [hidden] too. */
 form[hidden]{display:none}
+/* === Anticipatory UX, slice 1 === */
+.nn-chip{position:absolute;z-index:4;top:clamp(12px,2.4vh,22px);left:max(16px,calc((100% - 1260px) / 2 + 16px));display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 6px 0 14px;border:1px solid #ffb23e;border-radius:999px;background:rgba(6,5,11,.88);color:#ffb23e;font:500 11px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+.nn-chip[hidden],.nn-restore-banner[hidden],.nn-inline-note[hidden]{display:none}
+.nn-chip a{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:none}
+.nn-chip-x{width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:#f6f1ea;font-size:18px;line-height:1}
+.nn-chip-x:hover{background:rgba(255,255,255,.08)}
+@media (max-width:899px),(orientation:portrait){.nn-chip{top:auto;bottom:calc(100% - 52px);left:16px}.map-home.has-continue .hud-chip{display:none}}
+.nn-restore-banner{position:absolute;z-index:7;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;width:max-content;max-width:calc(100% - 32px);min-height:44px;margin:0;padding:4px 8px 4px 16px;border:1px solid var(--border);border-left:3px solid #ffb23e;border-radius:12px;background:var(--surface);box-shadow:var(--shadow);font:500 11px/1.3 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+.nn-link-button{appearance:none;min-height:40px;padding:0 6px;border:0;background:none;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.nn-restore-banner .nn-link-button{color:#ffb23e}
+.nn-label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:20px;margin-bottom:4px}
+.nn-label-row label{margin:0}
+.nn-inline-note{display:inline-flex;align-items:center;gap:2px;font:500 10px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#ffb23e}
+.nn-inline-note .nn-link-button{min-height:32px;margin:-6px 0;padding:0 4px}
+.nn-footer-clear{white-space:nowrap;min-height:36px;padding:0;border:0;background:none;color:var(--muted);font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 </style>
 <script>
 (function(){
@@ -1001,6 +1016,7 @@ form[hidden]{display:none}
 
   <main id="main" tabindex="-1">
     <p id="panel-status" class="sr-only" aria-live="polite"></p>
+    <p id="nn-live" class="sr-only" aria-live="polite"></p>
 
     <section id="home" class="panel map-home is-active" aria-label="Home" tabindex="-1">
       <div class="map-stage" aria-hidden="true">
@@ -1064,6 +1080,7 @@ form[hidden]{display:none}
         </svg>
         <div class="map-scan"></div>
       </div>
+      <div class="nn-chip" data-continue-chip hidden><a href="#rentals" data-go="rentals" data-continue-link>Continue: Rentals</a><button type="button" class="nn-chip-x" data-continue-clear aria-label="Clear saved rental manifest">×</button></div>
       <div class="map-hud" aria-hidden="true">
         <span class="hud-chip"><i class="hud-dot"></i><span id="hud-status">After hours</span></span>
         <span class="hud-coords">39.9526° N · 75.1652° W</span>
@@ -1081,7 +1098,7 @@ form[hidden]{display:none}
         <nav class="waypoints" aria-label="Where to next">
           <a href="#events" data-go="events"><small>01</small><b>Events</b><span>Past rooms + flyers</span></a>
           <a href="#rentals" data-go="rentals"><small>02</small><b>Rentals</b><span>Audio · light · video</span></a>
-          <a href="#contact" data-go="contact" data-subject="Booking &amp; Talent"><small>03</small><b>Booking</b><span>Artists · rooms</span></a>
+          <a href="#contact" data-go="contact" data-subject-source="booking-tile"><small>03</small><b>Booking</b><span>Artists · rooms</span></a>
         </nav>
       </div>
       <form id="hs-entry" class="hs-entry" hidden novalidate>
@@ -1268,7 +1285,7 @@ form[hidden]{display:none}
                 <p class="badge badge-private">Private Event</p>
                 <h3>Room Buyout</h3>
                 <p>Private use of both rooms at 905 N Broad, up to 350 guests. Built for labels, crews, and closed-door events.</p>
-                <a class="text-link" href="#contact" data-go="contact">Details</a>
+                <a class="text-link" href="#contact" data-go="contact" data-subject-source="room-buyout">Details</a>
               </div>
             </article>
             <article class="card" data-cat="booking">
@@ -1288,6 +1305,7 @@ form[hidden]{display:none}
 
     <section id="rentals" class="panel rig" tabindex="-1" aria-label="Production rentals" hidden>
       <div class="rig-inner">
+        <p class="nn-restore-banner" data-rentals-restore-banner hidden><span data-rentals-restore-copy>Welcome back: your manifest is restored</span><button type="button" class="nn-link-button" data-rentals-restore-clear>Clear</button></p>
         <div class="rig-head">
           <p class="kicker">Production rentals · Load-in manifest</p>
           <h2>Tell us the job. <span>We’ll spec the rig.</span></h2>
@@ -1634,7 +1652,7 @@ form[hidden]{display:none}
               <p class="field-error" id="err-email" role="alert"></p>
             </div>
             <div class="full">
-              <label for="c-subject">Subject</label>
+              <div class="nn-label-row"><label for="c-subject">Subject</label><span class="nn-inline-note" data-contact-subject-note hidden><span data-contact-subject-note-text>Set from Rentals</span> · <button type="button" class="nn-link-button" data-contact-subject-change>change</button></span></div>
               <select id="c-subject" name="subject" required>
                 <option value="">Select a subject</option>
                 <option>General</option>
@@ -1642,12 +1660,13 @@ form[hidden]{display:none}
                 <option>Rentals & Production</option>
                 <option>Press & Media</option>
                 <option>Vendor & Sponsorship</option>
+                <option>Room Buyout</option>
               </select>
               <p class="field-error" id="err-subject" role="alert"></p>
             </div>
             <div class="full">
-              <label for="c-message">Message</label>
-              <textarea id="c-message" name="message" rows="3" required></textarea>
+              <div class="nn-label-row"><label for="c-message">Message</label><span class="nn-inline-note" data-contact-draft-note hidden>Draft restored</span></div>
+              <textarea id="c-message" name="message" rows="3" required enterkeyhint="send"></textarea>
               <p class="field-error" id="err-message" role="alert"></p>
             </div>
             <div class="full form-actions">
@@ -1707,6 +1726,7 @@ form[hidden]{display:none}
         <a href="#access" data-go="access">Tickets</a>
         <a href="#voices" data-go="voices">Standards</a>
         <a href="#faq" data-go="faq">FAQ</a>
+        <button type="button" class="nn-footer-clear" data-clear-device-data title="Clears saved quote progress, draft message, and on-device preferences.">Clear my data</button>
       </nav>
       <p class="copy">© <span id="year">2026</span> No Nonsense Collective</p>
     </div>
@@ -1737,6 +1757,114 @@ form[hidden]{display:none}
 <script>
 (function(){
   'use strict';
+
+  /* ---- On-device preferences: one key, best-effort, nothing personal. ---- */
+  var NN_STORE_KEY='nn:prefs:v1', NN_TTL_MS=14*24*60*60*1000, NN_DRAFT_MAX=2000;
+  var nnStore=(function(){
+    var state=null, canStore=true, writeTimer=null, loaded=false;
+    function freshRentals(){ return {items:{},zoneCounts:{},date:null,duration:null,logistics:null,savedAt:0}; }
+    function freshDraft(){ return {subject:null,message:null,savedAt:0}; }
+    function fresh(){
+      return {v:1,updated:0,theme:null,nav:{last:null,visits:{}},rentals:freshRentals(),
+        contact:{subject:null,subjectSource:null,draft:freshDraft()},game:{best:null,plays:0},meta:{migratedLegacyKeys:false}};
+    }
+    function obj(x){ return x && typeof x==='object' && !Array.isArray(x); }
+    function str(x,max){ return typeof x==='string' ? (max?x.slice(0,max):x) : null; }
+    function counts(x){ var out={}; if(obj(x)) Object.keys(x).forEach(function(k){ var n=Number(x[k]); if(n>0 && n<1000) out[k]=Math.floor(n); }); return out; }
+    function expired(ts){ return !ts || Date.now()-ts>NN_TTL_MS; }
+    function pastDate(d){
+      if(!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return !!d;
+      var t=new Date(); return new Date(d+'T00:00:00')<new Date(t.getFullYear(),t.getMonth(),t.getDate());
+    }
+    function prune(n){
+      if(expired(n.rentals.savedAt)) n.rentals=freshRentals();
+      if(expired(n.contact.draft.savedAt)) n.contact.draft=freshDraft();
+      if(pastDate(n.rentals.date)) n.rentals.date=null;
+      if(!Object.keys(n.rentals.items).length){ n.rentals.date=null; n.rentals.duration=null; n.rentals.logistics=null; n.rentals.savedAt=0; }
+    }
+    function normalize(raw){
+      var n=fresh();
+      if(!obj(raw) || raw.v!==1) return n;
+      n.updated=Number(raw.updated)||0;
+      n.theme=str(raw.theme,10);
+      if(obj(raw.nav)){ n.nav.last=str(raw.nav.last,20); n.nav.visits=counts(raw.nav.visits); }
+      if(obj(raw.rentals)){
+        var r=raw.rentals;
+        n.rentals={items:counts(r.items),zoneCounts:counts(r.zoneCounts),date:str(r.date,10),duration:str(r.duration,40),logistics:str(r.logistics,40),savedAt:Number(r.savedAt)||0};
+      }
+      if(obj(raw.contact)){
+        n.contact.subject=str(raw.contact.subject,120);
+        n.contact.subjectSource=str(raw.contact.subjectSource,30);
+        if(obj(raw.contact.draft)) n.contact.draft={subject:str(raw.contact.draft.subject,120),message:str(raw.contact.draft.message,NN_DRAFT_MAX),savedAt:Number(raw.contact.draft.savedAt)||0};
+      }
+      if(obj(raw.game)){ n.game.best=Number.isFinite(raw.game.best)?raw.game.best:null; n.game.plays=Number(raw.game.plays)||0; }
+      if(obj(raw.meta)) n.meta.migratedLegacyKeys=!!raw.meta.migratedLegacyKeys;
+      prune(n);
+      return n;
+    }
+    function load(){
+      if(loaded) return state;
+      loaded=true;
+      try{ localStorage.setItem('__nn_probe__','1'); localStorage.removeItem('__nn_probe__'); }catch(e){ canStore=false; }
+      try{ var raw=canStore && localStorage.getItem(NN_STORE_KEY); state=raw?normalize(JSON.parse(raw)):fresh(); }catch(e){ state=fresh(); }
+      return state;
+    }
+    function flush(){
+      clearTimeout(writeTimer); writeTimer=null;
+      if(!canStore || !state) return;
+      try{ localStorage.setItem(NN_STORE_KEY,JSON.stringify(state)); }catch(e){}
+    }
+    function mutate(fn,opts){
+      load(); fn(state); prune(state); state.updated=Date.now();
+      if(opts && opts.flush) flush();
+      else if(canStore){ clearTimeout(writeTimer); writeTimer=setTimeout(flush,400); }
+      return state;
+    }
+    function clearAll(){
+      load(); clearTimeout(writeTimer); state=fresh();
+      try{ localStorage.removeItem(NN_STORE_KEY); }catch(e){}
+    }
+    /* Copies legacy values once. Legacy keys stay: the head theme script and the game still read them. */
+    function migrateLegacyKeys(){
+      load();
+      if(state.meta.migratedLegacyKeys || !canStore) return;
+      try{
+        var t=localStorage.getItem('nononsense-theme'), b=Number(localStorage.getItem('nononsense-crowd-best'));
+        if(!state.theme && (t==='light' || t==='dark')) state.theme=t;
+        if(state.game.best==null && b>0) state.game.best=b;
+      }catch(e){}
+      state.meta.migratedLegacyKeys=true;
+      flush();
+    }
+    return {load:load,get:function(){ return load(); },mutate:mutate,flush:flush,clearAll:clearAll,migrateLegacyKeys:migrateLegacyKeys};
+  })();
+  var SUBJECT_BY_SOURCE={'booking-tile':'Booking & Talent','rentals-handoff':'Rentals & Production','room-buyout':'Room Buyout'};
+  var SOURCE_LABEL={'booking-tile':'Booking','rentals-handoff':'Rentals','room-buyout':'Room Buyout'};
+  function inferSubjectFromSource(src){ return SUBJECT_BY_SOURCE[src]||null; }
+  function announceStoredState(msg){ var el=document.getElementById('nn-live'); if(el){ el.textContent=''; setTimeout(function(){ el.textContent=msg; },60); } }
+  function trackNav(id){ nnStore.mutate(function(s){ s.nav.last=id; s.nav.visits[id]=(s.nav.visits[id]||0)+1; }); }
+  function saveRentalManifest(o){
+    nnStore.mutate(function(s){
+      if(o.items) s.rentals.items=JSON.parse(JSON.stringify(o.items));
+      if(o.zone) s.rentals.zoneCounts[o.zone]=(s.rentals.zoneCounts[o.zone]||0)+1;
+      if(o.date!==undefined) s.rentals.date=o.date||null;
+      if(o.duration!==undefined) s.rentals.duration=o.duration||null;
+      if(o.logistics!==undefined) s.rentals.logistics=o.logistics||null;
+      s.rentals.savedAt=Object.keys(s.rentals.items).length?Date.now():0;
+    });
+  }
+  function clearRentalManifest(){ nnStore.mutate(function(s){ s.rentals={items:{},zoneCounts:{},date:null,duration:null,logistics:null,savedAt:0}; },{flush:true}); }
+  function setContactSubject(subject,src){ nnStore.mutate(function(s){ s.contact.subject=subject||null; s.contact.subjectSource=src||null; }); }
+  function markContactSubjectManual(subject){ nnStore.mutate(function(s){ s.contact.subject=subject||null; s.contact.subjectSource='manual'; }); }
+  function saveContactDraft(o){
+    nnStore.mutate(function(s){
+      var sub=(o.subject||'').slice(0,120)||null, msg=(o.message||'').slice(0,NN_DRAFT_MAX)||null;
+      s.contact.draft={subject:sub,message:msg,savedAt:msg?Date.now():0};
+    });
+  }
+  function clearContactDraft(){ nnStore.mutate(function(s){ s.contact.draft={subject:null,message:null,savedAt:0}; s.contact.subject=null; s.contact.subjectSource=null; },{flush:true}); }
+  nnStore.load();
+  nnStore.migrateLegacyKeys();
   var labels={
     home:'Home',
     events:'Events',
@@ -1788,6 +1916,7 @@ form[hidden]{display:none}
       e.preventDefault();
       var id=go.getAttribute('data-go')||go.getAttribute('data-nav');
       showPanel(id, true, true, true);
+      trackNav(id);
       return;
     }
     if(navLinks.classList.contains('is-open') && !e.target.closest('#nav-links') && !e.target.closest('#nav-toggle')){
@@ -1908,6 +2037,9 @@ form[hidden]{display:none}
       rentalSelections[name]=(rentalSelections[name]||0)+1;
       renderRentalQuote();
       bumpManifest();
+      var card=btn.closest('[data-rental-cat]');
+      saveRentalManifest({items:rentalSelections,zone:card&&card.getAttribute('data-rental-cat')});
+      dismissRestoreBanner();
     });
   });
   if(quoteItems) quoteItems.addEventListener('click',function(e){
@@ -1915,8 +2047,10 @@ form[hidden]{display:none}
     if(!remove) return;
     delete rentalSelections[remove.getAttribute('data-remove-rental')];
     renderRentalQuote();
+    saveRentalManifest({items:rentalSelections});
+    dismissRestoreBanner();
   });
-  if(quoteClear) quoteClear.addEventListener('click',function(){ rentalSelections={}; renderRentalQuote(); });
+  if(quoteClear) quoteClear.addEventListener('click',function(){ rentalSelections={}; renderRentalQuote(); clearRentalManifest(); dismissRestoreBanner(); renderContinueChip(); });
   if(quoteRequest) quoteRequest.addEventListener('click',function(){
     var names=Object.keys(rentalSelections);
     if(!names.length) return;
@@ -1935,13 +2069,69 @@ form[hidden]{display:none}
     lines.push('Event location / venue: ');
     lines.push('Load-in / show time: ');
     lines.push('Anything else: ');
-    if(subject) subject.value='Rentals & Production';
+    if(subject) subject.value=inferSubjectFromSource('rentals-handoff');
     if(message) message.value=lines.join('\n');
+    setContactSubject(subject.value,'rentals-handoff');
+    showSubjectNote('rentals-handoff');
+    saveContactDraft({subject:subject.value,message:message.value});
     setManifest(false);
     showPanel('contact',true,true,true);
     window.setTimeout(function(){ if(message) message.focus(); },0);
   });
+  /* Rentals: restore a saved manifest before the first render. */
+  var rentalBanner=document.querySelector('[data-rentals-restore-banner]');
+  var rentalFields={date:document.getElementById('rent-date'),duration:document.getElementById('rent-duration'),logistics:document.getElementById('rent-fulfillment')};
+  function dismissRestoreBanner(){ if(rentalBanner) rentalBanner.hidden=true; }
+  function renderRentalsRestoreBanner(saved){
+    if(!rentalBanner) return;
+    var n=Object.keys(saved.items).reduce(function(t,k){ return t+saved.items[k]; },0);
+    var when=new Date(saved.savedAt).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    rentalBanner.querySelector('[data-rentals-restore-copy]').textContent='Welcome back: your manifest from '+when+' is restored ('+n+(n===1?' item':' items')+')';
+    rentalBanner.hidden=false;
+  }
+  (function restoreRentals(){
+    var r=nnStore.get().rentals, names=Object.keys(r.items);
+    if(!names.length) return;
+    var known={};
+    rentalCards.forEach(function(c){ var b=c.querySelector('.rental-add'); if(b) known[b.getAttribute('data-rental')]=1; });
+    names.forEach(function(k){ if(known[k]) rentalSelections[k]=r.items[k]; });
+    if(!Object.keys(rentalSelections).length) return;
+    if(r.date && rentalFields.date) rentalFields.date.value=r.date;
+    [['duration',r.duration],['logistics',r.logistics]].forEach(function(p){
+      var sel=rentalFields[p[0]];
+      if(sel && p[1] && [].some.call(sel.options,function(o){ return o.value===p[1]; })) sel.value=p[1];
+    });
+    renderRentalsRestoreBanner(r);
+  })();
+  Object.keys(rentalFields).forEach(function(k){
+    var el=rentalFields[k]; if(!el) return;
+    el.addEventListener('change',function(){ var o={}; o[k]=el.value; saveRentalManifest(o); dismissRestoreBanner(); });
+  });
+  if(rentalBanner) rentalBanner.querySelector('[data-rentals-restore-clear]').addEventListener('click',function(){
+    rentalSelections={}; renderRentalQuote(); clearRentalManifest(); dismissRestoreBanner(); renderContinueChip();
+    announceStoredState('Saved rental manifest cleared.');
+  });
+  document.querySelectorAll('.rental-filter').forEach(function(b){ b.addEventListener('click',dismissRestoreBanner); });
+
+  /* Home: continue chip for a saved manifest. */
+  var continueChip=document.querySelector('[data-continue-chip]'), continueUsed=false;
+  function renderContinueChip(){
+    if(!continueChip) return;
+    var n=Object.keys(rentalSelections).reduce(function(t,k){ return t+rentalSelections[k]; },0);
+    var show=n>0 && !continueUsed && !!nnStore.get().rentals.savedAt;
+    continueChip.hidden=!show;
+    continueChip.closest('.map-home').classList.toggle('has-continue',show);
+    if(show) continueChip.querySelector('[data-continue-link]').textContent='Continue: Rentals ('+n+(n===1?' item':' items')+')';
+  }
+  if(continueChip){
+    continueChip.querySelector('[data-continue-clear]').addEventListener('click',function(){
+      rentalSelections={}; renderRentalQuote(); clearRentalManifest(); dismissRestoreBanner(); renderContinueChip();
+      announceStoredState('Saved rental manifest cleared.');
+    });
+    continueChip.querySelector('[data-continue-link]').addEventListener('click',function(){ continueUsed=true; renderContinueChip(); });
+  }
   renderRentalQuote();
+  renderContinueChip();
 
   var amounts=[].slice.call(document.querySelectorAll('.amt'));
   var perLabels=[].slice.call(document.querySelectorAll('.per'));
@@ -2015,6 +2205,7 @@ form[hidden]{display:none}
     }
     var body='Name: '+name.value.trim()+'\nEmail: '+email.value.trim()+'\nSubject: '+subject.value+'\n\n'+message.value.trim();
     window.location.href='mailto:nononsensephl@gmail.com?subject='+encodeURIComponent('[nononsensephilly.com] '+subject.value+' · '+name.value.trim())+'&body='+encodeURIComponent(body);
+    clearContactDraft(); showSubjectNote(null); hideDraftNote();
     e.currentTarget.setAttribute('hidden','');
     var done=document.getElementById('contact-success');
     done.removeAttribute('hidden');
@@ -2439,10 +2630,68 @@ form[hidden]{display:none}
     requestAnimationFrame(frame);
   })();
 
+  /* Contact: subject inference with visible source, and draft autosave. */
+  var cSubject=document.getElementById('c-subject'), cMessage=document.getElementById('c-message');
+  var subjectNote=document.querySelector('[data-contact-subject-note]'), draftNote=document.querySelector('[data-contact-draft-note]'), draftNoteTimer=0;
+  function showSubjectNote(src){
+    if(!subjectNote) return;
+    if(!src || !SOURCE_LABEL[src]){ subjectNote.hidden=true; return; }
+    subjectNote.querySelector('[data-contact-subject-note-text]').textContent='Set from '+SOURCE_LABEL[src];
+    subjectNote.hidden=false;
+  }
+  function hideDraftNote(){ clearTimeout(draftNoteTimer); if(draftNote) draftNote.hidden=true; }
   document.addEventListener('click',function(e){
-    var a=e.target.closest('[data-subject]'), sel=document.getElementById('c-subject');
-    if(a && sel) sel.value=a.getAttribute('data-subject');
+    var a=e.target.closest('[data-subject-source]');
+    if(!a || !cSubject) return;
+    var src=a.getAttribute('data-subject-source'), sub=inferSubjectFromSource(src);
+    if(!sub) return;
+    cSubject.value=sub; setContactSubject(sub,src); showSubjectNote(src);
+    if(cMessage && cMessage.value) saveContactDraft({subject:sub,message:cMessage.value});
   });
+  if(cSubject){
+    cSubject.addEventListener('change',function(){
+      markContactSubjectManual(cSubject.value); showSubjectNote(null);
+      if(cMessage && cMessage.value) saveContactDraft({subject:cSubject.value,message:cMessage.value});
+    });
+    var changeBtn=document.querySelector('[data-contact-subject-change]');
+    if(changeBtn) changeBtn.addEventListener('click',function(){ showSubjectNote(null); cSubject.focus(); });
+  }
+  if(cMessage) cMessage.addEventListener('input',function(){
+    hideDraftNote();
+    saveContactDraft({subject:cSubject?cSubject.value:'',message:cMessage.value});
+  });
+  (function renderContactRestoreState(){
+    var c=nnStore.get().contact;
+    if(!cSubject || !cMessage) return;
+    if(c.draft.message){
+      cMessage.value=c.draft.message;
+      if(c.draft.subject && [].some.call(cSubject.options,function(o){ return o.value===c.draft.subject; })) cSubject.value=c.draft.subject;
+      if(draftNote){ draftNote.hidden=false; draftNoteTimer=setTimeout(hideDraftNote,8000); }
+    } else if(c.subject && c.subjectSource && c.subjectSource!=='manual' && [].some.call(cSubject.options,function(o){ return o.value===c.subject; })){
+      cSubject.value=c.subject;
+    }
+    if(c.subjectSource && c.subjectSource!=='manual' && cSubject.value===c.subject) showSubjectNote(c.subjectSource);
+  })();
+
+  /* Clear everything this site remembers on this device. */
+  document.querySelectorAll('[data-clear-device-data]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      nnStore.clearAll();
+      try{ localStorage.removeItem('nononsense-theme'); localStorage.removeItem('nononsense-crowd-best'); }catch(e){}
+      try{ sessionStorage.removeItem('nononsense-modal-shown'); }catch(e){}
+      dismissRestoreBanner(); continueUsed=true; renderContinueChip(); showSubjectNote(null); hideDraftNote();
+      announceStoredState('Saved data on this device cleared.');
+      var old=btn.textContent; btn.textContent='Cleared'; setTimeout(function(){ btn.textContent=old; },2000);
+    });
+  });
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') nnStore.flush(); });
+  window.addEventListener('pagehide',function(){ nnStore.flush(); });
+  (function announceRestore(){
+    var st=nnStore.get(), n=Object.keys(rentalSelections).length, parts=[];
+    if(n && st.rentals.savedAt) parts.push('Rental manifest restored, '+n+(n===1?' package.':' packages.'));
+    if(st.contact.draft.message) parts.push('Draft restored in contact form.');
+    if(parts.length) setTimeout(function(){ announceStoredState(parts.join(' ')); },800);
+  })();
 
   function panelFromHash(){
     var id=location.hash.replace(/^#/,'');
