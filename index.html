@@ -924,6 +924,10 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 .card .badge-club{background:#5ef2ff;color:#062126}
 .card .badge-outdoor{background:#59ff17;color:#071006}
 .card-links{display:flex;flex-wrap:wrap;column-gap:16px}
+.guests{margin-top:var(--space-xl)}
+.guests h3{font-size:var(--step-1);margin-bottom:12px}
+.guest-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.guest-list li{padding:6px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface);font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 .floor{margin-top:var(--space-xl)}
 .floor h3{font-size:var(--step-1);margin-bottom:12px}
 .floor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
@@ -1348,50 +1352,39 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
       </div>
     </section>
 
-    <section id="lineup" class="panel" tabindex="-1" aria-label="Lineup" hidden>
+    <section id="lineup" class="panel" tabindex="-1" aria-label="Artists" hidden>
       <div class="panel-top">
         <div class="wrap">
           <p class="kicker">Artists</p>
-          <h2>People we book</h2>
-          <p class="lede">Residents, guests, and collaborators chosen for the room, the crowd, and the slot.</p>
+          <h2>The collective</h2>
+          <p class="lede">The members behind No Nonsense, plus guests who have played our rooms.</p>
         </div>
       </div>
       <div class="panel-scroll">
         <div class="wrap">
           <div class="lineup-grid">
             <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">VC</div><div><div class="name">VOID CADET</div><div class="role">Artist · Techno · Berlin</div></div></div>
-              <p>Guest. Peak-time techno.</p>
+              <div class="who"><div class="avatar" aria-hidden="true">IX</div><div><div class="name">ILLIXIR</div><div class="role">Collective member</div></div></div>
+              <p>Plays solo and as Neuromancy, a GRiZ neurofunk tribute with Acidic Dreams. On the bill for Endpoint Connections 2.0, Aftertronics, AfterBreak 2025, and Rooftop Nonsense.</p>
+              <a class="text-link" href="https://open.spotify.com/track/2EO3bNmyE6GKPqWOd8AseL" target="_blank" rel="noopener noreferrer">Listen: Welcome Home</a>
             </article>
             <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">MD</div><div><div class="name">MISS DIRECT</div><div class="role">Artist · House · Philly</div></div></div>
-              <p>Resident. Late-night house.</p>
+              <div class="who"><div class="avatar" aria-hidden="true">AD</div><div><div class="name">ACIDIC DREAMS</div><div class="role">Collective member</div></div></div>
+              <p>Plays solo, in b2b sets, and as Neuromancy with ILLIXIR. On the bill for AfterBreak 2026, Aftertronics, AfterJinx, and Kandi Island.</p>
+              <a class="text-link" href="https://open.spotify.com/track/2EO3bNmyE6GKPqWOd8AseL" target="_blank" rel="noopener noreferrer">Listen: Welcome Home</a>
             </article>
             <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">SF</div><div><div class="name">SUBFLOOR</div><div class="role">Artist · Bass</div></div></div>
-              <p>Resident. Bass-forward club sets.</p>
-            </article>
-            <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">TC</div><div><div class="name">TEMPO CRIMES</div><div class="role">Artist · Drum and bass · UK</div></div></div>
-              <p>Guest. Drum and bass, 170+.</p>
-            </article>
-            <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">GR</div><div><div class="name">GRAVEYARD ROTATION</div><div class="role">Artist · All vinyl</div></div></div>
-              <p>Resident. All-vinyl selections.</p>
-            </article>
-            <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">DF</div><div><div class="name">DEFUNK</div><div class="role">Artist · Afterhours</div></div></div>
-              <p>Guest. After-hours set.</p>
-            </article>
-            <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">IX</div><div><div class="name">ILLIXIR</div><div class="role">Artist · Selector</div></div></div>
-              <p>Resident. Selector and visual collaborator.</p>
-            </article>
-            <article class="artist">
-              <div class="who"><div class="avatar" aria-hidden="true">FB</div><div><div class="name">FRESH BVKED</div><div class="role">Artist · Afterhours</div></div></div>
-              <p>Guest. Opening and early-room sets.</p>
+              <div class="who"><div class="avatar" aria-hidden="true">DV</div><div><div class="name">DOUBLE VISION</div><div class="role">Collective member</div></div></div>
+              <p>On the bill for AfterBreak 2026 Night 1.</p>
             </article>
           </div>
+          <section class="guests" aria-labelledby="guests-title">
+            <p class="kicker">On our lineups</p>
+            <h3 id="guests-title">Guests who have played No Nonsense</h3>
+            <ul class="guest-list">
+              <li>Defunk</li><li>Fresh Bvked</li><li>Mighty Mike Saga</li><li>Terrence Powers</li><li>Justin Hawkes</li><li>Viberium</li><li>Face My Flow</li><li>Trowl</li><li>JamL</li><li>Dr. Funkle</li><li>TheBusiness.</li><li>Dragon Drop</li><li>G-Nick</li><li>illGmusic</li><li>Orem</li><li>Quackz</li><li>Spin Doctaz</li><li>Chehz</li><li>Tethra64</li><li>Bluhtii</li><li>DJ Tweak</li><li>Alex Makin</li>
+            </ul>
+          </section>
         </div>
       </div>
     </section>
