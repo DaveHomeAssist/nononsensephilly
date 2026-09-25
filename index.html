@@ -983,6 +983,10 @@ form[hidden]{display:none}
 .nn-used{padding:4px 7px;border:1px solid #ffb23e;border-radius:999px;font:500 9px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:#ffb23e;white-space:nowrap}
 .nn-used[hidden]{display:none}
 .case-top{align-items:center}
+.map-cta.is-night{animation:nnNight 2.4s ease-in-out infinite}
+@keyframes nnNight{0%,100%{box-shadow:0 0 0 0 rgba(255,178,62,.55)}50%{box-shadow:0 0 26px 4px rgba(255,178,62,.35)}}
+.waypoints a.nn-first{animation:nnFirst 1.4s ease-in-out 1.2s 3}
+@keyframes nnFirst{0%,100%{border-color:rgba(246,241,234,.2)}50%{border-color:#ffb23e;box-shadow:0 0 18px rgba(255,178,62,.35)}}
 .nn-footer-clear{white-space:nowrap;min-height:36px;padding:0;border:0;background:none;color:var(--muted);font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 </style>
 <script>
@@ -1777,7 +1781,7 @@ form[hidden]{display:none}
     function fresh(){
       return {v:1,updated:0,theme:null,nav:{last:null,visits:{}},rentals:freshRentals(),
         contact:{subject:null,subjectSource:null,remember:false,name:null,email:null,draft:freshDraft()},events:{filter:null,filterCounts:{}},
-        affinity:{zones:{},lastUsed:[],lastUsedAt:0},game:{best:null,plays:0},meta:{migratedLegacyKeys:false}};
+        affinity:{zones:{},lastUsed:[],lastUsedAt:0},player:{track:0,pos:0,at:0},game:{best:null,plays:0},meta:{migratedLegacyKeys:false}};
     }
     function obj(x){ return x && typeof x==='object' && !Array.isArray(x); }
     function str(x,max){ return typeof x==='string' ? (max?x.slice(0,max):x) : null; }
@@ -1792,6 +1796,7 @@ form[hidden]{display:none}
       if(expired(n.contact.draft.savedAt)) n.contact.draft=freshDraft();
       if(pastDate(n.rentals.date)) n.rentals.date=null;
       if(!n.contact.remember){ n.contact.name=null; n.contact.email=null; }
+      if(!n.player.at || Date.now()-n.player.at>30*24*60*60*1000){ n.player={track:0,pos:0,at:0}; }
       if(!n.affinity.lastUsedAt || Date.now()-n.affinity.lastUsedAt>90*24*60*60*1000){ n.affinity.lastUsed=[]; n.affinity.lastUsedAt=0; }
       if(!Object.keys(n.rentals.items).length){ n.rentals.date=null; n.rentals.duration=null; n.rentals.logistics=null; n.rentals.savedAt=0; }
     }
@@ -1818,6 +1823,7 @@ form[hidden]{display:none}
         n.affinity.lastUsed=Array.isArray(raw.affinity.lastUsed)?raw.affinity.lastUsed.filter(function(x){ return typeof x==='string'; }).slice(0,12):[];
         n.affinity.lastUsedAt=Number(raw.affinity.lastUsedAt)||0;
       }
+      if(obj(raw.player)){ n.player.track=Math.max(0,Math.floor(Number(raw.player.track)||0)); n.player.pos=Math.max(0,Math.floor(Number(raw.player.pos)||0)); n.player.at=Number(raw.player.at)||0; }
       if(obj(raw.game)){ n.game.best=Number.isFinite(raw.game.best)?raw.game.best:null; n.game.plays=Number(raw.game.plays)||0; }
       if(obj(raw.meta)) n.meta.migratedLegacyKeys=!!raw.meta.migratedLegacyKeys;
       prune(n);
@@ -2363,6 +2369,8 @@ form[hidden]{display:none}
   function tickHud(){
     if(!hudStatus) return;
     var d=new Date(), hr=d.getHours(), mn=d.getMinutes();
+    var dropCta=document.querySelector('.map-cta');
+    if(dropCta){ var night=hr<6; dropCta.classList.toggle('is-night',night); dropCta.textContent=night?'Tonight\u2019s drop':'Get the drop'; }
     var clock=(hr<10?'0':'')+hr+':'+(mn<10?'0':'')+mn;
     var left=1440-(hr*60+mn);
     if(hr<6) hudStatus.textContent=clock+' · After hours live';
@@ -2382,6 +2390,9 @@ form[hidden]{display:none}
     {t:'Dance of Dragons',a:'ILLIXIR',u:'https://soundcloud.com/illixirbass/dance-of-dragons'}
   ];
   var plIdx=0, plWidget=null, plPlaying=false;
+  var plSaved=nnStore.get().player, plResumePos=0, plResuming=false, plLastSave=0;
+  if(plSaved.at && plSaved.track<PL_TRACKS.length){ plIdx=plSaved.track; plResumePos=plSaved.pos; plResuming=plIdx>0 || plResumePos>5000; }
+  function plSave(pos){ nnStore.mutate(function(st){ st.player={track:plIdx,pos:Math.max(0,Math.floor(pos||0)),at:Date.now()}; }); }
   var plRoot=document.querySelector('.player'), plPlay=document.getElementById('pl-play'), plHost=document.getElementById('pl-host'), plFrame=document.getElementById('pl-frame'), plTimer=0;
   function plShowHost(on){ plRoot.classList.toggle('pl-open',on); plHost.setAttribute('aria-hidden',on?'false':'true'); }
   function plWatch(){ plRoot.classList.add('is-loading'); clearTimeout(plTimer); plTimer=setTimeout(function(){ if(!plPlaying){ plRoot.classList.remove('is-loading'); plShowHost(true); } },5000); }
@@ -2391,9 +2402,9 @@ form[hidden]{display:none}
     var tr=PL_TRACKS[plIdx], n=PL_TRACKS.length;
     document.getElementById('pl-title').textContent=tr.t;
     document.getElementById('pl-artist').textContent=tr.a;
-    document.getElementById('pl-pos').textContent=(plIdx<9?'0':'')+(plIdx+1)+' / '+(n<10?'0':'')+n;
+    document.getElementById('pl-pos').textContent=(plResuming && !plPlaying?'Resume · ':'')+(plIdx<9?'0':'')+(plIdx+1)+' / '+(n<10?'0':'')+n;
     document.getElementById('pl-link').href=tr.u;
-    plPlay.setAttribute('aria-label',(plPlaying?'Pause ':'Play ')+tr.t+' by '+tr.a);
+    plPlay.setAttribute('aria-label',(plPlaying?'Pause ':(plResuming?'Resume ':'Play '))+tr.t+' by '+tr.a);
   }
   function plSetPlaying(on){ plPlaying=on; plRoot.classList.toggle('is-playing',on); if(on){ clearTimeout(plTimer); plRoot.classList.remove('is-loading'); plShowHost(false); } plRender(); }
   function plStart(){
@@ -2404,7 +2415,13 @@ form[hidden]{display:none}
       f.title='SoundCloud player'; f.allow='autoplay'; f.src=plEmbed(PL_TRACKS[plIdx].u);
       plFrame.appendChild(f);
       plWidget=window.SC.Widget(f);
-      plWidget.bind(window.SC.Widget.Events.PLAY,function(){ plSetPlaying(true); });
+      plWidget.bind(window.SC.Widget.Events.PLAY,function(){
+        if(plResuming && plResumePos>5000){ var p=plResumePos; plResumePos=0; plWidget.seekTo(p); }
+        plResuming=false; plSetPlaying(true); plSave(0);
+      });
+      plWidget.bind(window.SC.Widget.Events.PLAY_PROGRESS,function(e){
+        var now=Date.now(); if(now-plLastSave<10000 || !e) return; plLastSave=now; plSave(e.currentPosition);
+      });
       plWidget.bind(window.SC.Widget.Events.PAUSE,function(){ plSetPlaying(false); });
       plWidget.bind(window.SC.Widget.Events.FINISH,function(){ plGo(1); });
     };
@@ -2413,12 +2430,14 @@ form[hidden]{display:none}
   }
   function plGo(step){
     plIdx=(plIdx+step+PL_TRACKS.length)%PL_TRACKS.length;
+    plResuming=false; plResumePos=0; plSave(0);
     plRender();
     if(plWidget){ plWatch(); plWidget.load(PL_TRACKS[plIdx].u,{auto_play:true,visual:false,show_artwork:false,hide_related:true,show_comments:false,show_user:false,sharing:false,buying:false,download:false}); }
   }
   plPlay.addEventListener('click',function(){ if(plPlaying && plWidget) plWidget.pause(); else plStart(); });
   document.getElementById('pl-next').addEventListener('click',function(){ plGo(1); });
   document.getElementById('pl-prev').addEventListener('click',function(){ plGo(-1); });
+  if(plResuming) plRender();
 
   /* Splash game: lead the crowd to the drops. It plays itself until someone steers. */
   (function(){
@@ -2432,6 +2451,8 @@ form[hidden]{display:none}
     var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     var W=0,H=0,cell=22,cols=0,rows=0,ox=0,oy=0,enabled=false;
     var snake=[],dir={x:1,y:0},next={x:1,y:0},food=null,mode='demo',score=0,best=0,acc=0,last=0,deadAt=0,winAt=0,won=false,touch=null;
+    var plays=nnStore.get().game.plays||0;
+    if(!best && nnStore.get().game.best) best=nnStore.get().game.best;
     var API='https://nononsense-scores.vercel.app/api/scores', board=null, startAt=0, boardFrom=0, boardUntil=0, hilite=null;
     var entry=document.getElementById('hs-entry'), entryInput=document.getElementById('hs-initials'), entryMsg=document.getElementById('hs-msg');
     function loadBoard(){
@@ -2501,7 +2522,7 @@ form[hidden]{display:none}
     }
     function reset(m){
       mode=m; score=0; won=false; acc=0;
-      if(m==='play'){ startAt=performance.now(); boardUntil=0; }
+      if(m==='play'){ startAt=performance.now(); boardUntil=0; plays++; nnStore.mutate(function(st){ st.game.plays=plays; if(best) st.game.best=best; }); }
       var cx=Math.floor(cols/2), cy=Math.floor(rows/2);
       snake=[{x:cx,y:cy},{x:cx-1,y:cy},{x:cx-2,y:cy},{x:cx-3,y:cy}];
       dir={x:1,y:0}; next={x:1,y:0};
@@ -2537,7 +2558,7 @@ form[hidden]{display:none}
       if(!safe(h.x,h.y)){
         if(mode==='play'){
           mode='dead'; deadAt=now;
-          if(score>best){ best=score; try{ localStorage.setItem('nononsense-crowd-best',String(best)); }catch(e){} }
+          if(score>best){ best=score; try{ localStorage.setItem('nononsense-crowd-best',String(best)); }catch(e){} nnStore.mutate(function(st){ st.game.best=best; }); }
           if(qualifies()) openEntry();
         } else reset('demo');
         return;
@@ -2574,9 +2595,10 @@ form[hidden]{display:none}
       ctx.globalAlpha=1;
       ctx.font='500 10px "IBM Plex Mono", ui-monospace, monospace';
       ctx.textBaseline='bottom';
-      var label = mode==='play' ? 'CROWD '+score+' · BEST '+best
+      var touchDev='ontouchstart' in window, rec=board && board.length ? ' · RECORD '+board[0].score : '', mine=best?' · YOUR BEST '+best:'';
+      var label = mode==='play' ? 'CROWD '+score+mine+rec
         : mode==='dead' ? 'CROWD SCATTERED · '+score
-        : ('ontouchstart' in window ? 'SWIPE TO LEAD THE CROWD' : 'ARROW KEYS TO LEAD THE CROWD')+(best?' · BEST '+best:'');
+        : (plays>0 ? (touchDev?'SWIPE TO PLAY':'PRESS \u2191 TO PLAY') : (touchDev?'SWIPE TO LEAD THE CROWD':'ARROW KEYS TO LEAD THE CROWD'))+mine+rec;
       ctx.fillStyle=mode==='dead'?'#ff4f8b':'#ffb23e';
       ctx.fillText(label,ox-4,oy-10);
       if(won && now-winAt<2600){
@@ -2785,6 +2807,10 @@ form[hidden]{display:none}
     restoringUI=true; zb.click(); restoringUI=false;
     if(rentalFilterStatus) rentalFilterStatus.textContent='';
     if(!restored.length && rentalBanner) rentalBanner.hidden=true;
+  })();
+  (function firstVisitHint(){
+    var st=nnStore.get(), ev=document.querySelector('.waypoints a[data-go="events"]');
+    if(ev && !Object.keys(st.nav.visits).length && !st.rentals.savedAt && !st.contact.draft.message) ev.classList.add('nn-first');
   })();
   document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') nnStore.flush(); });
   window.addEventListener('pagehide',function(){ nnStore.flush(); });
