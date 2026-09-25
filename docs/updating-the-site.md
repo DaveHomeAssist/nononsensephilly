@@ -43,3 +43,18 @@ Names on lineups link to `data/artists.json` automatically (spelling variants go
 The build also writes crawlable pages: `/events/`, one page per event, `/artists/` (plus a page for members, projects, and any guest with two or more shows or a link), `/rentals/` with the full gear list, a `404.html`, `sitemap.xml`, and `site.webmanifest`. Each page carries structured data (event, artist, rental service, and breadcrumb). A page's sitemap date only changes when its content does.
 
 After a deploy, submit `https://nononsensephilly.com/sitemap.xml` once in Google Search Console and Bing Webmaster Tools.
+
+## Signups, contact, and rental requests (Resend)
+The drop-list form and the contact form post to the scores service:
+- `POST /api/signup` saves the email in Upstash with where it came from (first touch: `utm_source`, or Instagram, Linktree, RA, DICE, Google, or the referring site), adds it to Resend contacts, and sends a confirmation.
+- `POST /api/request` saves the message. **Rentals & Production** requests get a reference like `NNC-2026-014`. The crew inbox (`CREW_INBOX`, default nononsensephl@gmail.com) gets the request, and replying goes straight to the sender, who also gets a copy.
+
+If Resend isn't set up or an email fails, the site opens the visitor's email app as before, with the reference in the subject, so nothing is lost.
+
+**Exports** (admin token): `GET /api/signup?format=csv` and `GET /api/request?format=csv`. These feed the weekly sheet.
+
+**One-time Resend setup:**
+1. In Resend, add the domain `nononsensephilly.com` and add the DNS records it lists at Namecheap. Wait until it shows **Verified**.
+2. Create an API key with **Sending access** (full access is needed for adding contacts; use full access or skip contacts).
+3. In Vercel → nononsense-scores → Settings → Environment Variables, add `RESEND_API_KEY`. Optional: `MAIL_FROM` (default `No Nonsense Collective <hello@nononsensephilly.com>`) and `CREW_INBOX`.
+4. Redeploy nononsense-scores.
