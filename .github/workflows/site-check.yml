@@ -1,0 +1,50 @@
+name: site-check
+
+on:
+  pull_request:
+  push:
+    branches: [main, claude/busy-hamilton-flo002]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Script syntax
+        run: |
+          for f in find.js tools/build.mjs scores-api/api/*.js scores-api/lib/*.js; do
+            node --check "$f"
+          done
+
+      - name: Inline script syntax in index.html
+        run: |
+          node -e '
+            const html = require("fs").readFileSync("index.html", "utf8");
+            const re = /<script(?![^>]*\bsrc=)(?![^>]*type="application\/(?:ld\+)?json")[^>]*>([\s\S]*?)<\/script>/g;
+            let m, n = 0;
+            while ((m = re.exec(html))) { new Function(m[1]); n++; }
+            console.log(n + " inline scripts parse");
+            const js = /<script type="application\/(?:ld\+)?json"[^>]*>([\s\S]*?)<\/script>/g;
+            let k = 0;
+            while ((m = js.exec(html))) { JSON.parse(m[1]); k++; }
+            for (const f of require("fs").readdirSync("data")) if (f.endsWith(".json")) { JSON.parse(require("fs").readFileSync("data/" + f, "utf8")); k++; }
+            console.log(k + " JSON blocks and data files parse");
+          '
+
+      - name: Published images carry no EXIF
+        run: node tools/build.mjs --check
+
+      - name: Generated pages match data
+        run: |
+          node tools/build.mjs
+          git diff --exit-code -- . ':!sitemap.xml' || {
+            echo "::error::Generated files are out of date. Run node tools/build.mjs and commit the result."
+            exit 1
+          }

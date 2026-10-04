@@ -6,6 +6,10 @@
   var openBtn = document.getElementById('find-open');
   if (!dlg || !q || !list || !openBtn) return;
   var idx = [];
+  function go(panel){
+    var link = document.querySelector('[data-nav="' + panel + '"]') || document.querySelector('[data-go="' + panel + '"]');
+    if (link) link.click();
+  }
   function add(kind, title, extra, run){
     title = (title || '').replace(/\s+/g, ' ').trim();
     if (!title) return;
@@ -19,22 +23,23 @@
     });
   });
   document.querySelectorAll('[data-artist]').forEach(function(btn){
-    var name = (btn.childNodes[0] && btn.childNodes[0].textContent) || btn.textContent || '';
+    var card = btn.closest('.artist');
+    var named = card && card.querySelector('.name');
+    var name = named ? named.textContent : ((btn.childNodes[0] && btn.childNodes[0].textContent) || btn.textContent || '');
     add('Artist', name, '', function(){ btn.click(); });
   });
   document.querySelectorAll('.rental-card').forEach(function(card){
     var title = (card.querySelector('h3') || {}).textContent || '';
     var spec = card.querySelector('[data-spec]');
     add('Gear', title, card.textContent, function(){
-      var nav = document.querySelector('[data-nav="rentals"]');
-      if (nav) nav.click();
+      go('rentals');
       if (spec) spec.click();
     });
   });
   document.querySelectorAll('.faq-item button[aria-controls]').forEach(function(btn){
-    add('FAQ', btn.textContent, '', function(){
-      var nav = document.querySelector('[data-nav="faq"]');
-      if (nav) nav.click();
+    var answer = document.getElementById(btn.getAttribute('aria-controls'));
+    add('FAQ', btn.textContent, answer ? answer.textContent : '', function(){
+      go('faq');
       if (btn.getAttribute('aria-expanded') !== 'true') btn.click();
       btn.focus();
     });
@@ -48,12 +53,21 @@
   });
   var sel = 0;
   var shown = [];
-  function esc(s){ return s.replace(/[&<>]/g, function(c){ return {'&':'&','<':'<','>':'>'}[c]; }); }
+  function esc(s){ return s.replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function closeFind(){ dlg.hidden = true; openBtn.focus(); }
-  function openFind(){ dlg.hidden = false; q.value = ''; render(''); q.focus(); }
+  function openFind(){
+    document.querySelectorAll('dialog[open]').forEach(function(d){ d.close(); });
+    dlg.hidden = false; q.value = ''; render(''); q.focus(); }
   function render(raw){
     var needle = raw.trim().toLowerCase();
-    shown = !needle ? idx.slice(0, 8) : idx.filter(function(item){ return item.hay.indexOf(needle) !== -1; }).slice(0, 12);
+    shown = !needle ? idx.slice(0, 8) : idx.filter(function(item){ return item.hay.indexOf(needle) !== -1; })
+      .map(function(item, i){
+        var t = item.title.toLowerCase();
+        return { item: item, rank: t.indexOf(needle) === 0 ? 0 : t.indexOf(needle) !== -1 ? 1 : 2, i: i };
+      })
+      .sort(function(a, b){ return a.rank - b.rank || a.i - b.i; })
+      .map(function(r){ return r.item; })
+      .slice(0, 12);
     sel = 0;
     list.innerHTML = '';
     if (!shown.length){
