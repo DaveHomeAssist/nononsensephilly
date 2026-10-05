@@ -114,7 +114,8 @@ function eventCard(e, ph) {
   const lineupText = (e.lineup || []).filter((x) => !/mystery/i.test(x)).slice(0, 6);
   const more = (e.lineup || []).length > 6 || e.lineupNote;
   const statusPill = ph === 'past' ? '' : `<span class="ev-state ev-state--${ph}">${STATUS[ph]}</span>`;
-  const tickets = (ph === 'on-sale' && e.ticketUrl) ? `<a class="btn btn-primary ev-tix" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener noreferrer" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : '';
+  const tickets = (ph === 'on-sale' && e.ticketUrl) ? `<a class="btn btn-primary ev-tix" href="${esc(e.ticketUrl)}" target="_blank" rel="noopener noreferrer" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>`
+    : (ph !== 'past' && ph !== 'cancelled') ? '<button type="button" class="text-link ev-tix" data-open-news>Get the drop</button>' : '';
   const vids = (e.videos || []).length ? `<li class="ev-has">▶ ${e.videos.length} video${e.videos.length > 1 ? 's' : ''}</li>` : '';
   const sets = (e.nights || []).some((n) => (n.sets || []).length) ? '<li class="ev-has">Set times</li>' : '';
   return `            <article class="card" data-cat="${e.category}" data-year="${yearOf(e)}" data-event="${e.slug}" data-phase="${ph}">
@@ -168,13 +169,15 @@ blocks['guests'] = '\n' + guests.map((a) => {
 }).join('\n') + '\n            ';
 
 blocks['rental-zones'] = '\n' + rentalsData.zones.map((z, i) => `            <button type="button" class="rig-zone rental-filter" data-rental-filter="${z.id}" aria-pressed="${i === 0}"><span class="ref">${z.ref}</span><b>${esc(z.name)}</b><small>${esc(z.sub)}</small></button>`).join('\n') + '\n          ';
+/* Optional "From $X" line. Only shows when the case in data/rentals.json carries priceFrom. */
+const priceLine = (c) => Number.isFinite(c.priceFrom) && c.priceFrom > 0 ? `From $${c.priceFrom.toLocaleString('en-US')}${c.priceUnit ? ' ' + c.priceUnit : ''}` : '';
 blocks['rental-cases'] = '\n' + rentalsData.cases.map((c) => {
   const first = c.zone === rentalsData.zones[0].id;
   const addon = c.addon ? `\n              <button type="button" class="case-addon rental-add" data-rental="${esc(c.addon.name)}" data-addon data-umami-event="rental-add" data-umami-event-package="${esc(c.addon.name)}">+ ${esc(c.addon.label)} <span>tech required</span></button>` : '';
   return `            <article class="rental-card" data-rental-cat="${c.zone}"${first ? '' : ' hidden'}>
               <div class="case-top"><span class="case-code" aria-hidden="true">${esc(c.code)}</span><span class="case-ref">${esc(c.ref)}</span></div>
               <h3>${esc(c.name)}</h3>
-              <p>${esc(c.blurb)}</p>
+              <p>${esc(c.blurb)}</p>${priceLine(c) ? `\n              <p class="case-price">${esc(priceLine(c))}</p>` : ''}
               <ul class="case-specs">${c.chips.map((x) => `<li>${esc(x)}</li>`).join('')}<li class="case-spec-li"><button type="button" class="case-spec" data-spec="${esc(c.name)}" aria-label="Full gear list: ${esc(c.name)}">Full spec</button></li></ul>
               <button type="button" class="btn case-add rental-add" data-rental="${esc(c.name)}" data-umami-event="rental-add" data-umami-event-package="${esc(c.name)}">Add to manifest</button>${addon}
             </article>`;
@@ -182,14 +185,14 @@ blocks['rental-cases'] = '\n' + rentalsData.cases.map((c) => {
 
 /* Hero line and map X, pre-rendered for no-JS visitors. The page re-checks them against the clock. */
 blocks['hero-next'] = next
-  ? `<p class="nn-next" data-next><i class="nn-next-dot"></i><b>${esc(STATUS[phase(next, now)])}</b> <span>${esc(next.title)} · ${esc(next.dateLabel)} · ${esc(where(next))}</span></p>`
+  ? `<p class="nn-next" data-next><i class="nn-next-dot"></i><b>${esc(STATUS[phase(next, now)])}</b> <span class="nn-next-long">${esc(next.title)} · ${esc(next.dateLabel)} · ${esc(where(next))}</span><span class="nn-next-short">${esc(next.title)} · ${esc(next.dateLabel.replace(/, \d{4}$/, ''))}</span></p>`
   : `<p class="nn-next is-quiet" data-next><i class="nn-next-dot"></i><b>Next show</b> <span>Announced to the drop list first</span></p>`;
 
 const dataForPage = {
   events: events.map((e) => { const { ...rest } = e; return rest; }),
   recaps: eventsData.recaps || [],
   artists: artists.map((a) => ({ ...a, shows: showsByArtist.get(a.slug) || [] })),
-  rentals: rentalsData.cases.map((c) => ({ name: c.name, zone: c.zone, gear: c.gear, circuits: c.circuits, circuitLabel: c.circuitLabel || '', video: !!c.video, provides: c.provides || '', addon: c.addon || null }))
+  rentals: rentalsData.cases.map((c) => ({ name: c.name, zone: c.zone, gear: c.gear, circuits: c.circuits, circuitLabel: c.circuitLabel || '', video: !!c.video, provides: c.provides || '', addon: c.addon || null, price: priceLine(c) }))
 };
 blocks['home-ld'] = `<script type="application/ld+json">${JSON.stringify({
   '@context': 'https://schema.org',
@@ -496,7 +499,7 @@ writePage('rentals/index.html', shell({
   body: `<p class="kicker">Production rentals · Philadelphia</p><h1>DJ, sound + lighting rentals</h1>
 <p class="lede">The gear we run our own nights on, for your room: Pioneer CDJ-3000s and a DJM-A9, EV tops and 18" subs, moving heads, haze, a laser (always with our tech), projection with live VJ, and a 3300W generator. Pickup, delivery, or delivery with setup. Nothing is reserved until you accept the written quote.</p>
 <a class="btn" href="/#rentals" data-umami-event="rentals-page-build">Build a request</a><a class="btn ghost" href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Rental request')}">Email us</a>
-${rentalsData.zones.map((z) => `<h2>${esc(z.ref)} · ${esc(z.name)}</h2>${rentalsData.cases.filter((c) => c.zone === z.id).map((c) => `<section class="case"><h3>${esc(c.name)} <small class="tag">${esc(c.ref)}</small></h3><p>${esc(c.blurb)}</p><table class="gear"><thead><tr><th>Qty</th><th>Gear</th><th>Notes</th></tr></thead><tbody>${gearRows(c.gear)}${c.addon ? gearRows([{ qty: 1, model: c.addon.gear + ' (add-on)', tags: ['tech'], note: 'Only with our laser technician. Beams stay above the crowd unless the venue holds an approved variance.' }]) : ''}</tbody></table><p><small>${c.circuits ? `Draws about ${c.circuits} × 20A circuit${c.circuits > 1 ? 's' : ''}.` : c.provides ? `Provides a ${esc(c.provides)}.` : 'No power draw of its own.'}</small></p></section>`).join('')}`).join('')}
+${rentalsData.zones.map((z) => `<h2>${esc(z.ref)} · ${esc(z.name)}</h2>${rentalsData.cases.filter((c) => c.zone === z.id).map((c) => `<section class="case"><h3>${esc(c.name)} <small class="tag">${esc(c.ref)}</small></h3><p>${esc(c.blurb)}</p>${priceLine(c) ? `<p><b>${esc(priceLine(c))}</b>, confirmed in a written quote.</p>` : ''}<table class="gear"><thead><tr><th>Qty</th><th>Gear</th><th>Notes</th></tr></thead><tbody>${gearRows(c.gear)}${c.addon ? gearRows([{ qty: 1, model: c.addon.gear + ' (add-on)', tags: ['tech'], note: 'Only with our laser technician. Beams stay above the crowd unless the venue holds an approved variance.' }]) : ''}</tbody></table><p><small>${c.circuits ? `Draws about ${c.circuits} × 20A circuit${c.circuits > 1 ? 's' : ''}.` : c.provides ? `Provides a ${esc(c.provides)}.` : 'No power draw of its own.'}</small></p></section>`).join('')}`).join('')}
 <h2>How it works</h2><ol><li>Build the manifest on the <a href="/#rentals">rentals screen</a>. It adds power, video path, and rider questions to your request.</li><li>We confirm exact gear, crew, delivery, and price in writing.</li><li>You accept the quote and we lock the date.</li></ol>
 <p>Full inventory: ${owned.map((g) => esc(g.model)).join(' · ')}.</p>`
 }), '/rentals/');

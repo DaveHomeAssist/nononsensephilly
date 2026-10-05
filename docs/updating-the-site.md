@@ -36,6 +36,9 @@ curl -X POST https://nononsense-scores.vercel.app/api/drop \
   -d '{"event":"afterbreak-2026","revealAt":"2026-10-09T18:00:00-04:00","venue":"…","address":"…"}'
 ```
 
+## Rental prices
+Cases show no price unless you add one. In `data/rentals.json`, give a case `"priceFrom": 450` and optionally `"priceUnit": "per day"`, then run the build. The card, spec sheet, and `/rentals/` then read "From $450 per day". The written quote still sets the final price.
+
 ## Artists
 Names on lineups link to `data/artists.json` automatically (spelling variants go in `aliases`). The build warns about any lineup name with no record.
 
