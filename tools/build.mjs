@@ -110,6 +110,15 @@ function actHTML(act, linkMode) {
 function doorLine(e) {
   return e.door && e.door.age ? `<li>${esc(e.door.age)}</li>` : '';
 }
+/* Announced but not on sale: say so, say what the drop list sends, and how to ask about access. */
+const icsHref = (e) => `events/${e.slug}/${e.slug}.ics`;
+function announcedLines(e, ph) {
+  if (ph !== 'announced') return '';
+  const access = e.venue && e.venue.public
+    ? 'Access: ask us about stairs, seating or step-free entry before the show.'
+    : 'Access: stairs, seating and step-free entry are confirmed when the venue is. Need something specific? Ask before the show.';
+  return `<p class="ev-note"><b>Announced, not on sale.</b> The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day.</p><p class="ev-access">${access} <a href="#contact" data-go="contact">Contact us</a>.</p>`;
+}
 function eventCard(e, ph) {
   const lineupText = (e.lineup || []).filter((x) => !/mystery/i.test(x)).slice(0, 6);
   const more = (e.lineup || []).length > 6 || e.lineupNote;
@@ -125,8 +134,9 @@ function eventCard(e, ph) {
                 <h3>${esc(e.title)}</h3>
                 <p class="event-meta">${e.start || e.sortDate ? `<time datetime="${esc((e.start || e.sortDate).slice(0, 10))}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}</p>${e.notice ? `\n                <p class="ev-notice">${esc(e.notice)}</p>` : ''}
                 <p>${esc(e.summary)}${lineupText.length ? ` ${esc(lineupText.join(', '))}${more ? ', and more' : ''}.` : ''}</p>
-                <ul class="door-chips">${doorLine(e)}${sets}${vids}</ul>
-                <div class="card-links">${tickets}<button type="button" class="text-link" data-event-open="${e.slug}">Lineup + details</button><a class="text-link" href="events/${e.slug}/">Event page</a></div>
+                <ul class="door-chips">${doorLine(e)}${sets}${vids}</ul>${announcedLines(e, ph) ? `
+                ${announcedLines(e, ph)}` : ''}
+                <div class="card-links">${tickets}${ph !== 'past' && ph !== 'cancelled' && e.start ? `<a class="text-link" href="${icsHref(e)}" download data-umami-event="add-to-calendar" data-umami-event-event="${e.slug}">Add to calendar</a>` : ''}<button type="button" class="text-link" data-event-open="${e.slug}">Lineup + details</button><a class="text-link" href="events/${e.slug}/">Event page</a></div>
               </div>
             </article>`;
 }
@@ -415,9 +425,9 @@ function eventPage(e) {
     <p class="kicker">${CAT[e.category]} · ${STATUS[ph]}</p>
     <h1>${esc(e.title)}</h1>
     <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}${where(e) === 'Philadelphia' ? '' : ', Philadelphia'}</p>
-    ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}
+    ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}${ph === 'announced' ? `<p class="notice">Announced, not on sale. The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day. ${e.venue && e.venue.public ? 'Ask us about stairs, seating or step-free entry before the show.' : 'Stairs, seating and step-free entry are confirmed when the venue is; ask before the show if you need something specific.'}</p>` : ''}
     <p>${esc(e.summary)}${(e.presenters || []).length ? ` With ${esc(e.presenters.join(' and '))}.` : ''}</p>
-    ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>
+    ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>${ph !== 'past' && ph !== 'cancelled' && e.start ? `<a class="btn ghost" href="/${icsHref(e)}" download>Add to calendar</a>` : ''}
     ${acts.length ? `<h2>Lineup</h2><ul class="chips">${e.lineup.map((a) => `<li>${actLinks(a)}</li>`).join('')}</ul>` : ''}
     ${e.lineupNote ? `<p>${esc(e.lineupNote)}</p>` : ''}
     ${nights ? `<h2>Set times</h2>${nights}` : ''}
@@ -432,6 +442,19 @@ function eventPage(e) {
   return shell({ title: fitTitle(t), desc, pathname: `/events/${e.slug}/`, image: og, imageAlt: `${e.title} flyer`, ld: ld ? [ld] : [], trail: [['Home', '/'], ['Events', '/events/'], [e.title, `/events/${e.slug}/`]], body });
 }
 for (const e of events) writePage(`events/${e.slug}/index.html`, eventPage(e), `/events/${e.slug}/`);
+
+/* Calendar files for shows that haven't happened. The address is never in them. */
+const icsStamp = (d) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+const icsText = (s) => String(s).replace(/[\\;,]/g, (c) => '\\' + c).replace(/\n/g, '\\n');
+for (const e of upcoming.filter((x) => x.start)) {
+  const loc = e.venue && e.venue.public && e.venue.name ? `${e.venue.name}, Philadelphia` : 'Philadelphia (address drops at 6 PM on show day)';
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//No Nonsense Collective//nononsensephilly.com//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    'BEGIN:VEVENT', `UID:${e.slug}@nononsensephilly.com`, `DTSTAMP:${icsStamp(e.start)}`, `DTSTART:${icsStamp(e.start)}`, `DTEND:${icsStamp(e.end || endOf(e))}`,
+    `SUMMARY:${icsText(e.title + ' · No Nonsense')}`, `LOCATION:${icsText(loc)}`,
+    `DESCRIPTION:${icsText(e.summary + ' Get the drop: ' + eventUrl(e))}`, `URL:${eventUrl(e)}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n') + '\r\n';
+  const rel = `events/${e.slug}/${e.slug}.ics`;
+  if (!fs.existsSync(path.join(ROOT, rel)) || fs.readFileSync(path.join(ROOT, rel), 'utf8') !== ics) write(rel, ics);
+}
 
 const tile = (e) => `<li><a href="/events/${e.slug}/"><img src="/${flyerCard(e)}" alt="${esc(e.title)} flyer" width="720" height="900" loading="lazy" decoding="async"><b>${esc(e.title)}</b><span>${esc(e.dateLabel)} · ${esc(where(e))}${phase(e, now) === 'past' ? '' : ' · ' + esc(STATUS[phase(e, now)])}</span></a></li>`;
 writePage('events/index.html', shell({
