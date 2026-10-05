@@ -1,6 +1,6 @@
 // Drop-list signups. POST {email, source, event, website} from the site; GET ?format=csv with the
 // admin token exports the list (the weekly sheet export reads this).
-import { cors, redis, redisReady, clientIp, firstIn, isAdmin, body, clip, tag, EMAIL_RE, sendEmail, addContact, wrapEmail, csv } from '../lib/shared.js';
+import { cors, redis, redisReady, clientIp, firstIn, adminGate, body, clip, tag, EMAIL_RE, sendEmail, addContact, wrapEmail, csv } from '../lib/shared.js';
 
 const KEY = 'nn:signups';
 
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   if (!redisReady()) return res.status(503).json({ error: 'signups not configured' });
   try {
     if (req.method === 'GET') {
-      if (!isAdmin(req)) return res.status(401).json({ error: 'admin token required' });
+      if (!(await adminGate(req, res))) return;
       const all = (await redis(['HGETALL', KEY])) || [];
       const rows = [];
       for (let i = 0; i < all.length; i += 2) rows.push({ email: all[i], ...JSON.parse(all[i + 1]) });
@@ -45,6 +45,6 @@ export default async function handler(req, res) {
     }
     return res.status(200).json({ ok: true, emailed, returning: !!prev });
   } catch (e) {
-    return res.status(500).json({ error: 'signup unavailable' });
+    return res.status(e.status || 500).json({ error: e.status ? e.message : 'signup unavailable' });
   }
 }

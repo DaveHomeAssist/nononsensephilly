@@ -20,7 +20,7 @@ async function top() {
 
 export default async function handler(req, res) {
   const origin = req.headers.origin;
-  if (ORIGINS.includes(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin || '')) res.setHeader('Access-Control-Allow-Origin', origin);
+  if (ORIGINS.includes(origin) || (env.VERCEL_ENV !== 'production' && /^http:\/\/localhost(:\d+)?$/.test(origin || ''))) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 'no-store');
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     if (!Number.isInteger(score) || score < 1 || score > 500 || !(ms > 0) || score > ms / 70) {
       return res.status(400).json({ error: 'score rejected' });
     }
-    const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+    const ip = String(req.headers['x-vercel-forwarded-for'] || req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
     const ok = await redis(['SET', `nn:crowd:rl:${ip}`, '1', 'EX', '15', 'NX']);
     if (ok !== 'OK') return res.status(429).json({ error: 'slow down' });
 
