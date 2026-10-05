@@ -1,5 +1,5 @@
 {
-  "_readme": "Rental cases on the Rentals screen. Gear comes from the inventory on linktr.ee/nononsensephl. Keep each case name stable: saved manifests on visitors' devices use it. tags: pair, amp (passive, needs an amp), tech (needs our technician), sourced (hired in per job, not owned). circuits is a rough count of 20A household circuits the case draws.",
+  "_readme": "Rental cases on the Rentals screen. Gear comes from the inventory on linktr.ee/nononsensephl. Keep each case name stable: saved manifests on visitors' devices use it. tags: pair, amp (passive, needs an amp), tech (needs our technician), sourced (hired in per job, not owned). circuits is a rough count of 20A household circuits the case draws. Optional pricing: priceFrom (a number in USD) and priceUnit (e.g. \"per day\") show \"From $X per day\" on the card, spec sheet, and /rentals/. Leave them out and no price shows.",
   "zones": [
     {
       "id": "audio",
