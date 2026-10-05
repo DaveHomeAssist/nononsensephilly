@@ -15,6 +15,14 @@
     if (!title) return;
     idx.push({ kind: kind, title: title, hay: (kind + ' ' + title + ' ' + (extra || '')).toLowerCase(), run: run });
   }
+  // Upcoming shows first, so the empty search already shows what's next.
+  document.querySelectorAll('.ev-up-grid article[data-event]').forEach(function(card){
+    var title = (card.querySelector('h3') || {}).textContent || '';
+    add('Next show', title, card.textContent, function(){
+      var b = card.querySelector('[data-event-open]');
+      if (b) b.click();
+    });
+  });
   document.querySelectorAll('#event-grid article[data-event]').forEach(function(card){
     var title = (card.querySelector('h3') || {}).textContent || '';
     add('Show', title, card.textContent, function(){

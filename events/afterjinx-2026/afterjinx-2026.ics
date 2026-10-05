@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//No Nonsense Collective//nononsensephilly.com//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:afterjinx-2026@nononsensephilly.com
+DTSTAMP:20261227T060000Z
+DTSTART:20261227T060000Z
+DTEND:20261228T130000Z
+SUMMARY:AfterJinx 2026 · No Nonsense
+LOCATION:Philadelphia (address drops at 6 PM on show day)
+DESCRIPTION:Save the date: unofficial HiJinx Festival afterparties return. Venue and lineup go to the drop list first. Get the drop: https://nononsensephilly.com/events/afterjinx-2026/
+URL:https://nononsensephilly.com/events/afterjinx-2026/
+END:VEVENT
+END:VCALENDAR
