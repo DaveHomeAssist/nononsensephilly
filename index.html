@@ -1156,14 +1156,15 @@ button.text-link{background:none;border:0;padding:0;cursor:pointer}
 }
 @media (max-height:700px) and (orientation:portrait),(max-height:500px){ .nn-next-long{display:none} .nn-next-short{display:inline} }
 @media (prefers-reduced-motion:reduce){ .nn-next-dot{animation:none} }
-.find-dlg{position:fixed;inset:0;z-index:90;background:rgba(6,5,11,.78);display:flex;align-items:flex-start;justify-content:center;padding:10vh 16px 16px}
-.find-dlg[hidden]{display:none}
-.find-card{width:min(560px,100%);background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:14px}
-#find-q{width:100%;min-height:48px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:0 12px;font:500 16px/1.3 inherit}
+.find-dlg{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;z-index:90;background:rgba(6,5,11,.78);display:flex;align-items:flex-start;justify-content:center;padding:10vh 16px 16px}
+.find-dlg[hidden],.find-dlg:not([open]){display:none}
+.find-card{display:flex;flex-direction:column;max-height:100%;width:min(560px,100%);background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:14px}
+#find-q{width:100%;min-height:48px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:0 12px;font:500 16px/1.3 var(--font-body, sans-serif)}
+.find-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}.find-head h2{margin:0;font-size:20px}.find-close{min-width:44px;min-height:44px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px}
 .find-hint{margin:8px 2px 0;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
-.find-list{list-style:none;margin:8px 0 0;padding:0;max-height:48vh;overflow:auto}
+.find-list{min-height:0;list-style:none;margin:8px 0 0;padding:0;max-height:48vh;overflow:auto}
 .find-list button{width:100%;text-align:left;background:transparent;border:0;color:var(--text);padding:8px;border-radius:8px;min-height:44px}
-.find-list button[aria-selected="true"]{background:rgba(255,178,62,.16)}
+.find-list button:focus-visible{background:rgba(255,178,62,.16)}
 .find-list small{display:block;color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 
 /* Press feedback: phones have no hover, so every tappable thing answers the touch. */
@@ -2941,7 +2942,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     });
   }
   function openModal(force){
-    if(!modal.hidden || (!force && (modalArmed || seen()))) return;
+    if(!modal.hidden || document.querySelector('dialog[open]') || (!force && (modalArmed || seen()))) return;
     modalArmed=true;
     mark();
     var kick=document.getElementById('news-kicker'), nx=nextEvent();
@@ -3677,14 +3678,15 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
 })();
 </script>
 
-<div id="find-dlg" class="find-dlg" hidden>
-  <div class="find-card" role="dialog" aria-modal="true" aria-labelledby="find-label">
-    <label id="find-label" class="sr-only" for="find-q">Search</label>
+<dialog id="find-dlg" class="find-dlg" aria-labelledby="find-title" hidden>
+  <div class="find-card">
+    <div class="find-head"><h2 id="find-title">Search</h2><button id="find-close" class="find-close" type="button" aria-label="Close search">✕</button></div>
+    <label id="find-label" class="sr-only" for="find-q">Show, artist, gear, or question</label>
     <input id="find-q" type="search" placeholder="Show, artist, gear, question" autocomplete="off" enterkeyhint="search">
-    <p class="find-hint" id="find-hint">Type to search. Esc closes.</p>
-    <ul id="find-list" class="find-list" role="listbox" aria-label="Search results"></ul>
+    <p class="find-hint" id="find-hint" role="status" aria-live="polite" aria-atomic="true">Type to search. Esc closes.</p>
+    <ul id="find-list" class="find-list" aria-label="Search results"></ul>
   </div>
-</div>
+</dialog>
 <script src="find.js"></script>
 
 </body>
