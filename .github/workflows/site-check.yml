@@ -48,3 +48,9 @@ jobs:
             echo "::error::Generated files are out of date. Run node tools/build.mjs and commit the result."
             exit 1
           }
+
+      - name: Search accessibility and interaction
+        run: |
+          npm install --no-save --package-lock=false playwright@1.63.0 axe-core@4.11.0
+          npx playwright install --with-deps chromium
+          node tests/search.mjs

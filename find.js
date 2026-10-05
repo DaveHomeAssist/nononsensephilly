@@ -51,13 +51,25 @@
     seen[k] = 1;
     return true;
   });
-  var sel = 0;
   var shown = [];
-  function esc(s){ return s.replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  function closeFind(){ dlg.hidden = true; openBtn.focus(); }
+  var returnFocus = openBtn;
+  function closeFind(){
+    if (dlg.open) dlg.close();
+  }
+  dlg.addEventListener('close', function(){
+    if (dlg.open) return; // An earlier close event must not hide a newly reopened search.
+    dlg.hidden = true;
+    if (returnFocus && returnFocus.isConnected) returnFocus.focus();
+  });
   function openFind(){
+    returnFocus = document.activeElement;
     document.querySelectorAll('dialog[open]').forEach(function(d){ d.close(); });
-    dlg.hidden = false; q.value = ''; render(''); q.focus(); }
+    dlg.hidden = false;
+    q.value = '';
+    render('');
+    dlg.showModal();
+    q.focus();
+  }
   function render(raw){
     var needle = raw.trim().toLowerCase();
     shown = !needle ? idx.slice(0, 8) : idx.filter(function(item){ return item.hay.indexOf(needle) !== -1; })
@@ -68,8 +80,7 @@
       .sort(function(a, b){ return a.rank - b.rank || a.i - b.i; })
       .map(function(r){ return r.item; })
       .slice(0, 12);
-    sel = 0;
-    list.innerHTML = '';
+    list.replaceChildren();
     if (!shown.length){
       hint.textContent = needle ? 'Nothing matches.' : 'Shows, artists, gear, questions.';
       return;
@@ -79,38 +90,54 @@
       var li = document.createElement('li');
       var b = document.createElement('button');
       b.type = 'button';
-      b.setAttribute('role', 'option');
-      b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-      b.innerHTML = '<small>' + item.kind + '</small>' + esc(item.title);
+      var kind = document.createElement('small');
+      kind.textContent = item.kind;
+      b.append(kind, document.createTextNode(item.title));
       b.addEventListener('click', function(){ var run = item.run; closeFind(); run(); });
       li.appendChild(b);
       list.appendChild(li);
     });
   }
-  function move(delta){
-    if (!shown.length) return;
-    sel = (sel + delta + shown.length) % shown.length;
+  function focusResult(index){
     var buttons = list.querySelectorAll('button');
-    buttons.forEach(function(b, i){ b.setAttribute('aria-selected', i === sel ? 'true' : 'false'); });
-    if (buttons[sel]) buttons[sel].scrollIntoView({ block: 'nearest' });
+    if (!buttons.length) return;
+    buttons[(index + buttons.length) % buttons.length].focus();
   }
   openBtn.addEventListener('click', openFind);
+  document.getElementById('find-close').addEventListener('click', closeFind);
   dlg.addEventListener('click', function(e){ if (e.target === dlg) closeFind(); });
   q.addEventListener('input', function(){ render(q.value); });
   q.addEventListener('keydown', function(e){
-    if (e.key === 'ArrowDown'){ e.preventDefault(); move(1); }
-    else if (e.key === 'ArrowUp'){ e.preventDefault(); move(-1); }
+    if (e.key === 'ArrowDown'){ e.preventDefault(); focusResult(0); }
+    else if (e.key === 'ArrowUp'){ e.preventDefault(); focusResult(-1); }
     else if (e.key === 'Enter'){
       e.preventDefault();
-      if (shown[sel]){ var run = shown[sel].run; closeFind(); run(); }
-    } else if (e.key === 'Escape'){ e.preventDefault(); closeFind(); }
+      var first = list.querySelector('button');
+      if (first) first.click();
+    }
+  });
+  list.addEventListener('keydown', function(e){
+    var buttons = Array.from(list.querySelectorAll('button'));
+    var index = buttons.indexOf(e.target);
+    if (index < 0) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); focusResult(index + 1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); focusResult(index - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); focusResult(0); }
+    else if (e.key === 'End') { e.preventDefault(); focusResult(-1); }
+  });
+  dlg.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var nodes = Array.from(dlg.querySelectorAll('button:not([disabled]), input:not([disabled])'));
+    var first = nodes[0], last = nodes[nodes.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
   document.addEventListener('keydown', function(e){
     var tag = (e.target && e.target.tagName) || '';
     var typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable);
-    if (e.key === 'Escape' && !dlg.hidden){ closeFind(); return; }
+    if (e.key === 'Escape' && dlg.open){ e.preventDefault(); closeFind(); return; }
     if (typing) return;
-    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')){ e.preventDefault(); dlg.hidden ? openFind() : closeFind(); }
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')){ e.preventDefault(); dlg.open ? closeFind() : openFind(); }
     else if (e.key === '/'){ e.preventDefault(); openFind(); }
   });
 })();

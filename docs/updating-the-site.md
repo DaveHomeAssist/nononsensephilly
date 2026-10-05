@@ -61,3 +61,9 @@ If Resend isn't set up or an email fails, the site opens the visitor's email app
 2. Create an API key with **Sending access** (full access is needed for adding contacts; use full access or skip contacts).
 3. In Vercel → nononsense-scores → Settings → Environment Variables, add `RESEND_API_KEY`. Optional: `MAIL_FROM` (default `No Nonsense Collective <hello@nononsensephilly.com>`) and `CREW_INBOX`.
 4. Redeploy nononsense-scores.
+
+## Search regression checks
+
+The search uses a native modal dialog, regular list buttons and text nodes for indexed titles. Arrow keys focus real results, Tab remains inside, Escape restores the opener, and the match count is announced. Signup prompts do not interrupt another open dialog.
+
+Run `npm install --no-save --package-lock=false playwright@1.63.0 axe-core@4.11.0`, `npx playwright install chromium`, then `node tests/search.mjs`. These test-only dependencies do not change the static production build. CI checks phone, landscape and desktop search in both themes, including axe, literal markup, empty results, close/reopen and result destinations.
