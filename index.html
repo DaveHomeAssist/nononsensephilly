@@ -3004,7 +3004,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     nnPost('signup',{email:addr,source:nnSource(),event:m?m[1]:'',website:document.getElementById('n-website').value})
       .then(function(j){
         nnTrack('drop-signup-saved',{returning:j.returning?'yes':'no'});
-        if(window.nnDropJoined) window.nnDropJoined();
+        if(window.nnDropPending) window.nnDropPending();
         finish('Check your inbox.', 'If confirmation is needed, an email will arrive shortly. Open its link and press Confirm to join. If you already confirmed, nothing else is needed.');
       })
       .catch(function(){ viaEmailApp(); })
@@ -3012,7 +3012,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
   });
 
   /* Drop-list bar: slides up a few seconds after landing. Never blocks the page, shows at most
-     once every 14 days, and never again once someone joins. On Home it only shows where it clears
+     once every 14 days after dismissal and pauses for 24 hours after a confirmation request. On Home it only shows where it clears
      the hero buttons; on short screens it waits for the next screen the visitor opens. */
   (function(){
     var toast=document.getElementById('drop-toast'); if(!toast) return;
@@ -3020,7 +3020,8 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     function state(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(err){ return {}; } }
     function save(o){ try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(err){} }
     var st=state();
-    if(st.joined || (st.dismissed && Date.now()-st.dismissed < 14*864e5)) return;
+    // Older clients marked a mere request as joined. Treat that hint as a bounded cooldown.
+    if((st.pending && Date.now()-st.pending < 864e5) || (st.joined && Date.now()-st.joined < 14*864e5) || (st.dismissed && Date.now()-st.dismissed < 14*864e5)) return;
     if(!/^#?(home)?$/.test(location.hash)) return;
     try{
       var next=(JSON.parse(document.getElementById('nn-data').textContent).events||[]).filter(function(e){ return e.start && new Date(e.end||e.start)>new Date(); })
@@ -3059,7 +3060,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       nnTrack('drop-toast-shown');
     }
     function hide(){ toast.classList.remove('is-in'); setTimeout(function(){ toast.hidden=true; }, 360); }
-    window.nnDropJoined=function(){ pending=false; shown=true; save({joined:Date.now()}); hide(); };
+    window.nnDropPending=function(){ pending=false; shown=true; save({pending:Date.now()}); hide(); };
     timer=setTimeout(show, 3500);
     document.getElementById('drop-toast-go').addEventListener('click', function(){ hide(); save({dismissed:Date.now()}); openModal(true); nnTrack('drop-list-open',{from:'toast'}); });
     document.getElementById('drop-toast-x').addEventListener('click', function(){ hide(); save({dismissed:Date.now()}); });

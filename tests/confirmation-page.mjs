@@ -37,6 +37,20 @@ try {
   await page.reload();assert.equal(await page.locator('#confirm').isDisabled(),true);assert.equal(posts,1);
   await page.close();console.log(`PASS confirmation ${width}x${height}: explicit click, token privacy, themes, axe and bounds`);
  }
+ const signupPage=await browser.newPage();
+ await signupPage.route('**/api/signup', route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,pending:true})}));
+ await signupPage.goto(origin);
+ await signupPage.locator('[data-open-news]').first().click();
+ await signupPage.locator('#n-email').fill('test@example.com');
+ await signupPage.locator('#news-form button[type=submit]').click();
+ await signupPage.waitForFunction(()=>document.getElementById('news-success-title').textContent==='Check your inbox.');
+ const signupState=await signupPage.evaluate(()=>JSON.parse(localStorage.getItem('nn-drop-toast')));
+ assert.ok(signupState.pending);assert.equal(signupState.joined,undefined);
+ await signupPage.evaluate(()=>localStorage.setItem('nn-drop-toast',JSON.stringify({pending:Date.now()-25*3600000})));
+ await signupPage.reload();assert.equal(await signupPage.evaluate(()=>typeof window.nnDropPending),'function');
+ await signupPage.evaluate(()=>localStorage.setItem('nn-drop-toast',JSON.stringify({joined:Date.now()-15*86400000})));
+ await signupPage.reload();assert.equal(await signupPage.evaluate(()=>typeof window.nnDropPending),'function');
+ await signupPage.close();console.log('PASS pending signup is not joined; expired pending and legacy hints allow recovery');
  const page=await browser.newPage();let attempt=0;
  await page.route('**/api/confirm-signup',async route=>{attempt++;await route.fulfill({status:attempt===1?503:200,contentType:'application/json',body:JSON.stringify(attempt===1?{error:'Please retry'}:{ok:true,confirmed:true})});});
  await page.goto(`${origin}/scores-api/confirm.html#${'b'.repeat(64)}`);
