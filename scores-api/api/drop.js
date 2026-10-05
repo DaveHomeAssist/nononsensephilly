@@ -67,7 +67,7 @@ function clean(body) {
 
 export default async function handler(req, res) {
   const origin = req.headers.origin;
-  if (ORIGINS.includes(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin || '')) res.setHeader('Access-Control-Allow-Origin', origin);
+  if (ORIGINS.includes(origin) || (env.VERCEL_ENV !== 'production' && /^http:\/\/localhost(:\d+)?$/.test(origin || ''))) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 'no-store');
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
   try {
     // A token that matches neither role is an error, not a quiet fall-back to the public view.
     if (token && !crew) {
-      const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+      const ip = String(req.headers['x-vercel-forwarded-for'] || req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
       const first = await redis(['SET', `nn:drop:fail:${ip}`, '1', 'EX', '5', 'NX']);
       if (first !== 'OK') return res.status(429).json({ error: 'slow down' });
       return res.status(401).json({ error: 'wrong admin token' });

@@ -48,6 +48,9 @@ const yearOf = (e) => (e.start || e.sortDate || '').slice(0, 4);
 const where = (e) => (e.venue && e.venue.public && e.venue.name) ? e.venue.name : (e.venue && e.venue.area) || '';
 const flyerCard = (e) => `media/flyers/${e.flyer}-card.webp`;
 const flyerFull = (e) => `media/flyers/${e.flyer}.webp`;
+/* Search snippets: cut at a word boundary so descriptions never end mid-name. */
+const clip = (s, n = 155) => s.length <= n ? s : s.slice(0, n).replace(/[\s,;·]+\S*$/, '').replace(/[\s,;·]+$/, '') + '…';
+const fitTitle = (t, n = 65) => [`${t} · No Nonsense Collective`, `${t} · No Nonsense`, t].find((x) => x.length <= n) || t;
 
 /* ---------- Artists: names on flyers resolve to one record ---------- */
 const artists = artistsData.artists;
@@ -89,9 +92,7 @@ for (const e of events) for (const act of actsOf(e)) for (const seg of splitAct(
 const gaps = [];
 for (const e of events) {
   if (!e.start) gaps.push(`${e.slug}: no date with a year (start is empty)`);
-  if (!(e.lineup || []).length && !e.lineupNote) gaps.push(`${e.slug}: no lineup`);
-  if (/more names/i.test(e.lineupNote || '')) gaps.push(`${e.slug}: lineup is partial`);
-  if (phase(e) === 'past' && !(e.nights || []).some((n) => (n.sets || []).length)) gaps.push(`${e.slug}: no set times`);
+  if (phase(e) === 'on-sale' && !(e.lineup || []).length && !e.lineupNote) gaps.push(`${e.slug}: on sale but no lineup`);
   if (phase(e) === 'on-sale' && !e.ticketUrl) gaps.push(`${e.slug}: on sale but no ticketUrl`);
 }
 if (gaps.length) console.warn(`Content gaps (${gaps.length}):\n  ` + gaps.join('\n  '));
@@ -201,7 +202,7 @@ blocks['home-ld'] = `<script type="application/ld+json">${JSON.stringify({
       sameAs: ['https://instagram.com/nononsensephl', 'https://www.youtube.com/@NoNonsensePHL', 'https://linktr.ee/nononsensephl'],
       member: artists.filter((a) => a.role === 'member').map((a) => ({ '@type': 'MusicGroup', name: a.name, url: `${SITE}/artists/${a.slug}/` })) },
     { '@type': 'WebSite', '@id': `${SITE}/#website`, url: `${SITE}/`, name: 'No Nonsense Collective', inLanguage: 'en-US', publisher: { '@id': `${SITE}/#org` } },
-    ...upcoming.filter((e) => e.start).map((e) => ({ '@type': 'MusicEvent', name: e.title, url: `${SITE}/events/${e.slug}/`, startDate: e.start, eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', eventStatus: 'https://schema.org/EventScheduled', location: { '@type': 'Place', name: where(e) || 'Philadelphia', address: { '@type': 'PostalAddress', addressLocality: 'Philadelphia', addressRegion: 'PA', addressCountry: 'US' } }, image: [`${SITE}/${flyerFull(e)}`], organizer: { '@id': `${SITE}/#org` } }))
+    ...upcoming.filter((e) => e.start).map((e) => ({ '@type': 'MusicEvent', '@id': `${SITE}/events/${e.slug}/#event`, name: e.title, url: `${SITE}/events/${e.slug}/`, startDate: e.start, ...(e.end ? { endDate: e.end } : {}), description: e.summary, eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', eventStatus: 'https://schema.org/EventScheduled', location: { '@type': 'Place', name: where(e) || 'Philadelphia', address: { '@type': 'PostalAddress', addressLocality: 'Philadelphia', addressRegion: 'PA', addressCountry: 'US' } }, image: [`${SITE}/${flyerFull(e)}`], organizer: { '@id': `${SITE}/#org` } }))
   ]
 }).replace(/</g, '\\u003c')}</script>`;
 blocks['data'] = `<script type="application/json" id="nn-data">${JSON.stringify(dataForPage).replace(/</g, '\\u003c')}</script>`;
@@ -212,6 +213,7 @@ for (const [name, body] of Object.entries(blocks)) {
   if (!re.test(html)) { console.error(`index.html is missing the <!-- nn:${name} --> block`); process.exit(1); }
   html = html.replace(re, (_, a, b) => a + body + b);
 }
+const homeChanged = read('index.html') !== html;
 write('index.html', html);
 
 /* ---------- share images (before pages, so pages can point at them) ---------- */
@@ -371,7 +373,7 @@ function writePage(rel, html, pathname, index = true) {
   if (!same) write(rel, html);
   if (index) sitemap.push({ loc: SITE + pathname, lastmod: same && oldLastmod.get(SITE + pathname) || today });
 }
-sitemap.push({ loc: `${SITE}/`, lastmod: today });
+sitemap.push({ loc: `${SITE}/`, lastmod: !homeChanged && oldLastmod.get(`${SITE}/`) || today });
 
 function eventLd(e) {
   if (!e.start) return null;
@@ -395,9 +397,9 @@ function eventLd(e) {
 }
 function eventPage(e) {
   const ph = phase(e, now);
-  const og = fs.existsSync(path.join(ROOT, `media/og/${e.slug}.jpg`)) ? `${SITE}/media/og/${e.slug}.jpg` : `${SITE}/${flyerFull(e)}`;
+  const og = fs.existsSync(path.join(ROOT, `media/og/${e.slug}.jpg`)) ? `${SITE}/media/og/${e.slug}.jpg` : undefined;
   const acts = (e.lineup || []).filter((x) => !/mystery/i.test(x));
-  const desc = `${e.dateLabel} · ${where(e)}. ${e.summary}${acts.length ? ' Lineup: ' + acts.join(', ') + '.' : ''}`.slice(0, 300);
+  const desc = clip(`${e.dateLabel} · ${where(e)}. ${e.summary}${acts.length ? ' Lineup: ' + acts.slice(0, 5).join(', ') + (acts.length > 5 ? ', and more.' : '.') : ''}`);
   const nights = (e.nights || []).map((n) => `<section><h3>${esc(n.label)}${n.status === 'cancelled' ? ' <span class="x">Cancelled</span>' : ''}</h3>${n.note ? `<p>${esc(n.note)}</p>` : ''}${(n.sets || []).length ? `<ol class="sets">${n.sets.map((s) => `<li><time>${esc(s[0])}</time><span>${actLinks(s[1])}</span></li>`).join('')}</ol>` : ''}</section>`).join('');
   const door = e.door || {};
   const doorRows = [['Age', door.age], ['Re-entry', door.reentry], ['Bring', door.bring], ['Floor', door.floor]].filter((r) => r[1]).map((r) => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('');
@@ -409,7 +411,7 @@ function eventPage(e) {
   <div>
     <p class="kicker">${CAT[e.category]} · ${STATUS[ph]}</p>
     <h1>${esc(e.title)}</h1>
-    <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}, Philadelphia</p>
+    <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}${where(e) === 'Philadelphia' ? '' : ', Philadelphia'}</p>
     ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}
     <p>${esc(e.summary)}${(e.presenters || []).length ? ` With ${esc(e.presenters.join(' and '))}.` : ''}</p>
     ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>
@@ -424,7 +426,7 @@ function eventPage(e) {
   </div>
 </div>`;
   const t = `${e.title} · ${e.dateLabel.replace(/^\w{3}, /, '')}`;
-  return shell({ title: t.length > 44 ? `${t} · No Nonsense` : `${t} · No Nonsense Collective`, desc, pathname: `/events/${e.slug}/`, image: og, imageAlt: `${e.title} flyer`, ld: ld ? [ld] : [], trail: [['Home', '/'], ['Events', '/events/'], [e.title, `/events/${e.slug}/`]], body });
+  return shell({ title: fitTitle(t), desc, pathname: `/events/${e.slug}/`, image: og, imageAlt: `${e.title} flyer`, ld: ld ? [ld] : [], trail: [['Home', '/'], ['Events', '/events/'], [e.title, `/events/${e.slug}/`]], body });
 }
 for (const e of events) writePage(`events/${e.slug}/index.html`, eventPage(e), `/events/${e.slug}/`);
 
@@ -460,7 +462,7 @@ ${projects.length ? `<p>Also plays as ${projects.map((p) => `<a href="${artistHr
 ${(a.links || []).length ? `<p>${a.links.map((l) => `<a class="btn ghost" href="${esc(l.url)}">${esc(l.label)}</a>`).join('')}</p>` : ''}
 <h2>${shows.length} No Nonsense ${shows.length === 1 ? 'show' : 'shows'}</h2>
 <ul class="tiles">${shows.map(tile).join('')}</ul>`;
-  return shell({ title: `${a.name} · ${role} · No Nonsense Collective`, desc: desc.slice(0, 300), pathname: `/artists/${a.slug}/`, image: shows[0] && fs.existsSync(path.join(ROOT, `media/og/${shows[0].slug}.jpg`)) ? `${SITE}/media/og/${shows[0].slug}.jpg` : undefined, ld: [ld], trail: [['Home', '/'], ['Artists', '/artists/'], [a.name, `/artists/${a.slug}/`]], body });
+  return shell({ title: fitTitle(`${a.name} · ${role}`), desc: clip(desc), pathname: `/artists/${a.slug}/`, image: shows[0] && fs.existsSync(path.join(ROOT, `media/og/${shows[0].slug}.jpg`)) ? `${SITE}/media/og/${shows[0].slug}.jpg` : undefined, ld: [ld], trail: [['Home', '/'], ['Artists', '/artists/'], [a.name, `/artists/${a.slug}/`]], body });
 }
 const paged = artists.filter(hasArtistPage);
 for (const a of paged) writePage(`artists/${a.slug}/index.html`, artistPage(a), `/artists/${a.slug}/`);
@@ -480,8 +482,8 @@ const TAGS = { pair: 'Pair', amp: 'Needs an amp', tech: 'Our tech runs it', sour
 const gearRows = (gear) => gear.map((g) => `<tr><td>${g.qty ? g.qty + '×' : '—'}</td><td>${esc(g.model)}${g.note ? `<br><small>${esc(g.note)}</small>` : ''}</td><td>${(g.tags || []).map((t) => `<span class="tag">${TAGS[t]}</span>`).join('')}</td></tr>`).join('');
 const owned = rentalsData.cases.flatMap((c) => c.gear.filter((g) => !(g.tags || []).includes('sourced') && !/crew|operator|technician|live vj/i.test(g.model)));
 writePage('rentals/index.html', shell({
-  title: 'DJ, sound & lighting rentals in Philadelphia · No Nonsense Collective',
-  desc: 'Rent CDJ-3000s, a DJM-A9, EV ZLX-15BT tops, S181 subs, moving heads, haze, a laser with a tech, and a 3300W generator in Philadelphia. Pickup, delivery, or full setup, confirmed in a written quote.',
+  title: 'DJ, sound & lighting rentals in Philadelphia · No Nonsense',
+  desc: 'Rent CDJ-3000s, a DJM-A9, EV tops and subs, moving heads, haze, a laser with tech, and a generator in Philadelphia. Pickup, delivery, or full setup.',
   pathname: '/rentals/',
   ld: [{
     '@context': 'https://schema.org', '@type': 'Service', '@id': `${SITE}/rentals/#service`, name: 'DJ, sound, lighting, and video rentals',

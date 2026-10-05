@@ -16,14 +16,15 @@ export async function redis(cmd) {
 
 export function cors(req, res, methods) {
   const origin = req.headers.origin;
-  if (ORIGINS.includes(origin) || /^http:\/\/localhost(:\d+)?$/.test(origin || '')) res.setHeader('Access-Control-Allow-Origin', origin);
+  if (ORIGINS.includes(origin) || (env.VERCEL_ENV !== 'production' && /^http:\/\/localhost(:\d+)?$/.test(origin || ''))) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', methods);
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex');
 }
 
-export const clientIp = (req) => String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+// Vercel sets x-vercel-forwarded-for and x-real-ip itself; prefer them over the client-supplied chain.
+export const clientIp = (req) => String(req.headers['x-vercel-forwarded-for'] || req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
 
 /** True the first time in `seconds` for this key; false while it's cooling down. */
 export async function firstIn(key, seconds) {
@@ -37,8 +38,22 @@ export function isAdmin(req) {
   return diff === 0;
 }
 
-export function body(req) { return typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {}); }
+/** Parsed JSON body. Malformed JSON throws an error carrying status 400. */
+export function body(req) {
+  try { return typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {}); }
+  catch { throw Object.assign(new Error('invalid JSON'), { status: 400 }); }
+}
+
+/** Admin check for exports, with the same one-wrong-guess-per-5-seconds throttle as the drop. */
+export async function adminGate(req, res) {
+  if (isAdmin(req)) return true;
+  if (!(await firstIn(`nn:admin:fail:${clientIp(req)}`, 5))) { res.status(429).json({ error: 'slow down' }); return false; }
+  res.status(401).json({ error: 'admin token required' });
+  return false;
+}
 export function clip(v, max) { return String(v == null ? '' : v).replace(/\u0000/g, '').trim().slice(0, max); }
+/** One line: no CR/LF, so it can't break an email subject or header. */
+export const line = (v, max) => clip(v, max).replace(/[\r\n]+/g, ' ');
 export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 /** Source tags are short labels like "instagram" or "afterbreak-2026". */
 export const tag = (v) => clip(v, 40).toLowerCase().replace(/[^a-z0-9._-]/g, '') || 'direct';
@@ -80,6 +95,7 @@ ${bodyHtml}
 }
 
 export function csv(rows, cols) {
-  const cell = (v) => { const s = String(v == null ? '' : v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  // A leading = + - @ would run as a formula when the sheet opens; prefix it with ' to keep it text.
+  const cell = (v) => { let s = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   return [cols.join(','), ...rows.map((r) => cols.map((c) => cell(r[c])).join(','))].join('\n') + '\n';
 }
