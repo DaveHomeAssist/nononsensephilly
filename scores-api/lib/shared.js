@@ -1,3 +1,4 @@
+import { upstreamSignal } from './request-budget.js';
 // Helpers shared by the signup and request endpoints (Upstash Redis + Resend).
 export const ORIGINS = ['https://nononsensephilly.com', 'https://www.nononsensephilly.com'];
 const env = process.env;
@@ -9,9 +10,11 @@ export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export const redisReady = () => !!(URL_ && TOKEN);
 export async function redis(cmd) {
-  const r = await fetch(URL_, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });
+  const r = await fetch(URL_, { signal: upstreamSignal(), method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });
   if (!r.ok) throw new Error(`redis ${r.status}`);
-  return (await r.json()).result;
+  const response = await r.json();
+  if (response.error) throw new Error('redis command failed');
+  return response.result;
 }
 
 export function cors(req, res, methods) {
@@ -40,7 +43,11 @@ export function isAdmin(req) {
 
 /** Parsed JSON body. Malformed JSON throws an error carrying status 400. */
 export function body(req) {
-  try { return typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {}); }
+  try {
+    const value = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body ?? {});
+    if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('object required');
+    return value;
+  }
   catch { throw Object.assign(new Error('invalid JSON'), { status: 400 }); }
 }
 
@@ -63,6 +70,7 @@ export async function sendEmail({ to, subject, html, text, replyTo, idempotencyK
   if (!env.RESEND_API_KEY) return false;
   try {
     const r = await fetch('https://api.resend.com/emails', {
+      signal: upstreamSignal(),
       method: 'POST',
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json', ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}) },
       body: JSON.stringify({ from: MAIL_FROM, to: [to], subject, html, text, ...(replyTo ? { reply_to: replyTo } : {}) })
@@ -71,16 +79,19 @@ export async function sendEmail({ to, subject, html, text, replyTo, idempotencyK
   } catch { return false; }
 }
 
-/** Adds a drop-list signup to Resend contacts so broadcasts can reach them. Best effort. */
+/** Sync only after explicit email confirmation. PATCH also makes a retry safe for existing contacts. */
 export async function addContact(email) {
   if (!env.RESEND_API_KEY) return false;
+  const headers = { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' };
   try {
-    const r = await fetch('https://api.resend.com/contacts', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, unsubscribed: false })
+    const existing = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+      method: 'PATCH', headers, signal: upstreamSignal(), body: JSON.stringify({ unsubscribed: false })
     });
-    return r.ok;
+    if (existing.status !== 404) return existing.ok;
+    const created = await fetch('https://api.resend.com/contacts', {
+      method: 'POST', headers, signal: upstreamSignal(), body: JSON.stringify({ email, unsubscribed: false })
+    });
+    return created.ok;
   } catch { return false; }
 }
 
@@ -96,6 +107,6 @@ ${bodyHtml}
 
 export function csv(rows, cols) {
   // A leading = + - @ would run as a formula when the sheet opens; prefix it with ' to keep it text.
-  const cell = (v) => { let s = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  const cell = (v) => { let s = String(v == null ? '' : v); if (/^(?:[\s\uFEFF]*[=+\-@]|[\t\r\n])/.test(s)) s = "'" + s; return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   return [cols.join(','), ...rows.map((r) => cols.map((c) => cell(r[c])).join(','))].join('\n') + '\n';
 }

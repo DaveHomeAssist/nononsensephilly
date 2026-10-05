@@ -1,3 +1,4 @@
+import { boundedHandler, upstreamSignal } from '../lib/request-budget.js';
 // Day-of location drop. The address lives in Upstash, never in the public repo, and this
 // endpoint only returns it once revealAt has passed on the server's clock.
 //
@@ -18,7 +19,7 @@ const TOKEN = env.nononsense_scores_KV_REST_API_TOKEN || env.KV_REST_API_TOKEN |
 const HOUR = 3600 * 1000;
 
 async function redis(cmd) {
-  const r = await fetch(URL_, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });
+  const r = await fetch(URL_, { signal: upstreamSignal(), method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });
   if (!r.ok) throw new Error(`redis ${r.status}`);
   return (await r.json()).result;
 }
@@ -65,7 +66,7 @@ function clean(body) {
   };
 }
 
-export default async function handler(req, res) {
+export default boundedHandler(async function handler(req, res) {
   const origin = req.headers.origin;
   if (ORIGINS.includes(origin) || (env.VERCEL_ENV !== 'production' && /^http:\/\/localhost(:\d+)?$/.test(origin || ''))) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -112,4 +113,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(500).json({ error: 'drop unavailable' });
   }
-}
+});
