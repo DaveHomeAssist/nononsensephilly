@@ -2034,7 +2034,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     </form>
     <div id="news-success" class="success" hidden tabindex="-1">
       <strong id="news-success-title">One more tap.</strong>
-      <p id="news-success-text">Your email app opened with a sign-up request to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Send it and you’re on the list. Drops also post on <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+      <p id="news-success-text">Your email app opened with a sign-up request to <a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a>. Send the request so the crew can confirm your signup. Preparing this draft does not subscribe you. Drops also post on <a href="https://instagram.com/nononsensephl" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
     </div>
   </div>
 </div>
@@ -3005,7 +3005,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       .then(function(j){
         nnTrack('drop-signup-saved',{returning:j.returning?'yes':'no'});
         if(window.nnDropJoined) window.nnDropJoined();
-        finish(j.returning?'Already on the list.':"You're on the list.", j.returning?'Nothing else to do. Drops also post on Instagram.':(j.emailed?'A confirmation is on its way to '+addr+'.':'Drops go out by email first, then Instagram.'));
+        finish('Check your inbox.', 'If confirmation is needed, an email will arrive shortly. Open its link and press Confirm to join. If you already confirmed, nothing else is needed.');
       })
       .catch(function(){ viaEmailApp(); })
       .then(function(){ if(btn){ btn.disabled=false; btn.textContent='Join the list'; } });

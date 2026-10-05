@@ -1,3 +1,4 @@
+import { boundedHandler, upstreamSignal } from '../lib/request-budget.js';
 // Global arcade leaderboard for the No Nonsense splash game, stored in Upstash Redis.
 const KEY = 'nn:crowd:scores';
 const ORIGINS = ['https://nononsensephilly.com', 'https://www.nononsensephilly.com'];
@@ -6,7 +7,7 @@ const URL_ = env.nononsense_scores_KV_REST_API_URL || env.KV_REST_API_URL || env
 const TOKEN = env.nononsense_scores_KV_REST_API_TOKEN || env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN;
 
 async function redis(cmd) {
-  const r = await fetch(URL_, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });
+  const r = await fetch(URL_, { signal: upstreamSignal(), method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify(cmd) });
   if (!r.ok) throw new Error(`redis ${r.status}`);
   return (await r.json()).result;
 }
@@ -18,7 +19,7 @@ async function top() {
   return out;
 }
 
-export default async function handler(req, res) {
+export default boundedHandler(async function handler(req, res) {
   const origin = req.headers.origin;
   if (ORIGINS.includes(origin) || (env.VERCEL_ENV !== 'production' && /^http:\/\/localhost(:\d+)?$/.test(origin || ''))) res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -50,4 +51,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(500).json({ error: 'leaderboard unavailable' });
   }
-}
+});

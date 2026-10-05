@@ -49,10 +49,10 @@ After a deploy, submit `https://nononsensephilly.com/sitemap.xml` once in Google
 
 ## Signups, contact, and rental requests (Resend)
 The drop-list form and the contact form post to the scores service:
-- `POST /api/signup` saves the email in Upstash with where it came from (first touch: `utm_source`, or Instagram, Linktree, RA, DICE, Google, or the referring site), adds it to Resend contacts, and sends a confirmation.
+- `POST /api/signup` stores a pending confirmation for 24 hours and sends a confirmation link. It does not add a contact. `POST /api/confirm-signup` records consent and syncs the contact only when the recipient explicitly presses Confirm. Links are single-use; merely opening the page does not subscribe. One confirmation email per address per hour limits unsolicited mail.
 - `POST /api/request` saves the message. **Rentals & Production** requests get a reference like `NNC-2026-014`. The crew inbox (`CREW_INBOX`, default nononsensephl@gmail.com) gets the request, and replying goes straight to the sender, who also gets a copy.
 
-If Resend isn't set up or an email fails, the site opens the visitor's email app as before, with the reference in the subject, so nothing is lost.
+If email delivery fails, the site prepares a request in the visitor's email app. The visitor still needs to send it; preparing it does not subscribe them. Rental references remain in the subject.
 
 **Exports** (admin token): `GET /api/signup?format=csv` and `GET /api/request?format=csv`. These feed the weekly sheet.
 
@@ -67,3 +67,13 @@ If Resend isn't set up or an email fails, the site opens the visitor's email app
 The search uses a native modal dialog, regular list buttons and text nodes for indexed titles. Arrow keys focus real results, Tab remains inside, Escape restores the opener, and the match count is announced. Signup prompts do not interrupt another open dialog.
 
 Run `npm install --no-save --package-lock=false playwright@1.63.0 axe-core@4.11.0`, `npx playwright install chromium`, then `node tests/search.mjs`. These test-only dependencies do not change the static production build. CI checks phone, landscape and desktop search in both themes, including axe, literal markup, empty results, close/reopen and result destinations.
+
+## Signup consent and runtime verification
+
+`confirm.html` keeps the confirmation token in the email URL fragment, removes it from the address bar on load, and sends it only in an explicit button POST. The server stores a digest key with a 24-hour lifetime. Failed mailing-list sync retains the link for retry; consent is recorded before the contact can be subscribed. Existing contacts are updated only after confirmation, using Resend's [documented update-by-email API](https://resend.com/docs/api-reference/contacts/update-contact).
+
+Existing `nn:signups` rows are preserved. Rows without `confirmedAt` are exported as `legacy_unverified`, not silently converted to confirmed. Do not use those rows for a new broadcast/import without separate consent evidence. Existing Resend contacts created before this fix are not bulk modified; their previous consent remains an operator review item. No migration or mass unsubscribe runs on deployment.
+
+API handlers use the Node request/response contract, Node 24, an eight-second request budget and three-second upstream timeouts inside a ten-second platform cap. Redis, Resend email and contact calls are mocked in `node --test tests/signup-consent.mjs`; browser confirmation tests mock the POST and send no mail. `node tests/confirmation-page.mjs` checks explicit confirmation, retry, token removal, both themes and accessibility. CI runs both.
+
+Release ordering: deploy and verify the API confirmation routes before publishing the homepage's confirmation copy. The API project must ultimately track `main`; a manually deployed source SHA does not correct its Git production-branch setting. A Vercel status reading “Canceled by Ignored Build Step” is not delivery. Actual test-mail receipt and historical-contact review require separate evidence.

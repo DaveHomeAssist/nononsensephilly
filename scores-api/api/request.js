@@ -1,3 +1,4 @@
+import { boundedHandler } from '../lib/request-budget.js';
 // Contact and rental requests. POST from the site's contact form. Rentals get a reference like
 // NNC-2026-014. The crew inbox gets the request (reply goes straight to the sender) and the sender
 // gets a copy. `notified:false` tells the site to fall back to the visitor's email app.
@@ -7,7 +8,7 @@ import { cors, redis, redisReady, clientIp, firstIn, adminGate, body, clip, line
 const LIST = 'nn:requests';
 const SUBJECTS = ['General', 'Booking & Talent', 'Rentals & Production', 'Press & Media', 'Vendor & Sponsorship', 'Room Buyout'];
 
-export default async function handler(req, res) {
+export default boundedHandler(async function handler(req, res) {
   cors(req, res, 'GET, POST, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (!redisReady()) return res.status(503).json({ error: 'requests not configured' });
@@ -64,4 +65,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(e.status || 500).json({ error: e.status ? e.message : 'requests unavailable' });
   }
-}
+});
