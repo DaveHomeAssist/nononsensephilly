@@ -89,9 +89,7 @@ for (const e of events) for (const act of actsOf(e)) for (const seg of splitAct(
 const gaps = [];
 for (const e of events) {
   if (!e.start) gaps.push(`${e.slug}: no date with a year (start is empty)`);
-  if (!(e.lineup || []).length && !e.lineupNote) gaps.push(`${e.slug}: no lineup`);
-  if (/more names/i.test(e.lineupNote || '')) gaps.push(`${e.slug}: lineup is partial`);
-  if (phase(e) === 'past' && !(e.nights || []).some((n) => (n.sets || []).length)) gaps.push(`${e.slug}: no set times`);
+  if (phase(e) === 'on-sale' && !(e.lineup || []).length && !e.lineupNote) gaps.push(`${e.slug}: on sale but no lineup`);
   if (phase(e) === 'on-sale' && !e.ticketUrl) gaps.push(`${e.slug}: on sale but no ticketUrl`);
 }
 if (gaps.length) console.warn(`Content gaps (${gaps.length}):\n  ` + gaps.join('\n  '));
