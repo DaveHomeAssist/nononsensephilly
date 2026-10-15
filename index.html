@@ -877,6 +877,8 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 .manifest-head::before{left:-10px}.manifest-head::after{right:-10px}
 .manifest-head h3{margin:0;font-size:1rem}
 #rentals .quote-meta{margin:0;font:500 10px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--rig-hot)}
+.rental-dup-note{margin:6px 0 0;font:500 11px/1.4 var(--font-mono);color:var(--muted)}
+.nn-footer-clear.is-cleared{color:var(--accent);border-color:currentColor}
 .manifest-toggle{display:none;margin-left:auto;min-height:40px;padding:0 14px;border:1px solid var(--border);border-radius:999px;background:transparent;font:500 11px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
 .manifest-body{display:flex;flex-direction:column;gap:10px;min-height:0;padding:14px 16px 16px;overflow:auto}
 #rentals .quote-items{margin:0;max-height:none;flex:0 1 auto}
@@ -1946,7 +1948,8 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
             </div>
             <div>
               <label for="c-date">Event date <span class="nn-optional">(optional)</span></label>
-              <input id="c-date" name="date" type="date">
+              <input id="c-date" name="date" type="date" aria-describedby="err-date">
+              <p class="field-error" id="err-date" role="alert"></p>
             </div>
             <div>
               <label for="c-headcount">Headcount <span class="nn-optional">(optional)</span></label>
@@ -2417,6 +2420,23 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     [].forEach.call(document.querySelectorAll('dialog[open]'),function(d){ d.close(); });
   },true);
   function handleDeepLink(){
+    if(location.hash==='#drop'){
+      history.replaceState(null,'',location.pathname+location.search);
+      setTimeout(function(){ openModal(true); nnTrack('drop-list-open',{from:'deep-link'}); },0);
+      return;
+    }
+    var b=location.hash.match(/^#book\/([a-z0-9-]+)$/);
+    if(b){
+      var who=(NN.artists||[]).filter(function(x){ return x.slug===b[1]; })[0];
+      history.replaceState(null,'',location.pathname+location.search+'#contact');
+      showPanel('contact',false,false,false);
+      if(who){
+        var t=document.createElement('a');
+        t.setAttribute('data-subject-source','artist-sheet'); t.setAttribute('data-book-artist',who.name); t.hidden=true;
+        document.body.appendChild(t); t.click(); t.remove();
+      }
+      return;
+    }
     var m=location.hash.match(/^#(event|artist)\/([a-z0-9-]+)$/);
     if(!m) return;
     if(m[1]==='event') openEvent(m[2]); else openArtist(m[2]);
@@ -2743,6 +2763,8 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       b.innerHTML=on?'✓ Laser on the manifest <span>tap to remove</span>':'+ Add laser <span>tech required</span>';
     });
     renderManifestExtras();
+    document.querySelectorAll('#rental-grid .rental-card').forEach(function(c){ var n=c.querySelector('.rental-dup-note'), b=c.querySelector('.rental-add:not([data-addon])'); if(n && (!b || (rentalSelections[b.getAttribute('data-rental')]||0)<2)) n.remove(); });
+    if(manifestToggle) paintReview();
   }
 
   document.querySelectorAll('.rental-filter').forEach(function(btn){
@@ -2763,6 +2785,11 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       var name=btn.getAttribute('data-rental');
       if(btn.hasAttribute('data-addon') && rentalSelections[name]) delete rentalSelections[name];
       else rentalSelections[name]=btn.hasAttribute('data-addon')?1:(rentalSelections[name]||0)+1;
+      if(!btn.hasAttribute('data-addon')){
+        var q=rentalSelections[name];
+        announceStoredState(q>1?name+': '+q+' on the manifest. Remove extras in Review.':name+' added to the manifest.');
+        if(q>1){ var card0=btn.closest('.rental-card'); if(card0){ var note=card0.querySelector('.rental-dup-note'); if(!note){ note=document.createElement('p'); note.className='rental-dup-note'; btn.insertAdjacentElement('afterend',note); } note.textContent='Already on the manifest. You now have '+q+'.'; } }
+      }
       renderRentalQuote();
       bumpManifest();
       var card=btn.closest('[data-rental-cat]');
@@ -2882,6 +2909,9 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
   });
 
   var emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  /* Local yyyy-mm-dd, so "today" matches the visitor's calendar, not UTC. */
+  function nnToday(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  ['c-date','rent-date'].forEach(function(id){ var el=document.getElementById(id); if(el) el.min=nnToday(); });
   function setError(id, message){
     var el=document.getElementById(id);
     el.textContent=message;
@@ -2898,7 +2928,9 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     var subject=document.getElementById('c-subject');
     var message=document.getElementById('c-message');
     var ok=true;
-    setError('err-name',''); setError('err-email',''); setError('err-subject',''); setError('err-message','');
+    setError('err-name',''); setError('err-email',''); setError('err-subject',''); setError('err-message',''); setError('err-date','');
+    var cDateIn=document.getElementById('c-date');
+    if(cDateIn && cDateIn.value && cDateIn.value<nnToday()){ setError('err-date','That date has passed. Pick today or later.'); ok=false; }
     if(!name.value.trim()){ setError('err-name','Name is required.'); ok=false; }
     if(!emailOk.test(email.value.trim())){ setError('err-email','Enter a valid email address.'); ok=false; }
     if(!subject.value){ setError('err-subject','Choose a subject.'); ok=false; }
@@ -3050,7 +3082,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     var st=state();
     // Older clients marked a mere request as joined. Treat that hint as a bounded cooldown.
     if((st.pending && Date.now()-st.pending < 864e5) || (st.joined && Date.now()-st.joined < 14*864e5) || (st.dismissed && Date.now()-st.dismissed < 14*864e5)) return;
-    if(!/^#?(home)?$/.test(location.hash)) return;
+    // Deep links (/#access from Linktree, /#rentals, shared pages) get the bar too, after a short delay.
     try{
       var next=(JSON.parse(document.getElementById('nn-data').textContent).events||[]).filter(function(e){ return e.start && new Date(e.end||e.start)>new Date(); })
         .sort(function(a,b){ return a.start<b.start?-1:1; })[0];
@@ -3060,12 +3092,19 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       }
     }catch(err){}
     var pending=false, shown=false, timer=0;
-    var current='home';
+    var current=(location.hash.replace(/^#/,'').split('/')[0])||'home';
+    if(current==='event') current='events'; else if(current==='artist') current='lineup';
+    // Never over the contact form; the bar waits for the next screen instead.
+    function quietScreen(){ return current==='contact'; }
     function onHome(){ return current==='home'; }
     function blocked(){ return !modal.hidden || !!document.querySelector('dialog[open]') || !document.getElementById('find-dlg').hidden; }
     function place(){
       var pl=document.querySelector('.player'), foot=pl && pl.closest('footer');
-      toast.style.setProperty('--toast-bottom', ((foot ? foot.getBoundingClientRect().height : 0) + 12) + 'px');
+      var bottom=foot ? foot.getBoundingClientRect().height : 0;
+      // On phones the rental manifest bar sits above the player; keep its Review button uncovered.
+      var mf=current==='rentals' && document.getElementById('manifest-toggle');
+      if(mf && mf.offsetParent){ var bar=mf.closest('.manifest')||mf; bottom=Math.max(bottom, innerHeight-bar.getBoundingClientRect().top); }
+      toast.style.setProperty('--toast-bottom', (bottom + 12) + 'px');
     }
     /* True when the bar would sit on top of a hero control. */
     function coversHero(){
@@ -3082,7 +3121,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     }
     function show(){
       if(shown || blocked()) return;
-      if(onHome() && coversHero()){ pending=true; return; }
+      if(quietScreen() || (onHome() && coversHero())){ pending=true; return; }
       pending=false; shown=true; place();
       toast.hidden=false; requestAnimationFrame(function(){ toast.classList.add('is-in'); });
       nnTrack('drop-toast-shown');
@@ -3096,8 +3135,8 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       if(e.detail===current) return;
       current=e.detail;
       if(!toast.hidden){ hide(); return; }
-      // Only reading screens: never over the contact form, the rental manifest or ticket buttons.
-      if(pending && /^(events|lineup|about|faq)$/.test(current)){ clearTimeout(timer); timer=setTimeout(show, 2500); }
+      // Any screen but the contact form, so visitors who go straight to Tickets or Rentals see it too.
+      if(pending && !quietScreen()){ clearTimeout(timer); timer=setTimeout(show, 2500); }
     });
     document.addEventListener('focusin', function(e){ if(!toast.hidden && e.target.closest && e.target.closest('form')) hide(); });
   })();
@@ -3112,13 +3151,18 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
   var manifest=document.querySelector('#rentals .manifest');
   var manifestToggle=document.getElementById('manifest-toggle');
   var rentalsPanel=document.getElementById('rentals');
+  function reviewLabel(){
+    var n=Object.keys(rentalSelections).reduce(function(t,k){ return t+rentalSelections[k]; },0);
+    return n?'Review ('+n+')':'Review';
+  }
+  function paintReview(){ if(manifestToggle && !manifest.classList.contains('is-open')) manifestToggle.textContent=reviewLabel(); }
   function setManifest(open){
     if(!manifest) return;
     manifest.classList.toggle('is-open',open);
     rentalsPanel.classList.toggle('sheet-open',open);
     if(manifestToggle){
       manifestToggle.setAttribute('aria-expanded',open?'true':'false');
-      manifestToggle.textContent=open?'Close':'Review';
+      manifestToggle.textContent=open?'Close':reviewLabel();
     }
   }
   function bumpManifest(){
@@ -3127,6 +3171,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     void manifest.offsetWidth;
     manifest.classList.add('bump');
   }
+  if(manifestToggle) paintReview();
   if(manifestToggle) manifestToggle.addEventListener('click',function(){ setManifest(!manifest.classList.contains('is-open')); });
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape' && manifest && manifest.classList.contains('is-open')){ setManifest(false); manifestToggle.focus(); }
@@ -3544,7 +3589,9 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
       try{ sessionStorage.removeItem('nononsense-modal-shown'); }catch(e){}
       dismissRestoreBanner(); continueUsed=true; renderContinueChip(); showSubjectNote(null); hideDraftNote();
       announceStoredState('Saved data on this device cleared.');
-      var old=btn.textContent; btn.textContent='Cleared'; setTimeout(function(){ btn.textContent=old; },2000);
+      var old=btn.dataset.label||btn.textContent; btn.dataset.label=old; btn.textContent='✓ Cleared from this device'; btn.classList.add('is-cleared');
+      document.querySelectorAll('.rental-dup-note').forEach(function(n){ n.remove(); });
+      setTimeout(function(){ btn.textContent=old; btn.classList.remove('is-cleared'); },4000);
     });
   });
 
@@ -3643,6 +3690,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     var id=location.hash.replace(/^#/,'');
     if(/^event\//.test(id)) return 'events';
     if(/^artist\//.test(id)) return 'lineup';
+    if(/^book\//.test(id)) return 'contact';
     return labels[id]?id:'home';
   }
   window.addEventListener('popstate',function(){ showPanel(panelFromHash(),true,true,false); handleDeepLink(); });

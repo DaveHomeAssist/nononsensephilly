@@ -427,7 +427,7 @@ function eventPage(e) {
     <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}${where(e) === 'Philadelphia' ? '' : ', Philadelphia'}</p>
     ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}${ph === 'announced' ? `<p class="notice">Announced, not on sale. The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day. ${e.venue && e.venue.public ? 'Ask us about stairs, seating or step-free entry before the show.' : 'Stairs, seating and step-free entry are confirmed when the venue is; ask before the show if you need something specific.'}</p>` : ''}
     <p>${esc(e.summary)}${(e.presenters || []).length ? ` With ${esc(e.presenters.join(' and '))}.` : ''}</p>
-    ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>${ph !== 'past' && ph !== 'cancelled' && e.start ? `<a class="btn ghost" href="/${icsHref(e)}" download>Add to calendar</a>` : ''}
+    ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}${ph !== 'past' && ph !== 'cancelled' ? `<a class="btn${ph === 'on-sale' && e.ticketUrl ? ' ghost' : ''}" href="/#drop" data-umami-event="drop-list-open" data-umami-event-from="event-page" data-umami-event-event="${e.slug}">${(e.lineup || []).length ? 'Get the drop' : 'Get the lineup drop'}</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>${ph !== 'past' && ph !== 'cancelled' && e.start ? `<a class="btn ghost" href="/${icsHref(e)}" download>Add to calendar</a>` : ''}
     ${acts.length ? `<h2>Lineup</h2><ul class="chips">${e.lineup.map((a) => `<li>${actLinks(a)}</li>`).join('')}</ul>` : ''}
     ${e.lineupNote ? `<p>${esc(e.lineupNote)}</p>` : ''}
     ${nights ? `<h2>Set times</h2>${nights}` : ''}
@@ -485,7 +485,7 @@ function artistPage(a) {
 <p class="lede">${esc(a.bio || `Guest on No Nonsense Collective lineups in Philadelphia.`)}</p>
 ${(a.members || []).length ? `<p>Members: ${a.members.map((m) => `<a href="${artistHref(m)}">${esc(artists.find((x) => x.slug === m).name)}</a>`).join(' + ')}</p>` : ''}
 ${projects.length ? `<p>Also plays as ${projects.map((p) => `<a href="${artistHref(p.slug)}">${esc(p.name)}</a>`).join(', ')}.</p>` : ''}
-${(a.links || []).length ? `<p>${a.links.map((l) => `<a class="btn ghost" href="${esc(l.url)}">${esc(l.label)}</a>`).join('')}</p>` : ''}
+<p><a class="btn" href="/#book/${a.slug}" data-umami-event="artist-book" data-umami-event-artist="${a.slug}">Book ${esc(a.name)}</a>${(a.links || []).map((l) => `<a class="btn ghost" href="${esc(l.url)}" rel="noopener">${esc(l.label)}</a>`).join('')}</p>
 <h2>${shows.length} No Nonsense ${shows.length === 1 ? 'show' : 'shows'}</h2>
 <ul class="tiles">${shows.map(tile).join('')}</ul>`;
   return shell({ title: fitTitle(`${a.name} · ${role}`), desc: clip(desc), pathname: `/artists/${a.slug}/`, image: shows[0] && fs.existsSync(path.join(ROOT, `media/og/${shows[0].slug}.jpg`)) ? `${SITE}/media/og/${shows[0].slug}.jpg` : undefined, ld: [ld], trail: [['Home', '/'], ['Artists', '/artists/'], [a.name, `/artists/${a.slug}/`]], body });

@@ -36,10 +36,18 @@
     var name = named ? named.textContent : ((btn.childNodes[0] && btn.childNodes[0].textContent) || btn.textContent || '');
     add('Artist', name, '', function(){ btn.click(); });
   });
+  /* Cards only show chips, so pull the full gear list (brands, models, add-ons) from the site data. */
+  var gearText = {};
+  try {
+    (JSON.parse(document.getElementById('nn-data').textContent).rentals || []).forEach(function(c){
+      gearText[c.name.toLowerCase()] = (c.gear || []).map(function(g){ return g.model + ' ' + (g.note || ''); }).join(' ') +
+        (c.addon ? ' ' + c.addon.name + ' ' + c.addon.gear : '') + (c.provides ? ' ' + c.provides : '');
+    });
+  } catch (err) {}
   document.querySelectorAll('.rental-card').forEach(function(card){
     var title = (card.querySelector('h3') || {}).textContent || '';
     var spec = card.querySelector('[data-spec]');
-    add('Gear', title, card.textContent, function(){
+    add('Gear', title, card.textContent + ' ' + (gearText[title.replace(/\s+/g, ' ').trim().toLowerCase()] || ''), function(){
       go('rentals');
       if (spec) spec.click();
     });
