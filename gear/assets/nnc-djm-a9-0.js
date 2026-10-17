@@ -14,8 +14,8 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   const body=new T.Group();const shell=at(E.rounded(W,H-8,D,8,M.black),0,(H-8)/2,0);body.add(shell);refs.shell=shell;body.add(at(E.rounded(W-6,8,D-6,6,M.dark),0,H-4,0));E.addPart('a9.body',body,root3);
   const ghost=new T.Mesh(new T.BoxGeometry(W,H,D),new T.MeshBasicMaterial({color:0x9a4525,wireframe:true,transparent:true,opacity:.35}));ghost.position.y=H/2;ghost.visible=false;root3.add(ghost);refs.ghost=ghost;
   const top=H+1;
-  const ch=new T.Group();for(let i=0;i<4;i++){const x=i*62-93;for(let k=0;k<5;k++)ch.add(at(cy(8,8,8,M.rubber,20),x,0,-120+k*42));ch.add(at(bx(10,2,90,M.rubber),x,0,100));ch.add(at(bx(16,8,10,M.silver),x,3,110-i*10))}E.addPart('a9.ch',at(ch,0,top,-20),root3);
-  const xf=new T.Group();xf.add(at(bx(90,2,10,M.rubber),0,0,0));xf.add(at(bx(10,8,16,M.silver),10,3,0));xf.add(at(cy(10,10,8,M.rubber,20),150,0,-100));xf.add(at(cy(10,10,8,M.rubber,20),150,0,-60));xf.add(at(cy(8,8,8,M.rubber,20),-150,0,-20));xf.add(at(cy(8,8,8,M.rubber,20),-150,0,20));E.addPart('a9.xfader',at(xf,0,top,180),root3);
+  refs.faders=[];const ch=new T.Group();for(let i=0;i<4;i++){const x=i*62-93;for(let k=0;k<5;k++)ch.add(at(cy(8,8,8,M.rubber,20),x,0,-120+k*42));const track=at(bx(10,2,90,M.rubber),x,0,100),cap=at(bx(16,8,10,M.silver),x,3,140);ch.add(track,cap);refs.faders.push({track,cap,x})}E.addPart('a9.ch',at(ch,0,top,-20),root3);
+  const xf=new T.Group();refs.crossTrack=at(bx(90,2,10,M.rubber),0,0,0);refs.crossCap=at(bx(10,8,16,M.silver),0,3,0);xf.add(refs.crossTrack,refs.crossCap);xf.add(at(cy(10,10,8,M.rubber,20),150,0,-100));xf.add(at(cy(10,10,8,M.rubber,20),150,0,-60));xf.add(at(cy(8,8,8,M.rubber,20),-150,0,-20));xf.add(at(cy(8,8,8,M.rubber,20),-150,0,20));E.addPart('a9.xfader',at(xf,0,top,180),root3);
   const fx=new T.Group();fx.add(at(bx(60,3,36,M.black),0,0,0));fx.add(faceUp(at(E.label('BEAT FX  ECHO 1/2',56,30,{w:280,h:150,bg:'#0d1626',fg:'#7fd4ff',font:'600 34px ui-monospace'}),0,2,0)));for(let k=0;k<4;k++)fx.add(at(cy(7,7,8,M.rubber,16),k*20-30,0,40));fx.add(at(bx(60,3,30,M.glass),0,0,80));E.addPart('a9.fx',at(fx,160,top,-150),root3);
   const rz=-D/2-4,ry=50;
   const xlr=(x,y,g)=>{g.add(alongZ(at(cy(10,10,10,M.silver,24),x,y,0)));for(const a of [0,1,2])g.add(alongZ(at(cy(2,2,10,M.black,8),x+Math.cos(a*2.1+1.57)*4.5,y+Math.sin(a*2.1+1.57)*4.5,-6)))};
@@ -33,6 +33,8 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
  
   const floor=new T.Mesh(new T.PlaneGeometry(1800,1800),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-2;floor.receiveShadow=true;E.scene.add(floor);
   NNCProduct.finish(E,root3,refs,'djm-a9');
+  root3.traverse(o=>{if(o.userData.nncMeter){o.material.emissiveIntensity=0;o.material.color.multiplyScalar(.1);}});
+
 }
 const initialSim=Object.assign({socket:null,xray:false,output:'Nothing selected. Recorded manufacturer facts only; nothing is connected.'},{});
 const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim,build,onAction(E,a,c){switch(a){
@@ -48,4 +50,8 @@ const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,vie
  partState(E,c){if(!c)return'';return c.action?`Local simulator action: ${c.action}. Nothing is wired, metered or driven.`:'Inspection only. No simulator action is assigned.'}}));
 const orig=E.setView.bind(E);E.setView=function(n){this.cfg.currentView=n;orig(n);E.renderSim()};
 root.querySelectorAll('[data-sim]').forEach(b=>b.addEventListener('click',()=>E.action(b.dataset.sim,b.dataset)));
+E.controls=NNCControls.mount(E,[
+ ...refs.faders.map(({cap,track,x},i)=>({id:'a9.ch.'+(i+1)+'.fader',component:'a9.ch',source:'djma9-controls',label:'Channel '+(i+1)+' fader',kind:'fader',min:0,max:100,step:1,initial:0,object:cap,targets:[track],track:[[x,3,140],[x,3,60]],apply(value){cap.position.z=140-value*.8;}})),
+ {id:'a9.xfader.position',component:'a9.xfader',source:'djma9-controls',label:'Crossfader',kind:'fader',min:0,max:100,step:1,initial:50,object:refs.crossCap,targets:[refs.crossTrack],track:[[-40,3,0],[40,3,0]],format:v=>v===50?'Centre':v+'% left → right',apply(value){refs.crossCap.position.x=-40+value*.8;}}
+],{view:'top',note:'Pioneer DJ DJM-A9: four channel faders and MAGVEL crossfader. Values show reconstructed travel, not output dB. Fader curves, assignments, audio and meters are not simulated.'});
 E.setView('overview');})();

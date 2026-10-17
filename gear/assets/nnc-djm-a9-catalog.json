@@ -45,6 +45,12 @@
       "label": "DOC | NNC Nick DJ Equipment Inventory",
       "locator": "NNC inventory record, 14 October 2026",
       "scope": "Which units Nick owns and how many."
+    },
+    {
+      "source_id": "djma9-controls",
+      "label": "Pioneer DJ DJM-A9 product overview",
+      "locator": "https://www.pioneerdj.com/en/product/dj-mixers/djm-a9/",
+      "scope": "Manufacturer overview accessed 17 October 2026: four-channel mixer, channel faders and third-generation MAGVEL crossfader. Local practice models reconstructed travel only; no fader curve, output dB or audio response is asserted."
     }
   ],
   "components": [
