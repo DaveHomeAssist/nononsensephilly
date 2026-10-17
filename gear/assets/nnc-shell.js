@@ -17,12 +17,12 @@
   if(grid){grid.visible=settings.grid!==false;for(const material of [].concat(grid.material)){material.color.set(css('--nnc-grid-colour'));material.opacity=Number(css('--nnc-grid-opacity'));material.transparent=true;}}
   if(explorer){explorer.accentColor=null;for(const material of explorer.tints.values())material.dispose();explorer.tints.clear();explorer.highlight();explorer.requestRender();}
  }
- function save(){if(!preferences.write(settings))root.querySelector('[data-appearance-status]').textContent='Changes apply here; this browser could not save them.';}
+ function save(){return preferences.write(settings);}
  const dialog=root.querySelector('[data-appearance-dialog]');
  root.querySelectorAll('[data-appearance-open]').forEach(button=>button.addEventListener('click',()=>{apply();dialog.showModal();}));
  root.querySelector('[data-appearance-close]').addEventListener('click',()=>dialog.close());
- root.querySelector('[data-appearance-reset]').addEventListener('click',()=>{settings={};save();apply();root.querySelector('[data-appearance-status]').textContent='Default appearance restored.';});
- root.querySelectorAll('[data-appearance]').forEach(input=>input.addEventListener('input',()=>{const key=input.dataset.appearance;settings=validate({...settings,[key]:input.type==='checkbox'?input.checked:input.value});save();apply();root.querySelector('[data-appearance-status]').textContent='Saved for every gear model on this device.';}));
+ root.querySelector('[data-appearance-reset]').addEventListener('click',()=>{settings={};const saved=save();apply();root.querySelector('[data-appearance-status]').textContent=saved?'Default appearance restored.':'Defaults apply here; this browser could not save the reset.';});
+ root.querySelectorAll('[data-appearance]').forEach(input=>input.addEventListener('input',()=>{const key=input.dataset.appearance;settings=validate({...settings,[key]:input.type==='checkbox'?input.checked:input.value});const saved=save();apply();root.querySelector('[data-appearance-status]').textContent=saved?'Saved for every gear model on this device.':'Changes apply here; this browser could not save them.';}));
  root.querySelector('[data-workbench-theme]').addEventListener('change',event=>window.fmpTheme?.set(event.target.value));
  const inspectorButton=root.querySelector('[data-inspector-toggle]');
  function inspect(open){root.dataset.inspector=open?'open':'closed';inspectorButton.setAttribute('aria-expanded',String(open));}
