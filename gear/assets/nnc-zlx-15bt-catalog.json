@@ -1,0 +1,335 @@
+{
+  "schema_version": "1.1",
+  "guide_id": "nnc-zlx-15bt",
+  "revision": "0.1.0",
+  "model": "Electro-Voice ZLX-15BT (first generation)",
+  "owner": "No Nonsense Collective · Nick's rig",
+  "units": "mm",
+  "dimensions_mm": [
+    426,
+    685,
+    383
+  ],
+  "weight_kg": 17.3,
+  "coordinate_system": {
+    "x": "unit right",
+    "y": "up",
+    "z": "front"
+  },
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "category_limits": {
+    "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
+    "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
+  },
+  "sources": [
+    {
+      "source_id": "ev-zlx15bt-eds",
+      "label": "Electro-Voice ZLX-15BT Engineering Data Sheet",
+      "locator": "https://assets.electrovoicedynacord.com/asset/f946bfb1-bfb8-4747-b1b2-f95a43ffda70/ZLX-15BT-Engineering-Data-Sheet.pdf",
+      "scope": "Official EDS (served in Portuguese): 1000 W class-D amplifier, 127 dB peak, 55 Hz–18 kHz (−3 dB), 42 Hz–20 kHz (−10 dB), rear panel items 1–8, 685 × 383 mm drawing. Machine text could not be read; figures were taken from the rendered pages."
+    },
+    {
+      "source_id": "ev-zlx15bt-retail",
+      "label": "Retailer copies of the EV ZLX-15BT specification table",
+      "locator": "zZounds, Markertek and CCI Solutions listings, read 17 October 2026",
+      "scope": "Dimensions 685 × 426 × 383 mm (H × W × D), net weight 17.3 kg, EVS-15K and DH-1K transducers, 90° × 60° coverage, polypropylene enclosure. Not a manufacturer page; the first-generation product page is gone."
+    },
+    {
+      "source_id": "nnc-seed",
+      "label": "NNC gear pack · catalog-seed.json",
+      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
+    },
+    {
+      "source_id": "nnc-inventory",
+      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "locator": "NNC inventory record, 14 October 2026",
+      "scope": "Which units Nick owns and how many."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "zlx.cabinet",
+      "label": "Two-way cabinet",
+      "category": "Enclosure",
+      "kind": "chassis",
+      "purpose": "Moulded polypropylene two-way cabinet, 426 wide × 685 high × 383 deep mm and 17.3 kg. The EV drawing gives 685 mm height and 383 mm depth; the 426 mm width is from retailer copies of the EV table. Three handles and a pole cup underneath.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds",
+        "ev-zlx15bt-retail"
+      ],
+      "limits": "EDS drawing gives height and depth; width is retailer-reproduced. Cabinet taper, handle shape and grille pattern are approximate.",
+      "action": null,
+      "aliases": [
+        "top",
+        "speaker",
+        "box"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.woofer",
+      "label": "EVS-15K 15-inch woofer",
+      "category": "Acoustic",
+      "kind": "driver",
+      "purpose": "15-inch EV-engineered EVS-15K low-frequency driver behind the steel grille, driven by the built-in 1000 W class-D amplifier.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds",
+        "ev-zlx15bt-retail"
+      ],
+      "limits": "Driver model is retailer-reproduced from the EV table; position is behind an opaque grille.",
+      "action": "xray",
+      "aliases": [
+        "15",
+        "lf"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.horn",
+      "label": "DH-1K high-frequency driver and waveguide",
+      "category": "Acoustic",
+      "kind": "driver",
+      "purpose": "DH-1K compression driver on EV's signal-synchronised waveguide, giving the published 90° × 60° coverage.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds",
+        "ev-zlx15bt-retail"
+      ],
+      "limits": "Waveguide shape is approximate.",
+      "action": null,
+      "aliases": [
+        "tweeter",
+        "hf",
+        "waveguide"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.io.input1",
+      "label": "INPUT 1 · XLR/TRS combo",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Balanced combo input for a mixer, instrument or microphone. The LCD menu sets LINE or MIC level for inputs 1 and 2 (EDS item 2).",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "combo",
+        "in 1"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.io.input2",
+      "label": "INPUT 2 · XLR/TRS combo",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Second balanced combo input, same LINE/MIC choice as input 1 (EDS item 3).",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "combo",
+        "in 2"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.io.aux",
+      "label": "AUX IN · 3.5 mm",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "3.5 mm stereo input for a phone or media player (EDS item 8). Bluetooth streaming is the wireless alternative where enabled.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "aux",
+        "mini jack",
+        "bluetooth"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.io.mixout",
+      "label": "OUTPUT · XLR mix out",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Male XLR carrying the mix of every input to another speaker or a subwoofer (EDS item 7). The master volume and DSP settings do not change this signal; the Bluetooth stream can be included through the MIX OUT setting.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "link",
+        "thru",
+        "mix out"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.ctl.lcd",
+      "label": "LCD and DSP controls",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "QuickSmartDSP menu on the rear LCD (EDS item 1): four presets, sub/top system match, two-band EQ, five user presets, limiter status, input meters and master level. The LCD lights about three seconds after power-on.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "menu",
+        "dsp",
+        "preset"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.io.power",
+      "label": "MAINS IN · IEC and POWER switch",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "IEC mains inlet (EDS item 5) with the POWER switch beside it (item 4).",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-eds"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "iec",
+        "power"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "zlx.pole",
+      "label": "Pole cup",
+      "category": "Enclosure",
+      "kind": "mount",
+      "purpose": "Pole socket in the base for a 35 mm speaker stand or a sub-mounted pole.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "ev-zlx15bt-retail",
+        "nnc-seed"
+      ],
+      "limits": "Pole cup position and depth are not in the readable part of the EDS.",
+      "action": null,
+      "aliases": [
+        "stand",
+        "pole mount"
+      ],
+      "shape": {}
+    }
+  ],
+  "evidence_policy": {
+    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+  },
+  "page": {
+    "title": "EV ZLX-15BT | NNC Gear Guide",
+    "site_title": "EV ZLX-15BT powered 15-inch top · No Nonsense gear guide",
+    "bench": "No Nonsense gear guide / 02 · preview",
+    "heading": "Electro-Voice ZLX-15BT",
+    "identity_strong": "Electro-Voice · ZLX-15BT · first generation",
+    "description": "Explore Electro-Voice ZLX-15BT (first generation) in 3D. Manufacturer facts, the NNC record and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "views": [
+      {
+        "id": "overview",
+        "label": "Overview"
+      },
+      {
+        "id": "front",
+        "label": "Front / grille"
+      },
+      {
+        "id": "rear",
+        "label": "Rear panel"
+      },
+      {
+        "id": "panel",
+        "label": "Input panel"
+      },
+      {
+        "id": "xray",
+        "label": "Drivers (x-ray)"
+      }
+    ],
+    "evidence_flag": "EDS READ FROM RENDERED PAGES",
+    "search_placeholder": "Name, port, control…",
+    "practice_heading": "Read the rear panel before you plug in.",
+    "practice_notice": "Every readback repeats the EDS description of that connector or control. Levels, presets and Bluetooth state are not simulated.",
+    "practice_cards": "<div class=\"card\"><h3>Simulated ZLX-15BT state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"zlx.io.input1\">INPUT 1 · XLR/TRS combo</button><button data-sim=\"socket\" data-socket=\"zlx.io.input2\">INPUT 2 · XLR/TRS combo</button><button data-sim=\"socket\" data-socket=\"zlx.io.aux\">AUX IN · 3.5 mm</button><button data-sim=\"socket\" data-socket=\"zlx.io.mixout\">OUTPUT · XLR mix out</button><button data-sim=\"socket\" data-socket=\"zlx.ctl.lcd\">LCD and DSP controls</button><button data-sim=\"socket\" data-socket=\"zlx.io.power\">MAINS IN · IEC and POWER switch</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Sub and top together</h3><p>The ZLX QuickSmartDSP has a sub/top system-match preset. With a sub below it, set the top to the matching preset so the crossover is shared rather than doubled, and feed the sub from the MIX OUT or split the signal before the top.</p><p class=\"small\">Preset names and the exact crossover point are in the EDS and manual; this model does not simulate DSP.</p></div>",
+    "evidence_heading": "EV ZLX-15BT · engineering data sheet and NNC record",
+    "evidence_note": "The official EDS is still served by Electro-Voice but only as a Portuguese edition whose text could not be machine-read; figures were taken from the rendered pages. Width, weight and transducer names come from retailer copies of the EV table, so they are marked Reported until the English EDS is found.",
+    "facts": [
+      [
+        "Envelope",
+        "685 × 426 × 383 mm (H × W × D)"
+      ],
+      [
+        "Net weight",
+        "17.3 kg (38 lb)"
+      ],
+      [
+        "Amplifier",
+        "1000 W class-D"
+      ],
+      [
+        "Peak SPL",
+        "127 dB"
+      ],
+      [
+        "Response",
+        "55 Hz – 18 kHz (−3 dB) · 42 Hz – 20 kHz (−10 dB)"
+      ],
+      [
+        "Transducers",
+        "EVS-15K 15 in · DH-1K HF"
+      ],
+      [
+        "Coverage",
+        "90° × 60°"
+      ],
+      [
+        "Inputs",
+        "2 × XLR/TRS combo · 3.5 mm aux · Bluetooth"
+      ],
+      [
+        "Output",
+        "1 × XLR mix out"
+      ]
+    ],
+    "unresolved": [
+      "Generation: the EV page now serves ZLX G2; confirm Nick's units are first-generation BT",
+      "English EDS or owner's manual to confirm width, weight and transducer names",
+      "Which DSP preset the units are left on"
+    ],
+    "footer": "EV ZLX-15BT · educational reconstruction · NNC staged"
+  }
+}

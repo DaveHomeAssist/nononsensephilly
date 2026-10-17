@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.1",
+  "guide_id": "nnc-tl60",
+  "revision": "0.1.0",
+  "model": "Godox TL60",
+  "owner": "No Nonsense Collective · Nick's rig",
+  "units": "mm",
+  "dimensions_mm": [
+    48,
+    750,
+    48
+  ],
+  "weight_kg": 0.73,
+  "coordinate_system": {
+    "x": "unit right",
+    "y": "up",
+    "z": "front"
+  },
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "category_limits": {
+    "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
+    "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
+  },
+  "sources": [
+    {
+      "source_id": "godox-tl60",
+      "label": "Godox TL60 product page and TL60/TL120/TL180 manual",
+      "locator": "https://www.godox.com/product-d/TL60.html",
+      "scope": "Official page carries images and the manual download; its text has no spec table. Copies of the manual (EN/CN and JA) are in the NNC pack but could not be machine-read."
+    },
+    {
+      "source_id": "godox-tl60-retail",
+      "label": "Retailer copies of the Godox TL60 specification",
+      "locator": "Digital Camera Warehouse, Scan and Photospecialist listings, read 17 October 2026",
+      "scope": "48 × 750 mm, 730 g, 18 W max, RGB 2700–6500 K, CRI 96 / TLCI 98, 14.4 V 2600 mAh battery, 20 V 2.4 A adapter, about 2 h at full power, DMX 32 channels in 6 groups over RJ45, app and remote control."
+    },
+    {
+      "source_id": "nnc-seed",
+      "label": "NNC gear pack · catalog-seed.json",
+      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
+    },
+    {
+      "source_id": "nnc-inventory",
+      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "locator": "NNC inventory record, 14 October 2026",
+      "scope": "Which units Nick owns and how many."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "tl.tube",
+      "label": "RGB tube",
+      "category": "Enclosure",
+      "kind": "chassis",
+      "purpose": "750 mm tube, 48 mm across, 730 g: 18 W RGB with 2700–6500 K white, CRI 96 and TLCI 98.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "godox-tl60-retail",
+        "godox-tl60"
+      ],
+      "limits": "Length, diameter and weight are retailer copies; the Godox page has no spec text.",
+      "action": null,
+      "aliases": [
+        "tube",
+        "wand"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "tl.ctl.panel",
+      "label": "Control panel and display",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Buttons and a small display at one end for mode, colour temperature, hue, saturation, brightness and effects; the app and the RC-R9 style remote do the same wirelessly.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "godox-tl60-retail"
+      ],
+      "limits": "Button layout is approximate.",
+      "action": "socket",
+      "aliases": [
+        "buttons",
+        "display",
+        "app",
+        "remote"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "tl.io.dc",
+      "label": "DC charging input",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Input for the 20 V 2.4 A adapter that charges the 14.4 V 2600 mAh battery; about two hours at full power on battery.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "godox-tl60-retail"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "charge",
+        "dc",
+        "battery"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "tl.io.dmx",
+      "label": "DMX over RJ45",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "RJ45 DMX connection, 32 channels in 6 groups; an RJ45 cable ships in the kit, so an XLR-to-RJ45 adapter is needed for a standard DMX line.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "godox-tl60-retail"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "dmx",
+        "rj45",
+        "ethernet"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "tl.mount",
+      "label": "End caps with 1/4-inch threads",
+      "category": "Enclosure",
+      "kind": "mount",
+      "purpose": "Threaded end caps for stands, clamps or the included brackets.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "nnc-seed"
+      ],
+      "limits": "Thread size not confirmed from a manufacturer page.",
+      "action": null,
+      "aliases": [
+        "thread",
+        "mount",
+        "cap"
+      ],
+      "shape": {}
+    }
+  ],
+  "evidence_policy": {
+    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+  },
+  "page": {
+    "title": "Godox TL60 | NNC Gear Guide",
+    "site_title": "Godox TL60 RGB tube light · No Nonsense gear guide",
+    "bench": "No Nonsense gear guide / 15 · preview",
+    "heading": "Godox TL60",
+    "identity_strong": "Godox · TL60 · 60 cm RGB tube",
+    "description": "Explore Godox TL60 in 3D. Manufacturer facts, the NNC record and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "views": [
+      {
+        "id": "overview",
+        "label": "Overview"
+      },
+      {
+        "id": "panel",
+        "label": "Control end"
+      },
+      {
+        "id": "ports",
+        "label": "Ports"
+      }
+    ],
+    "evidence_flag": "RETAILER FIGURES",
+    "search_placeholder": "Name, port, control…",
+    "practice_heading": "DMX on RJ45, charge on DC.",
+    "practice_notice": "Readbacks repeat retailer copies of the Godox table. Colour, battery and DMX state are not simulated.",
+    "practice_cards": "<div class=\"card\"><h3>Simulated TL60 state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"tl.ctl.panel\">Control panel and display</button><button data-sim=\"socket\" data-socket=\"tl.io.dc\">DC charging input</button><button data-sim=\"socket\" data-socket=\"tl.io.dmx\">DMX over RJ45</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Tube on the DMX line</h3><p>The TL60 takes DMX on RJ45, not XLR. Keep the adapter with the tube or run it from the app and leave it off the console.</p><p class=\"small\">Channel chart lives in the manual.</p></div>",
+    "evidence_heading": "Godox TL60 · product page, manual and NNC record",
+    "evidence_note": "The Godox page is images and a manual link with no readable spec text, and the manual PDFs in the pack could not be machine-read, so the figures are retailer copies and are marked Reported.",
+    "facts": [
+      [
+        "Size",
+        "48 × 750 mm, retailer"
+      ],
+      [
+        "Weight",
+        "730 g, retailer"
+      ],
+      [
+        "Output",
+        "18 W max · RGB · 2700–6500 K · CRI 96 / TLCI 98"
+      ],
+      [
+        "Battery",
+        "14.4 V 2600 mAh · about 2 h at full · 20 V 2.4 A adapter"
+      ],
+      [
+        "DMX",
+        "32 channels · 6 groups · RJ45"
+      ],
+      [
+        "Control",
+        "Panel · app · remote"
+      ]
+    ],
+    "unresolved": [
+      "Manual text for the DMX chart and thread size",
+      "Which brackets Nick uses"
+    ],
+    "footer": "Godox TL60 · educational reconstruction · NNC staged"
+  }
+}
