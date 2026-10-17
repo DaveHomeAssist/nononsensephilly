@@ -2,9 +2,9 @@
 const root=document.getElementById('bench-root'), catalog=JSON.parse(document.getElementById('equipment-catalog').textContent);let refs={};
 const SOCKETS=Object.fromEntries(catalog.components.filter(c=>c.action==='socket').map(c=>[c.component_id,`${c.label} · ${c.purpose.split(/(?<=\.)\s/)[0]}`]));
 const views={overview:{target:[0,320,0],theta:0.72,phi:0.86,radius:1650},front:{target:[0,320,120],theta:0,phi:1.0,radius:1350},rear:{target:[0,320,-200],theta:3.14,phi:1.1,radius:1150},panel:{target:[0,330,-299],theta:3.14,phi:1.35,radius:620,min:220},xray:{target:[0,320,0],theta:0.5,phi:0.95,radius:1550}};
-function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.12;E.scene.add(root3);
+function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.12;E.scene.add(root3);
   const mesh=(g,mat)=>{const m=new T.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;return m};
-  const bx=(w,h,d,mat)=>mesh(new T.BoxGeometry(w,h,d),mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);
+  const bx=(w,h,d,mat)=>E.rounded(w,h,d,Math.min(w,h,d)*.12,mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);
   const at=(o,x,y,z)=>{o.position.set(x,y,z);return o},alongZ=o=>{o.rotation.x=Math.PI/2;return o},alongX=o=>{o.rotation.z=Math.PI/2;return o},rear=o=>{o.rotation.y=Math.PI;return o},faceUp=o=>{o.rotation.x=-Math.PI/2;return o};
   const lab=(text,w,h,opts={})=>E.label(text,w,h,Object.assign({w:Math.round(w*4),h:Math.round(h*4),bg:'#9da6a3',fg:'#101414',font:'700 '+Math.round(h*2.6)+'px system-ui'},opts));
   const mat=(color,roughness=.6,metalness=.1)=>new T.MeshStandardMaterial({color,roughness,metalness});
@@ -33,6 +33,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.
   const lp=new T.Group();lp.add(alongZ(at(cy(12,12,12,M.rubber,24),0,0,0)));lp.add(rear(at(lab('LOW PASS 65–130',70,9),0,-24,-1)));E.addPart('cva.ctl.lpf',at(lp,60,265,z),root3);
  
   const floor=new T.Mesh(new T.PlaneGeometry(2600,2600),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-2;floor.receiveShadow=true;E.scene.add(floor);
+  NNCProduct.finish(E,root3,refs,'cva-118');
 }
 const initialSim=Object.assign({socket:null,xray:false,output:'Nothing selected. Recorded manufacturer facts only; nothing is connected.'},{});
 const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim,build,onAction(E,a,c){switch(a){

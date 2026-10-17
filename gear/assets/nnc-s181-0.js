@@ -3,13 +3,13 @@ const root=document.getElementById('bench-root'), catalog=JSON.parse(document.ge
 // 538 W × 701 H × 582 D mm cabinet; the camera sits about three cabinet widths away.
 const views={overview:{target:[0,350,0],theta:.72,phi:.86,radius:1700},front:{target:[0,350,120],theta:0,phi:1.05,radius:1300},rear:{target:[0,330,-180],theta:3.14,phi:1.12,radius:1150},plate:{target:[0,290,-291],theta:3.14,phi:1.35,radius:620,min:220},driver:{target:[0,350,0],theta:.55,phi:.95,radius:1500}};
 const SOCKETS={'s181.io.input':'Factory 1/4-inch INPUT · amplifier feed to the driver (recorded)','s181.io.output':'Factory 1/4-inch OUTPUT · parallel through to a second cabinet (recorded)','s181.io.added-a':'Added socket A · upper LOW (recorded role) · pinout unmetered','s181.io.added-b':'Added socket B · lower LOW (recorded role) · pinout unmetered','s181.io.added-c':'Added socket C · HI (recorded role) · pinout unmetered; likely a pass-through, not measured'};
-function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=.12;E.scene.add(root3);
+function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=.12;E.scene.add(root3);
   // Form follows the EV data sheet envelope only. The S-181 is a bandpass box: the 18-inch driver is
   // sealed inside and fires into a vented front chamber, so the visible openings are the front vents
   // and the rear connector recess. Vent shape, hardware and plate placement are approximate.
   const W=538,H=701,D=582;
   const mesh=(g,mat)=>{const m=new T.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;return m};
-  const bx=(w,h,d,mat)=>mesh(new T.BoxGeometry(w,h,d),mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);
+  const bx=(w,h,d,mat)=>E.rounded(w,h,d,Math.min(w,h,d)*.12,mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);
   const at=(o,x,y,z)=>{o.position.set(x,y,z);return o},rear=o=>{o.rotation.y=Math.PI;return o},alongZ=o=>{o.rotation.x=Math.PI/2;return o},alongX=o=>{o.rotation.z=Math.PI/2;return o};
   const carpet=new T.MeshStandardMaterial({color:0x23262a,roughness:.95,metalness:0});
   const cabinet=new T.Group();
@@ -42,6 +42,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=.1
   socket('s181.io.added-a',-30,330,'A','LOW');socket('s181.io.added-b',-30,235,'B','LOW');socket('s181.io.added-c',50,283,'C','HI');
   // Floor shadow catcher.
   const floor=new T.Mesh(new T.PlaneGeometry(2600,2600),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-12;floor.receiveShadow=true;E.scene.add(floor);
+  NNCProduct.finish(E,root3,refs,'s181');
 }
 const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim:{socket:null,xray:false,cabinets:1,output:'No socket chosen. Recorded roles only; the plate pinout is unmetered.'},build,onAction(E,a,c){switch(a){
   case'socket':{const id=c.component_id||c.socket;E.sim.socket=SOCKETS[id]?id:null;E.sim.output=SOCKETS[id]||'Unknown socket.';break}
