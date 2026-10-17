@@ -42,9 +42,10 @@
   if(slug==='zlx-15bt'){
    const shape=new T.Shape();shape.moveTo(-w/2+12,d/2-12);shape.lineTo(w/2-12,d/2-12);shape.lineTo(w*.32-12,-d/2+12);shape.lineTo(-w*.32+12,-d/2+12);shape.closePath();const geometry=new T.ExtrudeGeometry(shape,{depth:h-24,bevelEnabled:true,bevelSize:12,bevelThickness:12,bevelSegments:4,steps:1});geometry.rotateX(Math.PI/2);geometry.center();refs.shell.geometry.dispose();refs.shell.geometry=geometry;
   }
-  const front=cab.children.find(o=>o.isMesh&&o!==refs.shell&&o.position.z>d/2-8&&o.geometry.type!=='BoxGeometry');if(front)front.material=grille(w,h);
-  const group=new T.Group(),panel=at(bevel(w-58,h-66,3,1,grille(w,h)),0,h/2,d/2+4);group.add(panel);
-  if(slug==='s181'){panel.scale.y=.68;panel.position.y=h*.53;for(const y of [158,543])group.add(at(bevel(w-135,47,8,4,material(0x030405,.95)),0,y,d/2+7));}
+  // Replace the old front plate; stacking two grilles causes depth collisions.
+  const front=cab.children.find(o=>o.isMesh&&o!==refs.shell&&o.position.z>d/2-8&&o.geometry.type!=='BoxGeometry');if(front){cab.remove(front);front.geometry.dispose();}
+  const group=new T.Group(),panel=at(bevel(w-58,h-66,3,1,grille(w,h)),0,h/2,d/2+4);panel.name='nnc-speaker-grille';group.add(panel);
+  if(slug==='s181'){for(const y of [158,543]){const vent=at(bevel(w-135,47,3,1,material(0x030405,.95)),0,y,d/2+8);vent.name='nnc-speaker-vent';group.add(vent);}}
   faceLabel(E,group,slug==='cva-118'?'CERWIN-VEGA!':'EV',slug==='cva-118'?110:45,slug==='cva-118'?17:25,0,slug==='s181'?h*.49:53,d/2+7,{fg:slug==='cva-118'?'#d73132':'#e0e2e2'});
   for(const x of [-w/2+35,w/2-35])for(const y of [42,h-42])screw(group,x,y,d/2+7,2.5);
   cab.traverse(o=>{if(o.isMesh&&Math.abs(o.position.x)>w*.45&&o.position.y>h*.5&&o.position.y<h*.7)o.material=E.mats.rubber;});cab.add(group);E.productExterior=cab;refs.productExterior=cab;
@@ -63,7 +64,7 @@
   for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){const v=new T.Vector3(x,y,z).sub(centre),depth=v.dot(direction);radius=Math.max(radius,depth+Math.abs(v.dot(right))/(tan*E.camera.aspect*.78),depth+Math.abs(v.dot(up))/(tan*.78));}
   E.target.copy(centre);E.radius=radius;E.minRadius=Math.max(20,radius*.25);E.maxRadius=radius*3;E.camera.far=Math.max(5000,E.maxRadius+box.getSize(new T.Vector3()).length());E.camera.updateProjectionMatrix();E.updateCam();
  }
- function prepare(E){E.rounded=bevel;for(const [name,c] of Object.entries({black:0x101114,dark:0x25272a,soft:0x303236,rubber:0x151618,silver:0xaeb4bb}))E.mats[name].color.setHex(c);}
+ function prepare(E){E.camera.near=Math.max(.5,Math.max(...E.catalog.dimensions_mm)*.005);E.camera.updateProjectionMatrix();E.rounded=bevel;for(const [name,c] of Object.entries({black:0x101114,dark:0x25272a,soft:0x303236,rubber:0x151618,silver:0xaeb4bb}))E.mats[name].color.setHex(c);}
  function finish(E,root3,refs,slug){
   E.cfg.views.overview.phi=['s181','zlx-15bt','ekx-15sp','cva-118','gx5','gx7','haze-1dx','j-six','lasercube-2w','vertigo-tri-led'].includes(slug)?1.12:slug==='sm58'||slug==='tl60'?1.06:.7;
   if(['s181','zlx-15bt','ekx-15sp','cva-118'].includes(slug))speaker(E,refs,slug);

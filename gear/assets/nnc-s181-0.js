@@ -14,10 +14,7 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   const carpet=new T.MeshStandardMaterial({color:0x23262a,roughness:.95,metalness:0});
   const cabinet=new T.Group();
   const shell=at(E.rounded(W,H,D,14,carpet),0,H/2,0);cabinet.add(shell);refs.shell=shell; // rounded boxes are centred, so lift by H/2
-  // Front vents: two horizontal slots in a recessed baffle.
-  cabinet.add(at(E.rounded(W-70,H-80,8,10,M.black),0,H/2,D/2-2));
-  for(const y of [190,H-190])cabinet.add(at(bx(W-150,96,14,M.rubber),0,y,D/2+1));
-  cabinet.add(at(bx(W-150,10,4,M.silver),0,H/2,D/2+5));
+  // The shared product detail layer owns the front baffle, vents and badge.
   // Corner protectors, side handles and feet.
   for(const sx of [-1,1])for(const sy of [0,1])for(const sz of [-1,1])cabinet.add(at(bx(44,44,44,M.black),sx*(W/2-20),sy?H-22:22,sz*(D/2-20)));
   for(const sx of [-1,1])cabinet.add(at(bx(12,70,150,M.rubber),sx*(W/2+1),H*.62,0));

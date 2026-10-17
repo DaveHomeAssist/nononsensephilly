@@ -87,3 +87,10 @@ body{height:100dvh;display:flex;flex-direction:column;font-family:var(--nnc-font
 
 #bench-root[data-custom-panel=true]{--muted:var(--ink)}
 #bench-root .primary{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+
+/* Keep unit navigation in the workbench so it is also reachable full screen. */
+#bench-root .nnc-gear-nav{display:flex;align-items:center;gap:8px;margin-left:auto;min-width:0;font-size:13px}
+.nnc-gear-nav select{width:230px;min-width:0;max-width:32vw;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:7px;min-height:36px}
+.nnc-gear-nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 8px;color:var(--ink);border:1px solid var(--line);border-radius:4px}
+@media(max-width:1000px){.nnc-gear-nav select{width:175px}.nnc-gear-nav label{display:none}}
+@media(max-width:700px){#bench-root .bench-nav{height:84px;min-height:84px;flex-wrap:wrap;gap:0}#bench-root .nnc-gear-nav{order:-1;width:100%;height:40px;gap:6px;padding:0 4px}.nnc-gear-nav label{display:block}.nnc-gear-nav select{width:100%;max-width:none;flex:1;min-height:34px;padding:4px}.nnc-gear-nav a{min-height:34px}#bench-root .tabs{width:100%}}

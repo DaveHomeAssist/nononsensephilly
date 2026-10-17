@@ -3,6 +3,8 @@
 (() => {
  'use strict';
  const root=document.querySelector('#bench-root');
+ const gearSelect=root.querySelector('[data-gear-select]'),gearOpen=root.querySelector('[data-gear-open]');
+ gearSelect.addEventListener('change',()=>{gearOpen.href=gearSelect.value;});
  const preferences=window.NNCAppearance,{colours,validate}=preferences;
  let settings=preferences.read();
  let explorer,grid,outline;
