@@ -3,7 +3,7 @@
   "guide_id": "nnc-cdj-3000",
   "revision": "0.1.0",
   "model": "Pioneer DJ CDJ-3000",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     329,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -35,16 +35,16 @@
       "scope": "329 × 453 × 118 mm, 5.5 kg, 9-inch HD touch screen, Gigabit Pro DJ Link, V-Lock power cable, USB-HID and iPhone connection."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -73,12 +73,12 @@
       "label": "Jog wheel with centre display",
       "category": "Controls",
       "kind": "control",
-      "purpose": "Large jog wheel with an LCD in its centre showing playhead position and artwork. The seed records a 206 mm jog; the manual specification table does not state the diameter.",
+      "purpose": "Large jog wheel with an LCD in its centre showing playhead position and artwork. A 206 mm jog is reported; the manual specification table does not state the diameter.",
       "confidence": "Documented",
       "geometry_status": "approximate",
       "source_ids": [
         "cdj3000-page",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Diameter is not in the manual specification table.",
       "action": "socket",
@@ -300,7 +300,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Not in the readable manual pages; common to CDJ players.",
       "action": null,
@@ -311,7 +311,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "Pioneer DJ CDJ-3000 | NNC Gear Guide",
@@ -344,7 +344,7 @@
     "practice_notice": "Readbacks repeat the CDJ-3000 manual and product page. Playback, link and library state are not simulated.",
     "practice_cards": "<div class=\"card\"><h3>Simulated CDJ-3000 state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"cdj.jog\">Jog wheel with centre display</button><button data-sim=\"socket\" data-socket=\"cdj.screen\">9-inch touch screen</button><button data-sim=\"socket\" data-socket=\"cdj.hotcues\">Hot Cue and loop buttons</button><button data-sim=\"socket\" data-socket=\"cdj.transport\">PLAY/PAUSE and CUE</button><button data-sim=\"socket\" data-socket=\"cdj.media.sd\">SD card slot</button><button data-sim=\"socket\" data-socket=\"cdj.media.usb\">USB type A (top)</button><button data-sim=\"socket\" data-socket=\"cdj.io.audio\">AUDIO OUT L/R · RCA</button><button data-sim=\"socket\" data-socket=\"cdj.io.digital\">DIGITAL OUT · coaxial RCA</button><button data-sim=\"socket\" data-socket=\"cdj.io.link\">LINK · PRO DJ LINK LAN</button><button data-sim=\"socket\" data-socket=\"cdj.io.usbb\">USB type B (PC/Mac)</button><button data-sim=\"socket\" data-socket=\"cdj.io.ac\">AC IN · V-Lock power</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Link two players</h3><p>One LAN cable from each CDJ-3000 to the mixer's LINK ports (or a switch) lets both read one USB stick or SD card and sync. Audio still leaves each player on its own RCA or digital pair.</p><p class=\"small\">The DJM-A9 has the LINK hub; this model does not simulate the network.</p></div>",
     "evidence_heading": "Pioneer DJ CDJ-3000 · manual, product page and NNC record",
-    "evidence_note": "Envelope, weight and every rear connector come from the specification page of the AlphaTheta-hosted manual. The jog diameter is not in that table; the 206 mm figure is the seed's and stays Reported.",
+    "evidence_note": "Envelope, weight and every rear connector come from the specification page of the AlphaTheta-hosted manual. The jog diameter is not in that table; the 206 mm figure is from secondary sources and stays Reported.",
     "facts": [
       [
         "Envelope",
@@ -385,9 +385,8 @@
     ],
     "unresolved": [
       "Jog diameter not stated in the manual table",
-      "Front, top and rear renders for Nick's units",
-      "Firmware version on Nick's players"
+      "Firmware version on NNC's players"
     ],
-    "footer": "Pioneer DJ CDJ-3000 · educational reconstruction · NNC staged"
+    "footer": "Pioneer DJ CDJ-3000 · educational reconstruction"
   }
 }

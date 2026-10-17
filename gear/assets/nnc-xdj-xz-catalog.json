@@ -3,20 +3,20 @@
   "guide_id": "nnc-xdj-xz",
   "revision": "0.1.0",
   "model": "Pioneer DJ XDJ-XZ",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     878,
     118.4,
     466.1
   ],
-  "weight_kg": 13.0,
+  "weight_kg": 13,
   "coordinate_system": {
     "x": "unit right",
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -32,19 +32,19 @@
       "source_id": "xdjxz-manual",
       "label": "Pioneer DJ XDJ-XZ instruction manual DRI1625B",
       "locator": "https://downloads.support.alphatheta.com/manuals/XDJ_XZ_DRI1625B_manual/",
-      "scope": "Official manual on AlphaTheta's viewer; its specification page could not be machine-read during this build. Envelope and weight below are the seed's retailer copies of that table."
+      "scope": "Official manual on AlphaTheta's viewer; its specification page could not be machine-read during this build. Envelope and weight below are retailer copies of that table."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -58,7 +58,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "xdjxz-manual",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Envelope and weight are retailer copies of the Pioneer table.",
       "action": null,
@@ -79,7 +79,7 @@
       "source_ids": [
         "xdjxz-page"
       ],
-      "limits": "Diameter not stated on the product page (seed: 206 mm).",
+      "limits": "Diameter not stated on the product page (reported: 206 mm).",
       "action": "socket",
       "aliases": [
         "jog",
@@ -231,7 +231,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Standard XDJ layout; counts not machine-read from the manual.",
       "action": "socket",
@@ -251,7 +251,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "As above.",
       "action": "socket",
@@ -271,7 +271,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "xdjxz-page",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Channels 3 and 4 take external sources per the product page; pair count per channel is not machine-read.",
       "action": "socket",
@@ -292,7 +292,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "xdjxz-page",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Connector types not machine-read.",
       "action": "socket",
@@ -311,7 +311,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "",
       "action": "socket",
@@ -323,7 +323,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "Pioneer DJ XDJ-XZ | NNC Gear Guide",
@@ -353,18 +353,18 @@
     "evidence_flag": "ENVELOPE REPORTED",
     "search_placeholder": "Name, port, control…",
     "practice_heading": "Two decks on board, two more over LINK.",
-    "practice_notice": "Readbacks repeat the Pioneer DJ product page and the seed. Nothing plays, links or routes.",
+    "practice_notice": "Readbacks repeat the Pioneer DJ product page and reported figures. Nothing plays, links or routes.",
     "practice_cards": "<div class=\"card\"><h3>Simulated XDJ-XZ state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"xz.jog.left\">Left jog wheel with On Jog Display</button><button data-sim=\"socket\" data-socket=\"xz.jog.right\">Right jog wheel with On Jog Display</button><button data-sim=\"socket\" data-socket=\"xz.screen\">7-inch touch screen</button><button data-sim=\"socket\" data-socket=\"xz.pads\">16 performance pads</button><button data-sim=\"socket\" data-socket=\"xz.mixer\">4-channel mixer section</button><button data-sim=\"socket\" data-socket=\"xz.media.usb\">USB device ports (top, ×2)</button><button data-sim=\"socket\" data-socket=\"xz.io.usbb\">USB laptop port</button><button data-sim=\"socket\" data-socket=\"xz.io.link\">LINK · Pro DJ Link</button><button data-sim=\"socket\" data-socket=\"xz.io.master\">MASTER OUT · XLR and RCA</button><button data-sim=\"socket\" data-socket=\"xz.io.booth\">BOOTH OUT · TRS</button><button data-sim=\"socket\" data-socket=\"xz.io.inputs\">Channel 3/4 LINE / PHONO inputs · RCA</button><button data-sim=\"socket\" data-socket=\"xz.io.mic\">MIC 1 and MIC 2</button><button data-sim=\"socket\" data-socket=\"xz.io.ac\">AC IN</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Four decks from one box</h3><p>Decks 1 and 2 are the jogs. Decks 3 and 4 come from the LINE/PHONO inputs, a Pro DJ Link player on the LINK port, or a laptop on USB running rekordbox or Serato.</p><p class=\"small\">The XZ can take the CDJ-3000s on channels 3 and 4 if the A9 is out.</p></div>",
     "evidence_heading": "Pioneer DJ XDJ-XZ · product page, manual and NNC record",
-    "evidence_note": "Channel count, display, USB and pad facts come from the Pioneer DJ product page. The official manual is on AlphaTheta's viewer but its specification page could not be machine-read during this build, so the envelope, weight and rear-panel counts are the seed's retailer copies and are marked Reported.",
+    "evidence_note": "Channel count, display, USB and pad facts come from the Pioneer DJ product page. The official manual is on AlphaTheta's viewer but its specification page could not be machine-read during this build, so the envelope, weight and rear-panel counts are retailer copies and are marked Reported.",
     "facts": [
       [
         "Envelope",
-        "878 × 466.1 × 118.4 mm (W × D × H), seed"
+        "878 × 466.1 × 118.4 mm (W × D × H), reported"
       ],
       [
         "Weight",
-        "13.0 kg, seed"
+        "13.0 kg, reported"
       ],
       [
         "Channels",
@@ -393,9 +393,8 @@
     ],
     "unresolved": [
       "Machine-readable manual specification page",
-      "Jog diameter",
-      "Renders of Nick's unit"
+      "Jog diameter"
     ],
-    "footer": "Pioneer DJ XDJ-XZ · educational reconstruction · NNC staged"
+    "footer": "Pioneer DJ XDJ-XZ · educational reconstruction"
   }
 }
