@@ -1,0 +1,53 @@
+/* Scoped to staged NNC pages; shared FMP model layouts remain unchanged. */
+html,body{height:100%;overflow:hidden}
+body{height:100dvh;display:flex;flex-direction:column}
+.model-site-nav{flex:none}
+#model-content{flex:1;min-height:0}
+#bench-root{height:100%;min-height:0;display:flex;flex-direction:column}
+#bench-root header,#bench-root .bench-nav,#bench-root .footer{flex:none}
+#bench-root .workspace{flex:1;min-height:0;overflow:hidden}
+#bench-root .model-col{min-height:0;grid-template-rows:auto minmax(0,1fr) auto auto}
+#bench-root .stage{min-height:0}
+#bench-root .inspector,#bench-root .practice,#bench-root .evidence{min-height:0;overflow:auto;overscroll-behavior:contain}
+#bench-root .practice,#bench-root .evidence{flex:1}
+.nnc-panes,.nnc-view{display:none}
+@media(max-width:700px){
+ .model-site-nav{flex-wrap:nowrap;gap:6px;padding:3px 8px}
+ .model-site-nav a:first-child{flex-basis:auto;font-size:0}
+ .model-site-nav a:first-child:after{content:'NNC';font-size:12px}
+ .model-site-nav a[href='/rentals/']{display:none}
+ .model-site-nav label{font-size:0}
+ .model-site-nav select{font-size:12px}
+ #bench-root header{height:36px;padding:4px 10px}
+ #bench-root .brand-mark,#bench-root .title small,#bench-root .footer{display:none}
+ #bench-root .title h1{font-size:17px;margin:0;letter-spacing:0}
+ #bench-root .bench-nav{min-height:44px;padding:0 4px}
+ #bench-root .tabs button{height:44px}
+ #bench-root .workspace{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:44px minmax(0,1fr)}
+ .nnc-panes{display:flex;gap:4px;padding:0 8px}
+ .nnc-panes button{flex:1}
+ #bench-root .workspace[data-panel=model] .inspector,#bench-root .workspace[data-panel=inspector] .model-col{display:none}
+ #bench-root .viewbar{gap:0;padding:0 4px}
+ #bench-root .viewbar>button{display:none}
+ .nnc-view{display:flex;align-items:center;gap:8px;width:100%;font-size:12px}
+ .nnc-view select{flex:1;min-width:0}
+ #bench-root .viewbar button{padding:3px 5px;font-size:12px}
+ #bench-root .orbitbar{padding:2px 4px;gap:2px}
+ #bench-root .orbitbar button{padding:3px;min-width:38px}
+ #bench-root .system-strip{display:none}
+ #bench-root .stage-note{display:none}
+ #bench-root .stage .evidence-flag{bottom:4px}
+ #bench-root .hover-label{bottom:30px}
+ #bench-root .signal-map svg{min-width:0}
+}
+@media(max-height:450px){
+ #bench-root header,#bench-root .footer{display:none}
+ #bench-root .viewbar{padding:0 4px}
+ #bench-root .orbitbar{padding:0 4px}
+ #bench-root .system-strip,#bench-root .stage-note{display:none}
+}
+@media print{
+ html,body,#model-content,#bench-root{height:auto;overflow:visible;display:block}
+ #bench-root [data-section],#bench-root .workspace .inspector{display:block!important;overflow:visible}
+ .model-site-nav,.nnc-panes,.bench-nav,.orbitbar{display:none!important}
+}
