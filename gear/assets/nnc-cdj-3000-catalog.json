@@ -1,0 +1,393 @@
+{
+  "schema_version": "1.1",
+  "guide_id": "nnc-cdj-3000",
+  "revision": "0.1.0",
+  "model": "Pioneer DJ CDJ-3000",
+  "owner": "No Nonsense Collective · Nick's rig",
+  "units": "mm",
+  "dimensions_mm": [
+    329,
+    118,
+    453
+  ],
+  "weight_kg": 5.5,
+  "coordinate_system": {
+    "x": "unit right",
+    "y": "up",
+    "z": "front"
+  },
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "category_limits": {
+    "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
+    "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
+  },
+  "sources": [
+    {
+      "source_id": "cdj3000-manual",
+      "label": "Pioneer DJ CDJ-3000 instruction manual DRI1586A",
+      "locator": "https://downloads.support.alphatheta.com/manuals/CDJ_3000_DRI1586A_manual/",
+      "scope": "Specifications page: 5.5 kg, 329 × 453 × 118 mm (W × D × H), AUDIO OUT RCA, DIGITAL OUT coaxial RCA 96 kHz/24 bit, USB type A (5 V / 1 A) and type B, 1000BASE-T LAN, SD up to 32 GB, 9-inch display."
+    },
+    {
+      "source_id": "cdj3000-page",
+      "label": "Pioneer DJ CDJ-3000 product pages",
+      "locator": "https://www.pioneerdj.com/en-us/product/player/cdj-3000/black/specifications/",
+      "scope": "329 × 453 × 118 mm, 5.5 kg, 9-inch HD touch screen, Gigabit Pro DJ Link, V-Lock power cable, USB-HID and iPhone connection."
+    },
+    {
+      "source_id": "nnc-seed",
+      "label": "NNC gear pack · catalog-seed.json",
+      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
+    },
+    {
+      "source_id": "nnc-inventory",
+      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "locator": "NNC inventory record, 14 October 2026",
+      "scope": "Which units Nick owns and how many."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "cdj.body",
+      "label": "Player body",
+      "category": "Enclosure",
+      "kind": "chassis",
+      "purpose": "Multi player, 329 wide × 453 deep × 118 high mm and 5.5 kg, with an aluminium top plate. Two in the inventory.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual",
+        "cdj3000-page"
+      ],
+      "limits": "Envelope is published; edge profile and button placement are approximate.",
+      "action": null,
+      "aliases": [
+        "deck",
+        "player"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.jog",
+      "label": "Jog wheel with centre display",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Large jog wheel with an LCD in its centre showing playhead position and artwork. The seed records a 206 mm jog; the manual specification table does not state the diameter.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-page",
+        "nnc-seed"
+      ],
+      "limits": "Diameter is not in the manual specification table.",
+      "action": "socket",
+      "aliases": [
+        "platter",
+        "wheel"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.screen",
+      "label": "9-inch touch screen",
+      "category": "Controls",
+      "kind": "display",
+      "purpose": "9-inch full-colour HD LCD touch screen for browsing, waveforms and settings, with shortcut buttons for Playlist and Search below it.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual",
+        "cdj3000-page"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "display",
+        "lcd",
+        "browse"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.hotcues",
+      "label": "Hot Cue and loop buttons",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Eight Hot Cue buttons run left to right under the waveform, with dedicated Beat Jump, 4-beat and 8-beat loop controls.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-page"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "cue",
+        "loop",
+        "beat jump"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.transport",
+      "label": "PLAY/PAUSE and CUE",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Redesigned play, cue and Hot Cue buttons on the lower left, with the tempo slider to the right of the jog.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-page"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "play",
+        "cue",
+        "tempo"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.media.sd",
+      "label": "SD card slot",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Front-left SD slot, SD standard file system, up to 32 GB.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "sd",
+        "card"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.media.usb",
+      "label": "USB type A (top)",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "USB downstream port for a drive, 5 V / 1 A or less, under the cover on the top-left.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "usb",
+        "stick",
+        "drive"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.io.audio",
+      "label": "AUDIO OUT L/R · RCA",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Analogue line output, 2.0 Vrms at 1 kHz, 4 Hz – 40 kHz, 115 dB S/N. This is what feeds a mixer line channel.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "rca",
+        "line out",
+        "analog"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.io.digital",
+      "label": "DIGITAL OUT · coaxial RCA",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Coaxial S/PDIF digital output, 0.5 Vp-p into 75 Ω, 96 kHz / 24 bit, for a mixer digital input.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "spdif",
+        "coax",
+        "digital"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.io.link",
+      "label": "LINK · PRO DJ LINK LAN",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "1000BASE-T Ethernet for Pro DJ Link: share one USB or SD library across players, sync, and rekordbox link export. A LAN cable ships in the box.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual",
+        "cdj3000-page"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "lan",
+        "ethernet",
+        "pro dj link",
+        "rj45"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.io.usbb",
+      "label": "USB type B (PC/Mac)",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "USB upstream port for a laptop: HID control of Serato DJ Pro, djay PRO AI or TRAKTOR PRO 3, or rekordbox export.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-manual",
+        "cdj3000-page"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "usb b",
+        "laptop",
+        "hid"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.io.ac",
+      "label": "AC IN · V-Lock power",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "IEC mains inlet with the lockable V-Lock cable in regions that ship it, next to the power switch.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "cdj3000-page"
+      ],
+      "limits": "Voltage and wattage are not on the readable pages; see the manual safety sheet.",
+      "action": "socket",
+      "aliases": [
+        "power",
+        "iec",
+        "v-lock"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "cdj.io.kensington",
+      "label": "Kensington lock slot",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Security slot on the rear for a cable lock.",
+      "confidence": "Reported",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "nnc-seed"
+      ],
+      "limits": "Not in the readable manual pages; common to CDJ players.",
+      "action": null,
+      "aliases": [
+        "lock"
+      ],
+      "shape": {}
+    }
+  ],
+  "evidence_policy": {
+    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+  },
+  "page": {
+    "title": "Pioneer DJ CDJ-3000 | NNC Gear Guide",
+    "site_title": "Pioneer DJ CDJ-3000 multi player · No Nonsense gear guide",
+    "bench": "No Nonsense gear guide / 05 · preview",
+    "heading": "Pioneer DJ CDJ-3000",
+    "identity_strong": "Pioneer DJ · CDJ-3000 · 2 in the rig",
+    "description": "Explore Pioneer DJ CDJ-3000 in 3D. Manufacturer facts, the NNC record and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "views": [
+      {
+        "id": "overview",
+        "label": "Overview"
+      },
+      {
+        "id": "top",
+        "label": "Top panel"
+      },
+      {
+        "id": "rear",
+        "label": "Rear panel"
+      },
+      {
+        "id": "front",
+        "label": "Front / SD"
+      }
+    ],
+    "evidence_flag": "GEOMETRY APPROXIMATE",
+    "search_placeholder": "Name, port, control…",
+    "practice_heading": "Know which rear jack feeds what.",
+    "practice_notice": "Readbacks repeat the CDJ-3000 manual and product page. Playback, link and library state are not simulated.",
+    "practice_cards": "<div class=\"card\"><h3>Simulated CDJ-3000 state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"cdj.jog\">Jog wheel with centre display</button><button data-sim=\"socket\" data-socket=\"cdj.screen\">9-inch touch screen</button><button data-sim=\"socket\" data-socket=\"cdj.hotcues\">Hot Cue and loop buttons</button><button data-sim=\"socket\" data-socket=\"cdj.transport\">PLAY/PAUSE and CUE</button><button data-sim=\"socket\" data-socket=\"cdj.media.sd\">SD card slot</button><button data-sim=\"socket\" data-socket=\"cdj.media.usb\">USB type A (top)</button><button data-sim=\"socket\" data-socket=\"cdj.io.audio\">AUDIO OUT L/R · RCA</button><button data-sim=\"socket\" data-socket=\"cdj.io.digital\">DIGITAL OUT · coaxial RCA</button><button data-sim=\"socket\" data-socket=\"cdj.io.link\">LINK · PRO DJ LINK LAN</button><button data-sim=\"socket\" data-socket=\"cdj.io.usbb\">USB type B (PC/Mac)</button><button data-sim=\"socket\" data-socket=\"cdj.io.ac\">AC IN · V-Lock power</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Link two players</h3><p>One LAN cable from each CDJ-3000 to the mixer's LINK ports (or a switch) lets both read one USB stick or SD card and sync. Audio still leaves each player on its own RCA or digital pair.</p><p class=\"small\">The DJM-A9 has the LINK hub; this model does not simulate the network.</p></div>",
+    "evidence_heading": "Pioneer DJ CDJ-3000 · manual, product page and NNC record",
+    "evidence_note": "Envelope, weight and every rear connector come from the specification page of the AlphaTheta-hosted manual. The jog diameter is not in that table; the 206 mm figure is the seed's and stays Reported.",
+    "facts": [
+      [
+        "Envelope",
+        "329 × 453 × 118 mm (W × D × H)"
+      ],
+      [
+        "Weight",
+        "5.5 kg (12.1 lb)"
+      ],
+      [
+        "Display",
+        "9-inch HD LCD touch screen"
+      ],
+      [
+        "Analogue out",
+        "RCA · 2.0 Vrms · 4 Hz – 40 kHz · S/N 115 dB"
+      ],
+      [
+        "Digital out",
+        "Coaxial S/PDIF · 96 kHz / 24 bit"
+      ],
+      [
+        "USB",
+        "Type A (5 V / 1 A) for media · Type B for a computer"
+      ],
+      [
+        "LAN",
+        "1000BASE-T Pro DJ Link"
+      ],
+      [
+        "SD",
+        "Up to 32 GB"
+      ],
+      [
+        "Power",
+        "IEC, V-Lock cable in some regions"
+      ]
+    ],
+    "unresolved": [
+      "Jog diameter not stated in the manual table",
+      "Front, top and rear renders for Nick's units",
+      "Firmware version on Nick's players"
+    ],
+    "footer": "Pioneer DJ CDJ-3000 · educational reconstruction · NNC staged"
+  }
+}

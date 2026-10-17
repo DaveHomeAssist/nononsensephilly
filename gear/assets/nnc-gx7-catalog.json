@@ -1,0 +1,376 @@
+{
+  "schema_version": "1.1",
+  "guide_id": "nnc-gx7",
+  "revision": "0.1.0",
+  "model": "QSC GX7",
+  "owner": "No Nonsense Collective · Nick's rig",
+  "units": "mm",
+  "dimensions_mm": [
+    483,
+    89,
+    257
+  ],
+  "weight_kg": 7.0,
+  "coordinate_system": {
+    "x": "unit right",
+    "y": "up",
+    "z": "front"
+  },
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "category_limits": {
+    "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
+    "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
+  },
+  "sources": [
+    {
+      "source_id": "qsc-gx-spec",
+      "label": "QSC GX Series specification sheet (04/05/11)",
+      "locator": "https://docs.rs-online.com/8d64/0900766b81315bcb.pdf",
+      "scope": "Power per channel, THD, sensitivity, input and output connectors, crossover switch, 89 × 483 × 257 mm, net weights (GX5 12.6 kg, GX7 7 kg). Mirrored copy of the QSC sheet in the NNC pack as gx-series-spec-sheet-rs.pdf."
+    },
+    {
+      "source_id": "qsc-gx-manual",
+      "label": "QSC GX3/GX5/GX7 user manual TD-000271",
+      "locator": "https://www.qscaudio.com/resource-files/productresources/amp/gx/q_amp_gx_usermanual.pdf",
+      "scope": "Rear panel: XLR and TRS inputs wired in parallel per channel, unbalanced phono inputs, crossover switch (full range / 100 Hz LP sub on ch 1, HP top on ch 2), AC breaker reset, rear rack ears, exhaust vent. Weights GX3 12.1, GX5 12.6, GX7 7.7 kg."
+    },
+    {
+      "source_id": "qsc-gx7-page",
+      "label": "QSC GX7 product page (India mirror)",
+      "locator": "https://in.qsc.com/ch/live-sound/products/amplifiers/gx-series/gx7/",
+      "scope": "Marketing page that still lists the GX7 chassis and weights; qscaudio.com no longer carries the GX series."
+    },
+    {
+      "source_id": "nnc-seed",
+      "label": "NNC gear pack · catalog-seed.json",
+      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
+    },
+    {
+      "source_id": "nnc-inventory",
+      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "locator": "NNC inventory record, 14 October 2026",
+      "scope": "Which units Nick owns and how many."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "gx7.chassis",
+      "label": "2U rack chassis",
+      "category": "Enclosure",
+      "kind": "chassis",
+      "purpose": "Two-rack-unit steel chassis, 483 wide × 89 high × 257 deep mm, 7.0 kg net. Front rack ears plus optional rear ears; a variable-speed fan pulls air rear to front, so the rack needs an open back.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec",
+        "qsc-gx-manual"
+      ],
+      "limits": "Chassis envelope is published; vent pattern and handle shape are approximate.",
+      "action": null,
+      "aliases": [
+        "amp",
+        "rack"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.ctl.gain1",
+      "label": "Channel 1 gain",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Front-panel gain knob with 21 detents for channel 1. In crossover mode channel 1 carries the sub (20–100 Hz).",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "ch1",
+        "level"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.ctl.gain2",
+      "label": "Channel 2 gain",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Front-panel gain knob with 21 detents for channel 2. In crossover mode channel 2 carries the top box (100 Hz – 20 kHz).",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "ch2",
+        "level"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.ctl.leds",
+      "label": "Signal, clip and power LEDs",
+      "category": "Controls",
+      "kind": "indicator",
+      "purpose": "Green signal LEDs at −35 dB, red proportional clip LEDs at 0.1% THD, blue power LED. GuardRail reduces gain during heavy clipping rather than shutting down.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "clip",
+        "guardrail"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.ctl.power",
+      "label": "AC power switch",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Front-panel AC switch. If the amplifier shuts off after a long burst, switch off and reset the rear breaker after a 30-second cool-down.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "on",
+        "off"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.io.xlr",
+      "label": "Inputs · XLR and TRS per channel",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Balanced 3-pin XLR and 1/4-inch TRS inputs for each channel, wired in parallel so either one feeds through to the other. Pin 2 / tip positive. Input sensitivity 1.2 Vrms, greater than 20 kΩ balanced.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec",
+        "qsc-gx-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "xlr",
+        "trs",
+        "input"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.io.rca",
+      "label": "Inputs · unbalanced phono (RCA)",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Unbalanced RCA inputs per channel for nearby sources in the same rack. The manual says not to use the XLR or TRS inputs at the same time.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec",
+        "qsc-gx-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "rca",
+        "phono"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.io.speakon",
+      "label": "Outputs · Speakon combo per channel",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Neutrik Speakon combo output per channel that also accepts a 1/4-inch TS plug. Two-wire (1+/1−) Speakon wiring.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "speakon",
+        "nl4",
+        "output"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.io.binding",
+      "label": "Outputs · binding posts per channel",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Two binding-post terminals per channel for bare wire, spade or banana connections, in parallel with the Speakon combo.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "banana",
+        "binding post"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.ctl.crossover",
+      "label": "Crossover switch",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "FULL RANGE: both channels independent, crossover bypassed. CROSSOVER: the signal at channel 1 is split, 20–100 Hz (3rd-order low-pass) to channel 1 for a sub and 100 Hz – 20 kHz (2nd-order high-pass) to channel 2 for the top. Channel 2 inputs are ignored in that mode.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec",
+        "qsc-gx-manual"
+      ],
+      "limits": "",
+      "action": "crossover",
+      "aliases": [
+        "sub",
+        "sat",
+        "100 hz"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.io.ac",
+      "label": "AC inlet and breaker",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "IEC mains inlet with a resettable AC breaker beside it. 725 W per channel at 8 Ω draws about 10.1 A at 1/8 power pink noise into 4 Ω at 120 V.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec",
+        "qsc-gx-manual"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "iec",
+        "breaker",
+        "mains"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "gx7.fan",
+      "label": "Rear-to-front fan and vent",
+      "category": "Enclosure",
+      "kind": "vent",
+      "purpose": "Variable-speed fan draws cool air in over the transformer and out through the front. Keep the rear vent clear; install in an open-back rack.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "qsc-gx-spec",
+        "qsc-gx-manual"
+      ],
+      "limits": "",
+      "action": null,
+      "aliases": [
+        "cooling",
+        "exhaust"
+      ],
+      "shape": {}
+    }
+  ],
+  "evidence_policy": {
+    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+  },
+  "page": {
+    "title": "QSC GX7 | NNC Gear Guide",
+    "site_title": "QSC GX7 power amplifier · No Nonsense gear guide",
+    "bench": "No Nonsense gear guide / 03 · preview",
+    "heading": "QSC GX7",
+    "identity_strong": "QSC GX7 · 2U two-channel amplifier",
+    "description": "Explore QSC GX7 in 3D. Manufacturer facts, the NNC record and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "views": [
+      {
+        "id": "overview",
+        "label": "Overview"
+      },
+      {
+        "id": "front",
+        "label": "Front panel"
+      },
+      {
+        "id": "rear",
+        "label": "Rear panel"
+      },
+      {
+        "id": "xray",
+        "label": "Inside (x-ray)"
+      }
+    ],
+    "evidence_flag": "MODEL CONFIRMATION PENDING",
+    "search_placeholder": "Name, port, control…",
+    "practice_heading": "Full range or crossover: know which way the switch points.",
+    "practice_notice": "Readbacks repeat the QSC spec sheet and manual. The crossover toggle only changes text and the switch position; no gain or signal is simulated.",
+    "practice_cards": "<div class=\"card\"><h3>Simulated QSC GX7 state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"crossover\">Toggle crossover switch</button><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"gx7.ctl.gain1\">Channel 1 gain</button><button data-sim=\"socket\" data-socket=\"gx7.ctl.gain2\">Channel 2 gain</button><button data-sim=\"socket\" data-socket=\"gx7.ctl.leds\">Signal, clip and power LEDs</button><button data-sim=\"socket\" data-socket=\"gx7.ctl.power\">AC power switch</button><button data-sim=\"socket\" data-socket=\"gx7.io.xlr\">Inputs · XLR and TRS per channel</button><button data-sim=\"socket\" data-socket=\"gx7.io.rca\">Inputs · unbalanced phono (RCA)</button><button data-sim=\"socket\" data-socket=\"gx7.io.speakon\">Outputs · Speakon combo per channel</button><button data-sim=\"socket\" data-socket=\"gx7.io.binding\">Outputs · binding posts per channel</button><button data-sim=\"socket\" data-socket=\"gx7.io.ac\">AC inlet and breaker</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Powering the S-181 subs</h3><p>Each modified S-181 is 8 Ω nominal. One per channel in FULL RANGE with an external crossover, or two in parallel per channel at 4 Ω. In CROSSOVER mode channel 1 is the sub feed and channel 2 the top, from one input.</p><p class=\"small\">Check the amplifier label first: GX7 gives 725 W at 8 Ω, GX5 500 W.</p></div>",
+    "evidence_heading": "QSC GX7 · QSC specification sheet, user manual and NNC record",
+    "evidence_note": "The GX series is discontinued; the specification sheet is an RS-hosted copy of the QSC document and the user manual is still on qscaudio.com. Net weight 7 kg (spec sheet) or 7.7 kg (manual table) for the GX7.",
+    "facts": [
+      [
+        "Envelope",
+        "89 × 483 × 257 mm (H × W × D), 2 RU"
+      ],
+      [
+        "Net weight",
+        "7.0 kg"
+      ],
+      [
+        "Power, 8 Ω",
+        "725 W per channel both driven · 800 W single"
+      ],
+      [
+        "Power, 4 Ω",
+        "1000 W per channel both driven · 1200 W single"
+      ],
+      [
+        "Gain",
+        "36.1 dB voltage gain · 1.2 Vrms sensitivity"
+      ],
+      [
+        "Inputs",
+        "XLR + 1/4 in TRS balanced, parallel RCA unbalanced, per channel"
+      ],
+      [
+        "Outputs",
+        "Speakon combo + binding posts, per channel"
+      ],
+      [
+        "Crossover",
+        "100 Hz · 3rd-order LP sub (ch 1) · 2nd-order HP top (ch 2)"
+      ],
+      [
+        "Protection",
+        "Short, open, thermal, RF, DC; GuardRail gain limiting"
+      ]
+    ],
+    "unresolved": [
+      "Inventory names the GX7 in its title and the GX5 in its body: read the label on the amplifier",
+      "Front and rear photographs of Nick's unit",
+      "Which position the crossover switch is left in"
+    ],
+    "footer": "QSC GX7 · educational reconstruction · NNC staged"
+  }
+}
