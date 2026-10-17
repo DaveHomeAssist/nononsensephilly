@@ -43,7 +43,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=.1
   // Floor shadow catcher.
   const floor=new T.Mesh(new T.PlaneGeometry(2600,2600),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-12;floor.receiveShadow=true;E.scene.add(floor);
 }
-const E=new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim:{socket:null,xray:false,cabinets:1,output:'No socket chosen. Recorded roles only; the plate pinout is unmetered.'},build,onAction(E,a,c){switch(a){
+const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim:{socket:null,xray:false,cabinets:1,output:'No socket chosen. Recorded roles only; the plate pinout is unmetered.'},build,onAction(E,a,c){switch(a){
   case'socket':{const id=c.component_id||c.socket;E.sim.socket=SOCKETS[id]?id:null;E.sim.output=SOCKETS[id]||'Unknown socket.';break}
   case'driver':case'xray':E.sim.xray=!E.sim.xray;E.sim.output=E.sim.xray?'X-ray view: the cabinet shell is drawn as a wireframe so the hidden DL18MT is visible. Driver position is illustrative.':'Cabinet shell restored.';break;
   case'cabinets':E.sim.cabinets=Number(c.count)||1;E.sim.output=`${E.sim.cabinets} × 8 Ω cabinet${E.sim.cabinets>1?'s':''} on one amplifier channel → ${(8/E.sim.cabinets).toFixed(E.sim.cabinets===3?2:0)} Ω nominal. Check the amplifier's minimum load before patching.`;break;
@@ -52,7 +52,7 @@ const E=new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'ove
   const rd=root.querySelector('[data-readout]');if(rd)rd.textContent=`SOCKET   ${E.sim.socket?E.sim.socket.replace('s181.io.','').toUpperCase():'none'}\nX-RAY    ${E.sim.xray?'on':'off'}\nLOAD     ${E.sim.cabinets} × 8 Ω → ${(8/E.sim.cabinets).toFixed(E.sim.cabinets===3?2:0)} Ω\nPINOUT   unmetered\n\n${E.sim.output}`;
   const st=root.querySelector('[data-system-state]');if(st)st.textContent=`${E.sim.cabinets} × S-181 · ${E.sim.xray?'x-ray':'shell'}`},
  practice(){return null},
- partState(E,c){if(!c)return'';return c.action?`Local simulator action: ${c.action}. Nothing is wired, metered or driven.`:'Inspection only. No simulator action is assigned.'}});
+ partState(E,c){if(!c)return'';return c.action?`Local simulator action: ${c.action}. Nothing is wired, metered or driven.`:'Inspection only. No simulator action is assigned.'}}));
 const orig=E.setView.bind(E);E.setView=function(n){this.cfg.currentView=n;orig(n);E.renderSim()};
 root.querySelectorAll('[data-sim]').forEach(b=>b.addEventListener('click',()=>E.action(b.dataset.sim,b.dataset)));
 E.setView('overview');})();

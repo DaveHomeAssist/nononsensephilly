@@ -35,7 +35,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.
   const floor=new T.Mesh(new T.PlaneGeometry(1800,1800),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-2;floor.receiveShadow=true;E.scene.add(floor);
 }
 const initialSim=Object.assign({socket:null,xray:false,output:'Nothing selected. Recorded manufacturer facts only; nothing is connected.'},{"crossover": "full"});
-const E=new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim,build,onAction(E,a,c){switch(a){
+const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim,build,onAction(E,a,c){switch(a){
   case'socket':{const id=c.component_id||c.socket;E.sim.socket=SOCKETS[id]?id:null;E.sim.output=SOCKETS[id]||'Unknown connector.';break}
   case'xray':E.sim.xray=!E.sim.xray;E.sim.output=E.sim.xray?'X-ray view: the shell is drawn as a wireframe so hidden parts are visible. Internal positions are illustrative.':'Shell restored.';break;
   case'crossover':E.sim.crossover=E.sim.crossover==='full'?'crossover':'full';E.sim.output=E.sim.crossover==='full'?'FULL RANGE: both channels independent; the switch bypasses the crossover.':'CROSSOVER: channel 1 input is split, 20–100 Hz to channel 1 (sub) and 100 Hz – 20 kHz to channel 2 (top). Channel 2 inputs are ignored.';break;
@@ -45,7 +45,7 @@ const E=new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'ove
   const rd=root.querySelector('[data-readout]');if(rd)rd.textContent=`SELECTED ${E.sim.socket?E.sim.socket.replace(/^[a-z0-9]+\./,'').toUpperCase():'none'}\nX-RAY    ${E.sim.xray?"on":"off"}\nXOVER    ${E.sim.crossover.toUpperCase()}\n\n${E.sim.output}`;
   const st=root.querySelector('[data-system-state]');if(st)st.textContent=`${E.sim.crossover==='full'?'full range':'crossover 100 Hz'} · ${E.sim.xray?'x-ray':'shell'}`},
  practice(){return null},
- partState(E,c){if(!c)return'';return c.action?`Local simulator action: ${c.action}. Nothing is wired, metered or driven.`:'Inspection only. No simulator action is assigned.'}});
+ partState(E,c){if(!c)return'';return c.action?`Local simulator action: ${c.action}. Nothing is wired, metered or driven.`:'Inspection only. No simulator action is assigned.'}}));
 const orig=E.setView.bind(E);E.setView=function(n){this.cfg.currentView=n;orig(n);E.renderSim()};
 root.querySelectorAll('[data-sim]').forEach(b=>b.addEventListener('click',()=>E.action(b.dataset.sim,b.dataset)));
 E.setView('overview');})();
