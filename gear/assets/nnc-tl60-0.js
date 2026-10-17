@@ -11,11 +11,11 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   // Rounded boxes from the runtime are centred on the origin; everything here lifts by h/2 so the unit sits on the floor.
 
   const L=750,R=24;
-  const tube=new T.Group();const glow=new T.MeshStandardMaterial({color:0xffe6c8,emissive:0xffb070,emissiveIntensity:.5,roughness:.4});tube.add(at(cy(R,R,L-80,glow,32),0,L/2,0));E.addPart('tl.tube',tube,root3);
-  const caps=new T.Group();for(const y of [20,L-20])caps.add(at(cy(R+1,R+1,40,M.black,32),0,y,0));caps.add(at(cy(4,4,8,M.silver,12),0,L+2,0));caps.add(at(cy(4,4,8,M.silver,12),0,-2,0));E.addPart('tl.mount',caps,root3);
-  const pnl=new T.Group();pnl.add(at(bx(30,60,3,M.black),0,0,0));pnl.add(at(E.label('5600K\n100%',24,20,{w:96,h:80,bg:'#0b1220',fg:'#8ad0ff',font:'700 26px ui-monospace'}),0,16,2));for(let i=0;i<4;i++)pnl.add(at(cy(3.5,3.5,3,M.rubber,12),i*8-12,-14,2));E.addPart('tl.ctl.panel',at(pnl,0,80,R+1),root3);
+  const tube=new T.Group();const glow=new T.MeshStandardMaterial({color:0xffe6c8,emissive:0xffb070,emissiveIntensity:.5,roughness:.4});tube.add(at(cy(R,R,L-140,glow,32),0,405,0));E.addPart('tl.tube',tube,root3);
+  const caps=new T.Group();caps.add(at(cy(R+1,R+1,100,M.black,32),0,50,0));caps.add(at(cy(R+1,R+1,40,M.black,32),0,L-20,0));caps.add(at(cy(4,4,8,M.silver,12),0,L+2,0));caps.add(at(cy(4,4,8,M.silver,12),0,-2,0));E.addPart('tl.mount',caps,root3);
+  const pnl=new T.Group();pnl.add(at(bx(30,60,3,M.black),0,0,0));pnl.add(at(E.label('5600K\n100%',24,20,{w:96,h:80,bg:'#0b1220',fg:'#8ad0ff',font:'700 26px ui-monospace'}),0,16,2));for(let i=0;i<4;i++)pnl.add(at(cy(3.5,3.5,3,M.rubber,12),i*8-12,-14,2));E.addPart('tl.ctl.panel',at(pnl,0,54,R+1),root3);
   const dc=new T.Group();dc.add(alongZ(at(cy(3,3,6,M.black,10),0,0,0)));dc.add(rear(at(lab('DC',16,6),0,-10,-1)));E.addPart('tl.io.dc',at(dc,-8,70,-R-2),root3);
-  const dmx=new T.Group();dmx.add(at(bx(12,10,6,M.black),0,0,0));dmx.add(rear(at(lab('DMX',16,6),0,-12,-1)));E.addPart('tl.io.dmx',at(dmx,8,95,-R-2),root3);
+  const dmx=new T.Group();dmx.add(at(bx(12,10,6,M.black),0,0,0));dmx.add(rear(at(lab('DMX',16,6),0,-12,-1)));E.addPart('tl.io.dmx',at(dmx,8,40,-R-2),root3);
  
   const floor=new T.Mesh(new T.PlaneGeometry(1800,1800),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-2;floor.receiveShadow=true;E.scene.add(floor);
   NNCProduct.finish(E,root3,refs,'tl60');

@@ -48,14 +48,14 @@
   if(slug==='s181'){for(const y of [158,543]){const vent=at(bevel(w-135,47,3,1,material(0x030405,.95)),0,y,d/2+8);vent.name='nnc-speaker-vent';group.add(vent);}}
   faceLabel(E,group,slug==='cva-118'?'CERWIN-VEGA!':'EV',slug==='cva-118'?110:45,slug==='cva-118'?17:25,0,slug==='s181'?h*.49:53,d/2+7,{fg:slug==='cva-118'?'#d73132':'#e0e2e2'});
   for(const x of [-w/2+35,w/2-35])for(const y of [42,h-42])screw(group,x,y,d/2+7,2.5);
-  cab.traverse(o=>{if(o.isMesh&&Math.abs(o.position.x)>w*.45&&o.position.y>h*.5&&o.position.y<h*.7)o.material=E.mats.rubber;});cab.add(group);E.productExterior=cab;refs.productExterior=cab;
+  for(const o of [...cab.children])if(o.isMesh&&Math.abs(o.position.x)>w*.45&&o.position.y>h*.5&&o.position.y<h*.7){cab.remove(o);o.geometry.dispose();}cab.add(group);E.productExterior=cab;refs.productExterior=cab;
   // Recessed handle wells, rounded inset grip bars and mounting screws.
   const handles=slug==='cva-118'?E.partObjects.get('cva.handles'):cab;
-  for(const sign of [-1,1]){const well=at(bevel(4,74,142,3,E.mats.black),sign*(w/2+2),h*.61,0);handles.add(well);const grip=at(bevel(10,18,95,4,E.mats.rubber),sign*(w/2+6),h*.61,0);handles.add(grip);}
+  for(const sign of [-1,1]){const well=at(bevel(1,100,158,.3,E.mats.black),sign*(w/2+.6),h*.61,0);handles.add(well);const grip=at(bevel(2,18,108,.5,E.mats.rubber),sign*(w/2+1.6),h*.61,0);handles.add(grip);}
  }
- function amp(E,slug){const prefix=slug==='gx7'?'gx7':'gx5',g=E.partObjects.get(prefix+'.chassis'),[w,h,d]=E.catalog.dimensions_mm;const front=g.children.find(o=>o.isMesh&&o.position.z>d/2);if(front)front.material=material(0xaeb5bc,.37,.72);
-  const plate=at(bevel(w-38,h-8,2,.5,material(0xb8bec3,.4,.75)),0,h/2,d/2+2);g.add(plate);
-  for(const side of [-1,1])for(let j=0;j<14;j++)g.add(at(bevel(3,h-28,1,.3,E.mats.black),side*85+(j-6.5)*5,h/2,d/2+3.5));
+ function amp(E,slug){const prefix=slug==='gx7'?'gx7':'gx5',g=E.partObjects.get(prefix+'.chassis'),[w,h,d]=E.catalog.dimensions_mm;const front=g.children.find(o=>o.isMesh&&o.position.z>d/2);if(front){g.remove(front);front.geometry.dispose();}
+  const plate=at(bevel(w-38,h-8,2,.5,material(0xb8bec3,.4,.75)),0,h/2,d/2+2);g.add(plate);g.add(at(bevel(190,h-18,2,1,material(0x25292c)),0,h/2,d/2+4));
+  for(const side of [-1,1])for(let j=0;j<14;j++)g.add(at(bevel(3,h-28,1,.3,E.mats.black),side*157+(j-6.5)*5,h/2,d/2+3.5));
   faceLabel(E,g,'QSC',43,15,-200,h-22,d/2+4,{fg:'#111416',bg:'#b8bec3'});faceLabel(E,g,slug.toUpperCase(),38,15,198,18,d/2+4,{fg:'#111416',bg:'#b8bec3'});
   for(const x of [-w/2+7,w/2-7])for(const y of [12,h-12])screw(g,x,y,d/2+4,3);
  }
@@ -72,7 +72,7 @@
   if(['prime-4','xdj-xz','djm-a9'].includes(slug))mixer(E,slug);
   if(slug==='cdj-3000'){const body=E.partObjects.get('cdj.body');body.children.filter(o=>o.isMesh&&!o.material.wireframe).forEach(o=>o.material=E.mats.black);jog(E.partObjects.get('cdj.jog'));screen(E.partObjects.get('cdj.screen'));const transport=E.partObjects.get('cdj.transport');for(let i=0;i<12;i++)transport.add(at(bevel(13,3,9,.7,i===1?E.mats.amber:E.mats.black),(i%3)*20+15,0,-290+Math.floor(i/3)*25));for(let i=0;i<4;i++)knob(transport,270,0,-315+i*26,5);panelPrint(E,body,321,445,118.4,'Pioneer DJ    CDJ-3000');}
   if(slug==='sm58'){const grillePart=E.partObjects.get('sm.grille');grillePart.children[0].material=grille(155,160,true);const seam=new T.Mesh(new T.TorusGeometry(25.5,.65,8,64),E.mats.silver);seam.rotation.x=Math.PI/2;grillePart.add(seam);const handle=E.partObjects.get('sm.handle');faceLabel(E,handle,'SHURE\nSM58',17,11,0,106,14.2,{fg:'#e0e2e4',bg:'#25272a'});}
-  if(slug==='tl60'){const tube=E.partObjects.get('tl.tube');tube.children[0].material=new T.MeshBasicMaterial({color:0xf1fcff,toneMapped:false});for(const radius of [25.2,28,32]){const m=new T.MeshBasicMaterial({color:0xb9eafa,transparent:true,opacity:radius===25.2?.16:.035,depthWrite:false,side:T.BackSide,toneMapped:false});tube.add(at(new T.Mesh(new T.CylinderGeometry(radius,radius,670,48,1,true),m),0,375,0));}faceLabel(E,E.partObjects.get('tl.mount'),'Godox',25,10,0,729,25.8,{fg:'#d6d9dd',bg:'#101114'});}
+  if(slug==='tl60'){const tube=E.partObjects.get('tl.tube');tube.children[0].material=new T.MeshBasicMaterial({color:0xf1fcff,toneMapped:false});for(const radius of [25.2,28,32]){const m=new T.MeshBasicMaterial({color:0xb9eafa,transparent:true,opacity:radius===25.2?.16:.035,depthWrite:false,side:T.BackSide,toneMapped:false});tube.add(at(new T.Mesh(new T.CylinderGeometry(radius,radius,610,48,1,true),m),0,405,0));}faceLabel(E,E.partObjects.get('tl.mount'),'Godox',25,10,0,729,25.8,{fg:'#d6d9dd',bg:'#101114'});}
   // Detail added after addPart must retain pick and highlight ownership.
   E.pickables=[];for(const [id,part] of E.partObjects)part.traverse(o=>{if(o.isMesh){o.userData.componentId=id;E.pickables.push(o);}});
   E.scene.updateMatrixWorld(true);const bounds=new T.Box3();root3.traverse(o=>{if(!o.isMesh||o.material.wireframe)return;let node=o;while(node&&node.visible)node=node.parent;if(node)return;bounds.expandByObject(o);});E.productBounds=bounds;E.productFloorY=bounds.min.y-1;

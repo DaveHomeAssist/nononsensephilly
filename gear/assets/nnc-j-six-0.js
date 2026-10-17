@@ -12,10 +12,10 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
 
   const W=281,H=182,D=287;
   const base=new T.Group();base.add(at(E.rounded(W,110,D-35,27,M.black),0,63,0));
-  for(const sx of [-1,1]){base.add(at(E.rounded(8,105,30,3,M.black),sx*65,128,-30));base.add(alongX(at(cy(15,15,14,M.rubber,32),sx*76,112,-30)));}base.add(at(E.rounded(138,7,30,3,M.black),0,179,-30));
+  for(const sx of [-1,1]){base.add(at(E.rounded(8,105,30,3,M.black),sx*139,128,-30));base.add(alongX(at(cy(15,15,14,M.rubber,32),sx*148,112,-30)));}base.add(at(E.rounded(286,7,30,3,M.black),0,179,-30));
   for(const sx of [-1,1])for(let i=0;i<12;i++)base.add(at(bx(2,32,3,M.rubber),sx*138,65,-95+i*13));for(let i=0;i<17;i++)base.add(at(bx(3,1,12,M.rubber),i*12-96,119,-20));
   E.addPart('jsix.base',base,root3);
-  const pod=(id,x)=>{const g=new T.Group();g.add(alongZ(at(cy(49,49,7,M.rubber,48),0,0,0)));g.add(alongZ(at(cy(43,43,8,M.silver,48),0,0,2)));const lens=new T.Mesh(new T.SphereGeometry(40,32,20,0,Math.PI*2,0,Math.PI/2),new T.MeshStandardMaterial({color:0x53649b,roughness:.12,metalness:.8}));lens.rotation.x=Math.PI/2;lens.scale.y=.14;g.add(at(lens,0,0,6));for(const a of [0,1,2,3])NNCProduct.screw(g,Math.cos(a*Math.PI/2)*47,Math.sin(a*Math.PI/2)*47,5,1.5);E.addPart(id,at(g,x,62,D/2-15),root3)};
+  const pod=(id,x)=>{const g=new T.Group();g.add(alongZ(at(cy(49,49,7,M.rubber,48),0,0,0)));g.add(alongZ(at(cy(43,43,8,M.silver,48),0,0,2)));const lens=new T.Mesh(new T.SphereGeometry(40,32,20,0,Math.PI*2,0,Math.PI/2),new T.MeshPhysicalMaterial({color:0xe4eaf0,roughness:.12,metalness:0,transparent:true,opacity:.4,depthWrite:false,clearcoat:1}));lens.rotation.x=Math.PI/2;lens.scale.y=.14;g.add(at(lens,0,0,6));for(const a of [0,1,2,3])NNCProduct.screw(g,Math.cos(a*Math.PI/2)*47,Math.sin(a*Math.PI/2)*47,5,1.5);E.addPart(id,at(g,x,62,D/2-15),root3)};
   pod('jsix.pod.left',-75);pod('jsix.pod.right',75);
   const z=-D/2-4;
   const pw=new T.Group();pw.add(alongZ(at(cy(6,6,30,M.black,12),0,0,-10)));pw.add(alongZ(at(cy(5,5,10,M.silver,10),30,0,0)));pw.add(at(bx(10,6,4,M.silver),30,-14,0));pw.add(rear(at(lab('POWER  FUSE  120/230',80,9),15,-26,-1)));E.addPart('jsix.io.power',at(pw,-60,55,z),root3);

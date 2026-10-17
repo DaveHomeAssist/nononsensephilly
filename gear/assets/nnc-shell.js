@@ -3,8 +3,18 @@
 (() => {
  'use strict';
  const root=document.querySelector('#bench-root');
- const gearSelect=root.querySelector('[data-gear-select]'),gearOpen=root.querySelector('[data-gear-open]');
- gearSelect.addEventListener('change',()=>{gearOpen.href=gearSelect.value;});
+ const drawer=root.querySelector('[data-gear-drawer]')||root.querySelector('.nnc-gear-drawer'),gearToggle=root.querySelector('[data-gear-toggle]'),gearSearch=root.querySelector('[data-gear-search]'),gearCards=[...root.querySelectorAll('[data-gear]')],main=root.querySelector('.nnc-workbench-main');
+ const narrow=matchMedia('(max-width:700px)');let gearCategory='all';
+ function setDrawer(open,focus=false){root.dataset.gearDrawer=open?'open':'closed';drawer.hidden=!open;document.querySelector('.model-site-nav').inert=narrow.matches&&open;gearToggle.setAttribute('aria-expanded',String(open));if(narrow.matches){drawer.setAttribute('role','dialog');drawer.setAttribute('aria-modal','true');main.inert=open;}else{drawer.removeAttribute('role');drawer.removeAttribute('aria-modal');main.inert=false;}if(focus)(open?gearSearch:gearToggle).focus();try{sessionStorage.setItem('nncGearDrawer',String(open));}catch{} }
+ function filterGear(){const term=gearSearch.value.trim().toLowerCase();let count=0;for(const card of gearCards){card.hidden=!(gearCategory==='all'||gearCategory===card.dataset.gearCategory)||!card.dataset.gearSearchText.includes(term);if(!card.hidden)count++;}root.querySelector('[data-gear-count]').textContent=count+' '+(count===1?'model':'models');root.querySelector('[data-gear-empty]').hidden=count!==0;}
+ gearToggle.addEventListener('click',()=>setDrawer(drawer.hidden,true));root.querySelector('[data-gear-close]').addEventListener('click',()=>setDrawer(false,true));gearSearch.addEventListener('input',filterGear);
+ root.querySelectorAll('[data-gear-filter]').forEach(button=>button.addEventListener('click',()=>{gearCategory=button.dataset.gearFilter;root.querySelectorAll('[data-gear-filter]').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));filterGear();}));
+ root.querySelector('[data-gear-clear]').addEventListener('click',()=>{gearSearch.value='';root.querySelector('[data-gear-filter="all"]').click();gearSearch.focus();});
+ drawer.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();setDrawer(false,true);}if(event.key==='Tab'&&narrow.matches){const nodes=[...drawer.querySelectorAll('a,button,input,[tabindex="0"]')].filter(el=>el.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
+ // Keep the library available after navigation, but never obscure a phone's model on arrival.
+ let savedDrawer;try{savedDrawer=sessionStorage.getItem('nncGearDrawer');}catch{}
+ setDrawer(!narrow.matches&&(savedDrawer==='true'||(savedDrawer===null&&root.dataset.library==='true')));
+ narrow.addEventListener('change',()=>setDrawer(!narrow.matches&&root.dataset.gearDrawer==='open'));
  const preferences=window.NNCAppearance,{colours,validate}=preferences;
  let settings=preferences.read();
  let explorer,grid,outline;

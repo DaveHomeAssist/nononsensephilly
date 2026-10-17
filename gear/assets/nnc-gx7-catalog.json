@@ -25,8 +25,8 @@
     {
       "source_id": "qsc-gx-spec",
       "label": "QSC GX Series specification sheet (04/05/11)",
-      "locator": "https://docs.rs-online.com/8d64/0900766b81315bcb.pdf",
-      "scope": "Power per channel, THD, sensitivity, input and output connectors, crossover switch, 89 × 483 × 257 mm, net weights (GX5 12.6 kg, GX7 7 kg). Mirrored copy of the QSC sheet in the NNC pack as gx-series-spec-sheet-rs.pdf."
+      "locator": "https://www.qscaudio.com/resource-files/productresources/amp/gx/q_amp_gx_specs.pdf",
+      "scope": "QSC GX Series specification sheet: dimensions, ratings, 120 V GX7 weight of 7 kg, and PowerLight supply versus the GX3/GX5 toroidal transformers. The internal board placement in this model is illustrative."
     },
     {
       "source_id": "qsc-gx-manual",
@@ -66,7 +66,7 @@
         "qsc-gx-spec",
         "qsc-gx-manual"
       ],
-      "limits": "Chassis envelope is published; vent pattern and handle shape are approximate.",
+      "limits": "The GX7 PowerLight supply is documented by QSC. The internal board, components and heatsink positions are illustrative, not a service drawing.",
       "action": null,
       "aliases": [
         "amp",
