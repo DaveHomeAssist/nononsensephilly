@@ -12,6 +12,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.
 
   const W=728,H=104,D=497;
   const body=new T.Group();const shell=at(E.rounded(W,H-6,D,10,M.black),0,(H-6)/2,0);body.add(shell);refs.shell=shell;body.add(at(E.rounded(W-6,6,D-6,8,M.dark),0,H-3,0));E.addPart('p4.body',body,root3);
+  const ghost=new T.Mesh(shell.geometry,new T.MeshBasicMaterial({color:0x9a4525,wireframe:true,transparent:true,opacity:.35}));ghost.position.copy(shell.position);ghost.visible=false;body.add(ghost);refs.ghost=ghost;
   const top=H+1;
   const scr=new T.Group();const panel=at(bx(250,6,150,M.black),0,0,0);panel.rotation.x=-.5;scr.add(panel);const face=at(E.label('PRIME 4   LIBRARY\n▂▃▅▆▅▃▂▃▅▇▅▃▂  ▂▃▅▆▅▃▂',236,138,{w:944,h:552,bg:'#0d1626',fg:'#7fd4ff',font:'600 48px ui-monospace'}),0,4,-1);face.rotation.x=-.5-Math.PI/2;scr.add(face);scr.add(at(cy(12,12,10,M.rubber,24),160,0,30));E.addPart('p4.screen',at(scr,0,top+40,-140),root3);
   const jog=(id,x)=>{const g=new T.Group();g.add(at(cy(78,78,10,M.rubber,64),0,0,0));g.add(at(cy(70,70,4,M.black,64),0,7,0));g.add(at(cy(32,32,6,M.glass,48),0,9,0));E.addPart(id,at(g,x,top,40),root3)};

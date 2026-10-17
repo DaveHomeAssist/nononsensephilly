@@ -15,6 +15,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.
   body.add(at(E.rounded(W-6,30,D-6,8,M.silver),0,H-15,0)); // aluminium top plate
   body.add(at(bx(W-20,8,D-20,M.rubber),0,2,0));
   E.addPart('cdj.body',body,root3);
+  const ghost=new T.Mesh(shell.geometry,new T.MeshBasicMaterial({color:0x9a4525,wireframe:true,transparent:true,opacity:.35}));ghost.position.copy(shell.position);ghost.visible=false;body.add(ghost);refs.ghost=ghost;
   const top=H+1;
   const jog=new T.Group();jog.add(at(cy(103,103,10,M.rubber,64),0,0,0));jog.add(at(cy(96,96,4,M.black,64),0,7,0));jog.add(at(cy(40,40,6,M.glass,48),0,9,0));jog.add(faceUp(at(E.label('03:12',60,30,{w:240,h:120,bg:'#0b1220',fg:'#9fd2ff',font:'700 60px ui-monospace'}),0,13,0)));E.addPart('cdj.jog',at(jog,20,top,70),root3);
   const scr=new T.Group();scr.add(at(bx(200,4,112,M.black),0,0,0));scr.add(faceUp(at(E.label('CDJ-3000   LIBRARY\n▂▃▅▆▅▃▂▃▅▇▅▃▂',190,100,{w:760,h:400,bg:'#0d1626',fg:'#7fd4ff',font:'600 44px ui-monospace'}),0,3,0)));E.addPart('cdj.screen',at(scr,10,top,-150),root3);
