@@ -29,10 +29,16 @@
       "scope": "Official EDS (served in Portuguese): 1000 W class-D amplifier, 127 dB peak, 55 Hz–18 kHz (−3 dB), 42 Hz–20 kHz (−10 dB), rear panel items 1–8, 685 × 383 mm drawing. Machine text could not be read; figures were taken from the rendered pages."
     },
     {
+      "source_id": "ev-zlx15bt-eds-en",
+      "label": "Electro-Voice ZLX-15BT Engineering Data Sheet (English)",
+      "locator": "https://products.electrovoice.com/binary/ZLX-15BT_15__2-way_powered_speaker_BT_Datasheet_51_en_42355215115.pdf",
+      "scope": "Official English EDS: 55 Hz–18 kHz (−3 dB), 42 Hz–20 kHz (−10 dB), 127 dB maximum SPL, 90° × 60° coverage, 1000 W, EVS-15L 380 mm (15 in) LF transducer, DH-1K HF transducer, polypropylene enclosure, 685 × 426 × 383 mm (H × W × D), 17.3 kg net, rear panel items 1–8."
+    },
+    {
       "source_id": "ev-zlx15bt-retail",
       "label": "Retailer copies of the EV ZLX-15BT specification table",
       "locator": "zZounds, Markertek and CCI Solutions listings, read 17 October 2026",
-      "scope": "Dimensions 685 × 426 × 383 mm (H × W × D), net weight 17.3 kg, EVS-15L and DH-1K transducers, 90° × 60° coverage, polypropylene enclosure. Not a manufacturer page; the first-generation product page is gone."
+      "scope": "Dimensions 685 × 426 × 383 mm (H × W × D), net weight 17.3 kg, EVS-15L and DH-1K transducers, 90° × 60° coverage, polypropylene enclosure. Not a manufacturer page; the first-generation product page is gone. These figures agree with the English EDS."
     },
     {
       "source_id": "nnc-gear-record",
@@ -53,14 +59,15 @@
       "label": "Two-way cabinet",
       "category": "Enclosure",
       "kind": "chassis",
-      "purpose": "Moulded polypropylene two-way cabinet, 426 wide × 685 high × 383 deep mm and 17.3 kg. The EV drawing gives 685 mm height and 383 mm depth; the 426 mm width is from retailer copies of the EV table. Three handles and a pole cup underneath.",
+      "purpose": "Moulded polypropylene two-way cabinet, 426 wide × 685 high × 383 deep mm and 17.3 kg, per the English EDS. Three handles and a pole cup underneath.",
       "confidence": "Documented",
       "geometry_status": "approximate",
       "source_ids": [
+        "ev-zlx15bt-eds-en",
         "ev-zlx15bt-eds",
         "ev-zlx15bt-retail"
       ],
-      "limits": "EDS drawing gives height and depth; width is retailer-reproduced. Cabinet taper, handle shape and grille pattern are approximate.",
+      "limits": "Envelope and weight are from the English EDS. Cabinet taper, handle shape and grille pattern are approximate.",
       "action": null,
       "aliases": [
         "top",
@@ -78,10 +85,11 @@
       "confidence": "Documented",
       "geometry_status": "approximate",
       "source_ids": [
+        "ev-zlx15bt-eds-en",
         "ev-zlx15bt-eds",
         "ev-zlx15bt-retail"
       ],
-      "limits": "Driver model is retailer-reproduced from the EV table; position is behind an opaque grille.",
+      "limits": "Driver model is from the English EDS; position is behind an opaque grille.",
       "action": "xray",
       "aliases": [
         "15",
@@ -98,6 +106,7 @@
       "confidence": "Documented",
       "geometry_status": "approximate",
       "source_ids": [
+        "ev-zlx15bt-eds-en",
         "ev-zlx15bt-eds",
         "ev-zlx15bt-retail"
       ],
@@ -286,7 +295,7 @@
     "practice_notice": "Every readback repeats the EDS description of that connector or control. Levels, presets and Bluetooth state are not simulated.",
     "practice_cards": "<div class=\"card\"><h3>Simulated ZLX-15BT state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"zlx.io.input1\">INPUT 1 · XLR/TRS combo</button><button data-sim=\"socket\" data-socket=\"zlx.io.input2\">INPUT 2 · XLR/TRS combo</button><button data-sim=\"socket\" data-socket=\"zlx.io.aux\">AUX IN · 3.5 mm</button><button data-sim=\"socket\" data-socket=\"zlx.io.mixout\">OUTPUT · XLR mix out</button><button data-sim=\"socket\" data-socket=\"zlx.ctl.lcd\">LCD and DSP controls</button><button data-sim=\"socket\" data-socket=\"zlx.io.power\">MAINS IN · IEC and POWER switch</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Sub and top together</h3><p>The ZLX QuickSmartDSP has a sub/top system-match preset. With a sub below it, set the top to the matching preset so the crossover is shared rather than doubled, and feed the sub from the MIX OUT or split the signal before the top.</p><p class=\"small\">Preset names and the exact crossover point are in the EDS and manual; this model does not simulate DSP.</p></div>",
     "evidence_heading": "EV ZLX-15BT · engineering data sheet and NNC record",
-    "evidence_note": "The official EDS is still served by Electro-Voice but only as a Portuguese edition whose text could not be machine-read; figures were taken from the rendered pages. Width, weight and transducer names come from retailer copies of the EV table, so they are marked Reported until the English EDS is found.",
+    "evidence_note": "Electro-Voice's official English EDS gives the envelope (685 × 426 × 383 mm), net weight (17.3 kg) and transducers (EVS-15L 15-inch woofer, DH-1K HF driver), along with the amplifier, SPL, response and coverage figures. Retailer copies of the EV table agree with it.",
     "facts": [
       [
         "Envelope",
@@ -327,7 +336,6 @@
     ],
     "unresolved": [
       "Generation: the EV page now serves ZLX G2; NNC's units are listed as first-generation BT, not yet confirmed",
-      "English EDS or owner's manual to confirm width, weight and transducer names",
       "Which DSP preset the units are left on"
     ],
     "footer": "EV ZLX-15BT · educational reconstruction"
