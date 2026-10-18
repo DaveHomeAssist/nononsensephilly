@@ -47,7 +47,7 @@
       "label": "Fixture body and bracket",
       "category": "Enclosure",
       "kind": "chassis",
-      "purpose": "Twin-dome LED effect, 345 × 290 × 272 mm (L × W × H) and 3.3 kg, on a hanging bracket. Two in the inventory.",
+      "purpose": "Single curved lens housing over two internal RGB LED engines, 345 × 290 × 272 mm (L × W × H), on a hanging bracket. Housing silhouette reconstructed from the ADJ product gallery; not measured.",
       "confidence": "Documented",
       "geometry_status": "approximate",
       "source_ids": [
@@ -62,16 +62,16 @@
     },
     {
       "component_id": "vert.dome.left",
-      "label": "Left lens dome",
+      "label": "Left optical region (shared dome)",
       "category": "Acoustic",
       "kind": "light",
-      "purpose": "One of two domes, each over a 9 W 3-in-1 RGB LED, together throwing 32 sound-activated moving and strobing beams.",
-      "confidence": "Documented",
+      "purpose": "Approximate left region of the single curved lens housing. The fixture has two internal 9 W RGB engines, producing 32 beams together; the visible cover is not a separate dome per engine.",
+      "confidence": "Approximate",
       "geometry_status": "approximate",
       "source_ids": [
         "adj-vertigo"
       ],
-      "limits": "",
+      "limits": "Region is an inspection target, not a seam or measured division in the physical lens cover.",
       "action": "socket",
       "aliases": [
         "dome",
@@ -81,16 +81,16 @@
     },
     {
       "component_id": "vert.dome.right",
-      "label": "Right lens dome",
+      "label": "Right optical region (shared dome)",
       "category": "Acoustic",
       "kind": "light",
-      "purpose": "Second dome; colours listed are red, green, blue, purple, yellow, cyan and white.",
-      "confidence": "Documented",
+      "purpose": "Approximate right region of the single curved lens housing. The fixture has two internal 9 W RGB engines, producing 32 beams together; the visible cover is not a separate dome per engine.",
+      "confidence": "Approximate",
       "geometry_status": "approximate",
       "source_ids": [
         "adj-vertigo"
       ],
-      "limits": "",
+      "limits": "Region is an inspection target, not a seam or measured division in the physical lens cover.",
       "action": "socket",
       "aliases": [
         "dome",
@@ -155,7 +155,7 @@
       },
       {
         "id": "front",
-        "label": "Domes"
+        "label": "Lens cover"
       },
       {
         "id": "rear",
@@ -164,9 +164,9 @@
     ],
     "evidence_flag": "GEOMETRY APPROXIMATE",
     "search_placeholder": "Name, port, control…",
-    "practice_heading": "Two domes, one cable each way.",
+    "practice_heading": "Two RGB engines behind one curved cover.",
     "practice_notice": "Readbacks repeat the ADJ product page. Beam motion is not simulated.",
-    "practice_cards": "<div class=\"card\"><h3>Simulated Vertigo state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"vert.dome.left\">Left lens dome</button><button data-sim=\"socket\" data-socket=\"vert.dome.right\">Right lens dome</button><button data-sim=\"socket\" data-socket=\"vert.io.iec\">IEC power in and out</button><button data-sim=\"socket\" data-socket=\"vert.ctl.sound\">Sound-active control</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Daisy-chain the pair</h3><p>IEC in on the first, IEC out to the second. At 30 W each the pair is trivial on a circuit; the hazer is the one that draws.</p><p class=\"small\">Sound-active only; no patching.</p></div>",
+    "practice_cards": "<div class=\"card\"><h3>Simulated Vertigo state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"vert.dome.left\">Left optical region</button><button data-sim=\"socket\" data-socket=\"vert.dome.right\">Right optical region</button><button data-sim=\"socket\" data-socket=\"vert.io.iec\">IEC power in and out</button><button data-sim=\"socket\" data-socket=\"vert.ctl.sound\">Sound-active control</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Daisy-chain the pair</h3><p>IEC in on the first, IEC out to the second. At 30 W each the pair is trivial on a circuit; the hazer is the one that draws.</p><p class=\"small\">Sound-active only; no patching.</p></div>",
     "evidence_heading": "ADJ Vertigo Tri LED · product page and NNC record",
     "evidence_note": "ADJ still publishes the page for this discontinued fixture with its full specification block; the linked manual is a scanned PDF that could not be machine-read, so any sensitivity control or DMX detail stays unconfirmed.",
     "facts": [

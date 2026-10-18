@@ -2,9 +2,9 @@
 const root=document.getElementById('bench-root'), catalog=JSON.parse(document.getElementById('equipment-catalog').textContent);let refs={};
 const SOCKETS=Object.fromEntries(catalog.components.filter(c=>c.action==='socket').map(c=>[c.component_id,`${c.label} · ${c.purpose.split(/(?<=\.)\s/)[0]}`]));
 const views={overview:{target:[0,60,0],theta:0.62,phi:0.78,radius:1250},top:{target:[0,60,0],theta:0.15,phi:0.35,radius:1000},rear:{target:[0,60,-100],theta:3.14,phi:1.15,radius:850,min:240},front:{target:[0,40,120],theta:0,phi:1.2,radius:800,min:240}};
-function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.08;E.scene.add(root3);
+function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.08;E.scene.add(root3);
   const mesh=(g,mat)=>{const m=new T.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;return m};
-  const bx=(w,h,d,mat)=>mesh(new T.BoxGeometry(w,h,d),mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);
+  const bx=(w,h,d,mat)=>E.rounded(w,h,d,Math.min(w,h,d)*.12,mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);
   const at=(o,x,y,z)=>{o.position.set(x,y,z);return o},alongZ=o=>{o.rotation.x=Math.PI/2;return o},alongX=o=>{o.rotation.z=Math.PI/2;return o},rear=o=>{o.rotation.y=Math.PI;return o},faceUp=o=>{o.rotation.x=-Math.PI/2;return o};
   const lab=(text,w,h,opts={})=>E.label(text,w,h,Object.assign({w:Math.round(w*4),h:Math.round(h*4),bg:'#9da6a3',fg:'#101414',font:'700 '+Math.round(h*2.6)+'px system-ui'},opts));
   const mat=(color,roughness=.6,metalness=.1)=>new T.MeshStandardMaterial({color,roughness,metalness});
@@ -20,7 +20,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.
   const jog=new T.Group();jog.add(at(cy(103,103,10,M.rubber,64),0,0,0));jog.add(at(cy(96,96,4,M.black,64),0,7,0));jog.add(at(cy(40,40,6,M.glass,48),0,9,0));jog.add(faceUp(at(E.label('03:12',60,30,{w:240,h:120,bg:'#0b1220',fg:'#9fd2ff',font:'700 60px ui-monospace'}),0,13,0)));E.addPart('cdj.jog',at(jog,20,top,70),root3);
   const scr=new T.Group();scr.add(at(bx(200,4,112,M.black),0,0,0));scr.add(faceUp(at(E.label('CDJ-3000   LIBRARY\n▂▃▅▆▅▃▂▃▅▇▅▃▂',190,100,{w:760,h:400,bg:'#0d1626',fg:'#7fd4ff',font:'600 44px ui-monospace'}),0,3,0)));E.addPart('cdj.screen',at(scr,10,top,-150),root3);
   const hc=new T.Group();for(let i=0;i<8;i++)hc.add(at(bx(18,6,14,[M.red,M.amber,M.green,M.glass][i%4]),i*25-88,0,0));hc.add(faceUp(at(lab('HOT CUE  A – H',120,8),0,4,20)));E.addPart('cdj.hotcues',at(hc,10,top,-72),root3);
-  const tr=new T.Group();tr.add(at(cy(16,16,8,M.green,24),0,0,0));tr.add(at(cy(16,16,8,M.amber,24),0,0,-40));tr.add(at(bx(12,6,110,M.rubber),150,0,-30));tr.add(at(bx(16,8,10,M.silver),150,4,-10));E.addPart('cdj.transport',at(tr,-130,top,150),root3);
+  const tr=new T.Group();tr.add(at(cy(16,16,8,M.green,24),0,0,0));tr.add(at(cy(16,16,8,M.amber,24),0,0,-40));tr.add(at(bx(12,6,110,M.rubber),270,0,-30));tr.add(at(bx(16,8,10,M.silver),270,4,-10));E.addPart('cdj.transport',at(tr,-130,top,150),root3);
   const sd=new T.Group();sd.add(at(bx(34,5,6,M.rubber),0,0,0));sd.add(at(lab('SD',30,8),0,-12,0));E.addPart('cdj.media.sd',at(sd,-110,30,D/2+1),root3);
   const usb=new T.Group();usb.add(at(bx(40,10,30,M.silver),0,0,0));usb.add(at(bx(14,6,8,M.rubber),0,0,8));usb.add(faceUp(at(lab('USB',30,8),0,6,24)));E.addPart('cdj.media.usb',at(usb,-120,top,-190),root3);
   const rz=-D/2-4,ry=45;
@@ -33,6 +33,7 @@ function build(E){const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.
   const kl=new T.Group();kl.add(at(bx(8,4,4,M.rubber),0,0,0));E.addPart('cdj.io.kensington',at(kl,145,ry-10,rz),root3);
  
   const floor=new T.Mesh(new T.PlaneGeometry(1800,1800),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-2;floor.receiveShadow=true;E.scene.add(floor);
+  NNCProduct.finish(E,root3,refs,'cdj-3000');
 }
 const initialSim=Object.assign({socket:null,xray:false,output:'Nothing selected. Recorded manufacturer facts only; nothing is connected.'},{});
 const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,views,defaultView:'overview',initialSim,build,onAction(E,a,c){switch(a){
