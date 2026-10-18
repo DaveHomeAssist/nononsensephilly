@@ -33,7 +33,8 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
  
   const floor=new T.Mesh(new T.PlaneGeometry(1800,1800),new T.ShadowMaterial({opacity:.18}));floor.rotation.x=-Math.PI/2;floor.position.y=-2;floor.receiveShadow=true;E.scene.add(floor);
   NNCProduct.finish(E,root3,refs,'djm-a9');
-  root3.traverse(o=>{if(o.userData.nncMeter){o.material.emissiveIntensity=0;o.material.color.multiplyScalar(.1);}});
+  const segments=(group,x)=>group.children.filter(o=>o.userData.nncMeter&&(x===undefined||o.position.x===x)).sort((a,b)=>b.position.z-a.position.z);
+  refs.inputMeters=refs.faders.map(({x})=>segments(E.partObjects.get('a9.ch'),x+18));refs.outputMeter=segments(E.partObjects.get('a9.fx'));
 
 }
 const initialSim=Object.assign({socket:null,xray:false,output:'Nothing selected. Recorded manufacturer facts only; nothing is connected.'},{});
@@ -53,5 +54,5 @@ root.querySelectorAll('[data-sim]').forEach(b=>b.addEventListener('click',()=>E.
 E.controls=NNCControls.mount(E,[
  ...refs.faders.map(({cap,track,x},i)=>({id:'a9.ch.'+(i+1)+'.fader',component:'a9.ch',source:'djma9-controls',label:'Channel '+(i+1)+' fader',kind:'fader',min:0,max:100,step:1,initial:0,object:cap,targets:[track],track:[[x,3,140],[x,3,60]],apply(value){cap.position.z=140-value*.8;}})),
  {id:'a9.xfader.position',component:'a9.xfader',source:'djma9-controls',label:'Crossfader',kind:'fader',min:0,max:100,step:1,initial:50,object:refs.crossCap,targets:[refs.crossTrack],track:[[-40,3,0],[40,3,0]],format:v=>v===50?'Centre':v+'% left → right',apply(value){refs.crossCap.position.x=-40+value*.8;}}
-],{view:'top',note:'Pioneer DJ DJM-A9: four channel faders and MAGVEL crossfader. Values show reconstructed travel, not output dB. Fader curves, assignments, audio and meters are not simulated.'});
+],{view:'top',note:'Pioneer DJ DJM-A9: four channel faders and MAGVEL crossfader. Values show reconstructed travel, not output dB. Demo uses linear relative travel and averaged channel pairs, not calibrated curves or actual assignment settings.',demo:{kind:'djm-a9',paint(e,levels){refs.inputMeters.forEach(segments=>NNCControls.meter(e,segments,levels.input));NNCControls.meter(e,refs.outputMeter,levels.mix);}}});
 E.setView('overview');})();

@@ -16,3 +16,11 @@
 .nnc-control-readout{position:absolute;left:12px;bottom:48px;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--accent);padding:8px 12px;border-radius:var(--nnc-radius);font:12px ui-monospace,monospace;max-width:calc(100% - 24px);box-sizing:border-box}
 @media(max-width:700px){.nnc-control-toolbar{width:100%;border:0;padding:0}.nnc-control-toolbar button{flex:1}.nnc-control-readout{bottom:36px;font-size:11px}.nnc-control-row input[type=range]{min-height:44px}}
 @media(max-height:450px){#bench-root .nnc-control-toolbar button{min-height:28px;padding-block:2px}.nnc-control-readout{bottom:8px}}
+
+.nnc-demo{margin-block:12px;padding:12px;border:1px solid var(--line);border-radius:var(--nnc-radius);background:var(--paper)}
+.nnc-demo h3{font-size:14px;margin:0}.nnc-demo label{display:flex;justify-content:space-between;font-size:12px}
+#bench-root .nnc-demo input[type=range]{width:100%;height:36px;padding:0;accent-color:var(--accent)}
+.nnc-demo summary{font-size:12px;cursor:pointer;margin-top:6px}.nnc-control-row .nnc-demo-meter{margin-top:4px}.nnc-demo-meter{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font:11px ui-monospace,monospace}
+.nnc-demo-meter meter{width:100%;height:12px;grid-column:1/-1;accent-color:var(--accent)}
+.nnc-demo-badge{position:absolute;left:12px;top:46px;max-width:calc(100% - 24px);box-sizing:border-box;pointer-events:none;padding:6px 10px;background:var(--panel);color:var(--ink);border:1px solid var(--accent);border-radius:var(--nnc-radius);font:11px ui-monospace,monospace}
+@media(max-width:700px){.nnc-control-toolbar{flex-wrap:wrap}.nnc-control-toolbar button{flex:1 1 auto}.nnc-demo-badge{top:44px;font-size:10px}}
