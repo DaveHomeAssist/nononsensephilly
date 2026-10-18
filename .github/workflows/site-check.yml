@@ -25,7 +25,7 @@ jobs:
 
       - name: Gear pages carry no internal notes
         run: |
-          if grep -rniE "nick|\bseed\b|nnc staged|model contract|nnc-gear-pack|catalog-seed" gear --exclude-dir=vendor; then
+          if grep -rniE "nick|\bseed\b|nnc staged|model contract|nnc-gear-pack|catalog-seed|variance paperwork|interlock box wiring" gear --exclude-dir=vendor; then
             echo "::error::Internal working notes found in the public gear pages (see matches above)."
             exit 1
           fi
