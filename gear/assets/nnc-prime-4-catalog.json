@@ -1,0 +1,482 @@
+{
+  "schema_version": "1.1",
+  "guide_id": "nnc-prime-4",
+  "revision": "0.1.0",
+  "model": "Denon DJ PRIME 4 (original)",
+  "owner": "No Nonsense Collective",
+  "units": "mm",
+  "dimensions_mm": [
+    728.47,
+    103.63,
+    496.82
+  ],
+  "weight_kg": 9.7,
+  "coordinate_system": {
+    "x": "unit right",
+    "y": "up",
+    "z": "front"
+  },
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
+  "category_limits": {
+    "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
+    "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
+  },
+  "sources": [
+    {
+      "source_id": "prime4-guide",
+      "label": "Denon DJ Prime 4 user guide v1.1",
+      "locator": "https://cdn.inmusicbrands.com/denondj/Prime4/prime-4-user-guide-v1_1.pdf",
+      "scope": "Rear panel items 1–16 and front panel items 1–4 with connector types; technical specifications: 728.47 × 496.82 × 103.63 mm (W × D × H), 9.7 kg, IEC 100–240 VAC, 38–45 W, 24-bit / 44.1 kHz."
+    },
+    {
+      "source_id": "prime4-page",
+      "label": "Denon DJ Getting started with PRIME 4",
+      "locator": "https://www.denondj.com/getting-started-with-prime-4",
+      "scope": "Official landing page linking the user guide, FAQ and downloads; the product page itself is retired in favour of PRIME 4+."
+    },
+    {
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
+      "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
+    },
+    {
+      "source_id": "nnc-inventory",
+      "label": "NNC equipment inventory",
+      "locator": "NNC inventory record, 14 October 2026",
+      "scope": "Which units NNC owns and how many."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "p4.body",
+      "label": "Console body",
+      "category": "Enclosure",
+      "kind": "chassis",
+      "purpose": "Four-deck standalone console, 728.47 wide × 496.82 deep × 103.63 high mm and 9.7 kg, with the 10.1-inch touchscreen on a tilting stand at the top centre.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "Envelope is published; edge profile and control placement are approximate.",
+      "action": null,
+      "aliases": [
+        "controller",
+        "standalone"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.screen",
+      "label": "10.1-inch multi-touch screen",
+      "category": "Controls",
+      "kind": "display",
+      "purpose": "Full-colour multi-touch display on an adjustable angle, with the browse knob, Back, Forward, Load and View buttons beside it (top panel items 1–7).",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "display",
+        "touchscreen",
+        "browse"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.jog.left",
+      "label": "Left jog wheel with platter display",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Left deck jog with a centre display showing playhead and artwork; the Deck button selects deck 1 or 3.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "Diameter is not in the guide table (reported: 6-inch).",
+      "action": "socket",
+      "aliases": [
+        "jog",
+        "deck 1"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.jog.right",
+      "label": "Right jog wheel with platter display",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Right deck jog; the Deck button selects deck 2 or 4.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "As above.",
+      "action": "socket",
+      "aliases": [
+        "jog",
+        "deck 2"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.mixer",
+      "label": "Four channel strips and crossfader",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Per channel: channel FX buttons, level, meters, 3-band EQ, sweep FX, cue, fader and crossfader assign (top panel items 8–15); crossfader item 16 with contour and fader start on the front.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "fader",
+        "eq",
+        "crossfader"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.front.phones",
+      "label": "Headphones · 1/4 in and 1/8 in",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Front panel item 1: 6.35 mm and 3.5 mm headphone outputs, level from the Phones Level knob, less than 150 mW into 40 Ω.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "headphones",
+        "cue"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.front.selectors",
+      "label": "Input selectors, fader start, X-fader contour",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Front panel items 2–4: Engine/USB or Line per channel, fader start per side, crossfader curve.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "line",
+        "engine",
+        "contour"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.power",
+      "label": "Power input and power button",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear items 1–2: IEC inlet, 100–240 VAC 50/60 Hz, 38–39 W (43–45 W while charging a phone from USB 4), and the power button with a safe-eject protection circuit.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "iec",
+        "power"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.usb34",
+      "label": "Rear USB ports 3/4",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 3: two USB-A ports for drives; port 4 also charges a device at 5 V / 1 A. Two more USB ports and the SD slot are on the top.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "usb",
+        "drive",
+        "charge"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.usbb",
+      "label": "USB B (computer)",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 4: USB-B for MIDI to and from a computer with the included cable.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "usb b",
+        "midi",
+        "computer"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.link",
+      "label": "Link port · Ethernet",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 5: Ethernet port sending time, BPM and track data to StageLinQ lighting and video software.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "ethernet",
+        "stagelinq",
+        "lan"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.zone",
+      "label": "Zone Out · XLR balanced",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 6: balanced XLR pair that mirrors the master by default, or carries deck 4 as a zone playlist with its own level and EQ.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "zone",
+        "xlr",
+        "second room"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.booth",
+      "label": "Booth Outputs · XLR balanced",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 7: balanced XLR booth pair, level from the Booth knob.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "booth",
+        "xlr",
+        "monitor"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.master",
+      "label": "Master Outputs · XLR balanced and RCA",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear items 8–10: balanced XLR master pair (+24 dBu max, +4 dBu unity), unbalanced RCA master pair, and the Stereo/Mono switch.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "master",
+        "xlr",
+        "rca",
+        "mono"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.line",
+      "label": "Line and Line/Phono inputs · RCA",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear items 11–14: two RCA line pairs, two RCA line/phono pairs with the Phono/Line switch, and the grounding terminal for turntables.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "rca",
+        "phono",
+        "turntable",
+        "ground"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.mic",
+      "label": "Mic Inputs · XLR or 1/4 in",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 15: two combo microphone inputs for dynamic mics, levels from Mic 1 and Mic 2 on the top. −40 dBu unity.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "mic",
+        "combo",
+        "sm58"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.io.kensington",
+      "label": "Kensington lock slot",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Rear item 16: security slot.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": null,
+      "aliases": [
+        "lock"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "p4.media.top",
+      "label": "Top USB ports 1/2 and SD slot",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "Two USB-A ports and the SD/SDHC/SDXC slot on the top; a 2.5-inch SATA bay underneath takes an internal drive.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "prime4-guide"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "sd",
+        "usb",
+        "sata"
+      ],
+      "shape": {}
+    }
+  ],
+  "evidence_policy": {
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
+  },
+  "page": {
+    "title": "Denon DJ PRIME 4 | NNC Gear Guide",
+    "site_title": "Denon DJ PRIME 4 standalone system · No Nonsense gear guide",
+    "bench": "No Nonsense gear guide / 08 · preview",
+    "heading": "Denon DJ PRIME 4",
+    "identity_strong": "Denon DJ · PRIME 4 · original, not 4+",
+    "description": "Explore Denon DJ PRIME 4 (original) in 3D. Manufacturer facts, the NNC record and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "views": [
+      {
+        "id": "overview",
+        "label": "Overview"
+      },
+      {
+        "id": "top",
+        "label": "Top panel"
+      },
+      {
+        "id": "rear",
+        "label": "Rear panel"
+      },
+      {
+        "id": "front",
+        "label": "Front / phones"
+      }
+    ],
+    "evidence_flag": "GEOMETRY APPROXIMATE",
+    "search_placeholder": "Name, port, control…",
+    "practice_heading": "Sixteen rear items, numbered like the guide.",
+    "practice_notice": "Readbacks repeat the Denon DJ user guide item by item. Nothing plays, routes or charges.",
+    "practice_cards": "<div class=\"card\"><h3>Simulated PRIME 4 state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"><button data-sim=\"xray\">Toggle x-ray</button></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"p4.screen\">10.1-inch multi-touch screen</button><button data-sim=\"socket\" data-socket=\"p4.jog.left\">Left jog wheel with platter display</button><button data-sim=\"socket\" data-socket=\"p4.jog.right\">Right jog wheel with platter display</button><button data-sim=\"socket\" data-socket=\"p4.mixer\">Four channel strips and crossfader</button><button data-sim=\"socket\" data-socket=\"p4.front.phones\">Headphones · 1/4 in and 1/8 in</button><button data-sim=\"socket\" data-socket=\"p4.front.selectors\">Input selectors, fader start, X-fader contour</button><button data-sim=\"socket\" data-socket=\"p4.io.power\">Power input and power button</button><button data-sim=\"socket\" data-socket=\"p4.io.usb34\">Rear USB ports 3/4</button><button data-sim=\"socket\" data-socket=\"p4.io.usbb\">USB B (computer)</button><button data-sim=\"socket\" data-socket=\"p4.io.link\">Link port · Ethernet</button><button data-sim=\"socket\" data-socket=\"p4.io.zone\">Zone Out · XLR balanced</button><button data-sim=\"socket\" data-socket=\"p4.io.booth\">Booth Outputs · XLR balanced</button><button data-sim=\"socket\" data-socket=\"p4.io.master\">Master Outputs · XLR balanced and RCA</button><button data-sim=\"socket\" data-socket=\"p4.io.line\">Line and Line/Phono inputs · RCA</button><button data-sim=\"socket\" data-socket=\"p4.io.mic\">Mic Inputs · XLR or 1/4 in</button><button data-sim=\"socket\" data-socket=\"p4.media.top\">Top USB ports 1/2 and SD slot</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Zone out for a second room</h3><p>Zone Out mirrors the master until Zone Channel Assign puts deck 4 on it as a zone playlist. Then channel 4's level and EQ are bypassed and the Zone knobs take over.</p><p class=\"small\">Useful for a lobby feed off the same console; not simulated here.</p></div>",
+    "evidence_heading": "Denon DJ PRIME 4 · user guide and NNC record",
+    "evidence_note": "Every connector, the envelope and the weight come from the official user guide hosted on the inMusic CDN, which Denon's getting-started page still links. The original PRIME 4 product page is retired, so the guide is the manufacturer source.",
+    "facts": [
+      [
+        "Envelope",
+        "728.47 × 496.82 × 103.63 mm (W × D × H)"
+      ],
+      [
+        "Weight",
+        "9.7 kg (21.34 lb)"
+      ],
+      [
+        "Power",
+        "IEC · 100–240 VAC 50/60 Hz · 38–39 W, 43–45 W when charging"
+      ],
+      [
+        "Audio",
+        "24-bit · 44.1 kHz · 20 Hz – 20 kHz ±1 dB"
+      ],
+      [
+        "Outputs",
+        "Master XLR + RCA · Booth XLR · Zone XLR"
+      ],
+      [
+        "Inputs",
+        "2 × line RCA · 2 × line/phono RCA · 2 × mic combo"
+      ],
+      [
+        "Media",
+        "SD · 4 × USB-A · USB-B · 2.5 in SATA bay"
+      ],
+      [
+        "Link",
+        "Ethernet to StageLinQ"
+      ]
+    ],
+    "unresolved": [
+      "Jog diameter (reported: 6-inch) and touchscreen tilt range",
+      "Whether an internal SATA drive is fitted"
+    ],
+    "footer": "Denon DJ PRIME 4 · educational reconstruction"
+  }
+}

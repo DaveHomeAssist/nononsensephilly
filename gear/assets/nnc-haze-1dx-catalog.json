@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.1",
+  "guide_id": "nnc-haze-1dx",
+  "revision": "0.1.0",
+  "model": "Chauvet DJ Hurricane Haze 1DX",
+  "owner": "No Nonsense Collective",
+  "units": "mm",
+  "dimensions_mm": [
+    150,
+    223,
+    278
+  ],
+  "weight_kg": 3.3,
+  "coordinate_system": {
+    "x": "unit right",
+    "y": "up",
+    "z": "front"
+  },
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
+  "category_limits": {
+    "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
+    "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
+  },
+  "sources": [
+    {
+      "source_id": "haze-sheet",
+      "label": "Chauvet DJ Hurricane Haze 1DX specification sheet",
+      "locator": "https://www.chauvetdj.com/products/hurricane-haze-1dx/",
+      "scope": "1 DMX channel, 3-pin XLR DMX, 2 min heat-up, 120 VAC 60 Hz, 303 W / 2.5 A, 3.3 kg, 278 × 150 × 223 mm (L × W × H), 1.5 L tank, 800 cfm, 4 ml/min, HFG / HF5 EU / HFDJ5 EU fluids, built-in display and volume knob. Copy in the NNC pack."
+    },
+    {
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
+      "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
+    },
+    {
+      "source_id": "nnc-inventory",
+      "label": "NNC equipment inventory",
+      "locator": "NNC inventory record, 14 October 2026",
+      "scope": "Which units NNC owns and how many."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "haze.body",
+      "label": "Hazer body",
+      "category": "Enclosure",
+      "kind": "chassis",
+      "purpose": "Compact water-based hazer, 278 × 150 × 223 mm (L × W × H) and 3.3 kg, with a silent-running fan.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "haze-sheet"
+      ],
+      "limits": "Envelope is published; vent and nozzle shapes are approximate.",
+      "action": null,
+      "aliases": [
+        "hazer",
+        "fog"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "haze.tank",
+      "label": "1.5 L fluid tank",
+      "category": "Enclosure",
+      "kind": "tank",
+      "purpose": "0.4 gal / 1.5 L tank for HFG, HF5 EU or HFDJ5 EU fluid at 4 ml/min, so a full tank runs for hours at full output.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "haze-sheet"
+      ],
+      "limits": "Tank placement is approximate.",
+      "action": "socket",
+      "aliases": [
+        "fluid",
+        "tank"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "haze.nozzle",
+      "label": "Output nozzle and fan",
+      "category": "Acoustic",
+      "kind": "vent",
+      "purpose": "Front output, 800 cfm, after a 2-minute heat-up.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "haze-sheet"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "output",
+        "fan"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "haze.ctl.display",
+      "label": "Digital display and volume knob",
+      "category": "Controls",
+      "kind": "control",
+      "purpose": "Built-in display for DMX address and standalone haze settings; the volume knob runs it without DMX.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "haze-sheet"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "display",
+        "volume",
+        "menu"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "haze.io.dmx",
+      "label": "DMX in and out · 3-pin XLR",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "One DMX channel on 3-pin XLR, in and through.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "haze-sheet"
+      ],
+      "limits": "",
+      "action": "socket",
+      "aliases": [
+        "dmx",
+        "xlr",
+        "3-pin"
+      ],
+      "shape": {}
+    },
+    {
+      "component_id": "haze.io.power",
+      "label": "Power inlet",
+      "category": "Connections",
+      "kind": "connector",
+      "purpose": "IEC inlet, 120 VAC 60 Hz, 303 W / 2.5 A on the Chauvet sheet. Retailers list 188 W; the sheet wins until measured.",
+      "confidence": "Documented",
+      "geometry_status": "approximate",
+      "source_ids": [
+        "haze-sheet",
+        "nnc-gear-record"
+      ],
+      "limits": "Power rating figures conflict between sources.",
+      "action": "socket",
+      "aliases": [
+        "iec",
+        "power"
+      ],
+      "shape": {}
+    }
+  ],
+  "evidence_policy": {
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
+  },
+  "page": {
+    "title": "Chauvet DJ Hurricane Haze 1DX | NNC Gear Guide",
+    "site_title": "Chauvet DJ Hurricane Haze 1DX hazer · No Nonsense gear guide",
+    "bench": "No Nonsense gear guide / 13 · preview",
+    "heading": "Chauvet DJ Hurricane Haze 1DX",
+    "identity_strong": "Chauvet DJ · Hurricane Haze 1DX · water-based hazer",
+    "description": "Explore Chauvet DJ Hurricane Haze 1DX in 3D. Manufacturer facts, the NNC record and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "views": [
+      {
+        "id": "overview",
+        "label": "Overview"
+      },
+      {
+        "id": "front",
+        "label": "Nozzle"
+      },
+      {
+        "id": "rear",
+        "label": "Rear / DMX"
+      }
+    ],
+    "evidence_flag": "GEOMETRY APPROXIMATE",
+    "search_placeholder": "Name, port, control…",
+    "practice_heading": "One DMX channel, one knob, two minutes to heat.",
+    "practice_notice": "Readbacks repeat the Chauvet specification sheet. Heat, output and fluid level are not simulated.",
+    "practice_cards": "<div class=\"card\"><h3>Simulated hazer state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"haze.tank\">1.5 L fluid tank</button><button data-sim=\"socket\" data-socket=\"haze.nozzle\">Output nozzle and fan</button><button data-sim=\"socket\" data-socket=\"haze.ctl.display\">Digital display and volume knob</button><button data-sim=\"socket\" data-socket=\"haze.io.dmx\">DMX in and out · 3-pin XLR</button><button data-sim=\"socket\" data-socket=\"haze.io.power\">Power inlet</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Haze on a budget circuit</h3><p>At 2.5 A the hazer is the heaviest draw among the small effects. Give it two minutes before the doors and keep the DMX chain terminated if the volume knob is not in use.</p><p class=\"small\">Address and output are not simulated.</p></div>",
+    "evidence_heading": "Chauvet DJ Hurricane Haze 1DX · specification sheet and NNC record",
+    "evidence_note": "The Chauvet specification sheet on file carries every figure here. The power rating differs between the sheet (303 W) and retailers (188 W); the sheet is the manufacturer figure.",
+    "facts": [
+      [
+        "Envelope",
+        "11 × 6 × 9 in (278 × 150 × 223 mm, L × W × H)"
+      ],
+      [
+        "Weight",
+        "7.2 lb (3.3 kg)"
+      ],
+      [
+        "Tank",
+        "0.4 gal / 1.5 L · 4 ml/min"
+      ],
+      [
+        "Output",
+        "800 cfm · 2 min heat-up"
+      ],
+      [
+        "Power",
+        "120 VAC 60 Hz · 303 W / 2.5 A"
+      ],
+      [
+        "DMX",
+        "1 channel · 3-pin XLR"
+      ],
+      [
+        "Fluids",
+        "HFG · HF5 EU · HFDJ5 EU"
+      ]
+    ],
+    "unresolved": [
+      "Power draw: 303 W sheet against 188 W retail",
+      "User manual (only the spec sheet was available)",
+      "Which haze fluid NNC uses"
+    ],
+    "footer": "Chauvet DJ Hurricane Haze 1DX · educational reconstruction"
+  }
+}
