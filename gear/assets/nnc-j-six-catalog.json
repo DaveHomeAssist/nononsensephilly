@@ -3,7 +3,7 @@
   "guide_id": "nnc-j-six",
   "revision": "0.1.0",
   "model": "Chauvet DJ J-Six",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     281,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -29,16 +29,16 @@
       "scope": "112 LEDs (32 red, 48 green, 32 blue, 0.25 W), 63° coverage, 120/230 V switchable, 16 W / 0.2 A at 120 V, 3.2 kg, 287 × 281 × 182 mm, power linking 36 units at 120 V, sound-activated standalone, Edison power-link outlet, replaceable fuse. Copies in the NNC pack."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -159,7 +159,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "Chauvet DJ J-Six | NNC Gear Guide",
@@ -220,9 +220,9 @@
       ]
     ],
     "unresolved": [
-      "Fuse rating on Nick's unit",
+      "Fuse rating on NNC's unit",
       "Which voltage the switch is set to"
     ],
-    "footer": "Chauvet DJ J-Six · educational reconstruction · NNC staged"
+    "footer": "Chauvet DJ J-Six · educational reconstruction"
   }
 }

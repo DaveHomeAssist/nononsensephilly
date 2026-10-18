@@ -3,7 +3,7 @@
   "guide_id": "nnc-gx5",
   "revision": "0.1.0",
   "model": "QSC GX5",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     483,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -41,16 +41,16 @@
       "scope": "Marketing page that still lists the GX7 chassis and weights; qscaudio.com no longer carries the GX series."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -294,7 +294,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "QSC GX5 | NNC Gear Guide",
@@ -367,10 +367,9 @@
       ]
     ],
     "unresolved": [
-      "Inventory names the GX7 in its title and the GX5 in its body: read the label on the amplifier",
-      "Front and rear photographs of Nick's unit",
+      "Exact model of NNC's amplifier (GX5 or GX7)",
       "Which position the crossover switch is left in"
     ],
-    "footer": "QSC GX5 · educational reconstruction · NNC staged"
+    "footer": "QSC GX5 · educational reconstruction"
   }
 }
