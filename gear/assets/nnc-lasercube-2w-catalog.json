@@ -39,6 +39,12 @@
       "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
       "scope": "Which units NNC owns and how many."
+    },
+    {
+      "source_id": "lasercube-usb-manual",
+      "label": "LaserOS LaserCube USB 1W / 2W manual (2019)",
+      "locator": "https://www.laseros.com/wp-content/uploads/2020/01/LaserCube.Manual-EU_20191216.pdf",
+      "scope": "Legacy USB model reference. The exact owned revision and any mounting accessories remain unverified; do not infer WiFi hardware from later variants."
     }
   ],
   "components": [
@@ -53,7 +59,7 @@
       "source_ids": [
         "lasercube-retail"
       ],
-      "limits": "Reseller figures; the exact 2 W envelope is unconfirmed.",
+      "limits": "Approximate legacy USB enclosure. Mounting accessories and the exact owned revision are unverified; the unsupported stage yoke is omitted.",
       "action": null,
       "aliases": [
         "laser",

@@ -3,6 +3,18 @@
 (() => {
  'use strict';
  const root=document.querySelector('#bench-root');
+ const drawer=root.querySelector('[data-gear-drawer]')||root.querySelector('.nnc-gear-drawer'),gearToggle=root.querySelector('[data-gear-toggle]'),gearSearch=root.querySelector('[data-gear-search]'),gearCards=[...root.querySelectorAll('[data-gear]')],main=root.querySelector('.nnc-workbench-main');
+ const narrow=matchMedia('(max-width:700px)');let gearCategory='all';
+ function setDrawer(open,focus=false){root.dataset.gearDrawer=open?'open':'closed';drawer.hidden=!open;document.querySelector('.model-site-nav').inert=narrow.matches&&open;gearToggle.setAttribute('aria-expanded',String(open));if(narrow.matches){drawer.setAttribute('role','dialog');drawer.setAttribute('aria-modal','true');main.inert=open;}else{drawer.removeAttribute('role');drawer.removeAttribute('aria-modal');main.inert=false;}if(focus)(open?gearSearch:gearToggle).focus();try{sessionStorage.setItem('nncGearDrawer',String(open));}catch{} }
+ function filterGear(){const term=gearSearch.value.trim().toLowerCase();let count=0;for(const card of gearCards){card.hidden=!(gearCategory==='all'||gearCategory===card.dataset.gearCategory)||!card.dataset.gearSearchText.includes(term);if(!card.hidden)count++;}root.querySelector('[data-gear-count]').textContent=count+' '+(count===1?'model':'models');root.querySelector('[data-gear-empty]').hidden=count!==0;}
+ gearToggle.addEventListener('click',()=>setDrawer(drawer.hidden,true));root.querySelector('[data-gear-close]').addEventListener('click',()=>setDrawer(false,true));gearSearch.addEventListener('input',filterGear);
+ root.querySelectorAll('[data-gear-filter]').forEach(button=>button.addEventListener('click',()=>{gearCategory=button.dataset.gearFilter;root.querySelectorAll('[data-gear-filter]').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));filterGear();}));
+ root.querySelector('[data-gear-clear]').addEventListener('click',()=>{gearSearch.value='';root.querySelector('[data-gear-filter="all"]').click();gearSearch.focus();});
+ drawer.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();setDrawer(false,true);}if(event.key==='Tab'&&narrow.matches){const nodes=[...drawer.querySelectorAll('a,button,input,[tabindex="0"]')].filter(el=>el.getClientRects().length);const first=nodes[0],last=nodes.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}});
+ // Keep the library available after navigation, but never obscure a phone's model on arrival.
+ let savedDrawer;try{savedDrawer=sessionStorage.getItem('nncGearDrawer');}catch{}
+ setDrawer(!narrow.matches&&(savedDrawer==='true'||(savedDrawer===null&&root.dataset.library==='true')));
+ narrow.addEventListener('change',()=>setDrawer(!narrow.matches&&root.dataset.gearDrawer==='open'));
  const preferences=window.NNCAppearance,{colours,validate}=preferences;
  let settings=preferences.read();
  let explorer,grid,outline;
@@ -30,10 +42,11 @@
  root.querySelector('[data-inspector-close]').addEventListener('click',()=>{inspect(false);inspectorButton.focus();});
  root.querySelector('[data-find-component]').addEventListener('click',()=>{inspect(true);root.querySelector('[data-search]').focus();});
  root.querySelector('[data-focus-selection]').addEventListener('click',()=>explorer?.focusSelected());
- root.querySelector('[data-clear-selection]').addEventListener('click',()=>{explorer?.clearSelection();const fragment=new URLSearchParams(location.hash.slice(1));fragment.delete('part');history.replaceState(null,'',location.pathname+location.search+(fragment.size?'#'+fragment.toString():''));});
+ function deselect(){if(explorer){explorer.hovered='';explorer.hoverEl.textContent='Click a component to inspect';}explorer?.clearSelection();const fragment=new URLSearchParams(location.hash.slice(1));fragment.delete('part');history.replaceState(null,'',location.pathname+location.search+(fragment.size?'#'+fragment.toString():''));root.querySelector('[data-workbench-status]').textContent='Selection cleared.';explorer?.canvas.focus({preventScroll:true});}
+ root.querySelectorAll('[data-clear-selection]').forEach(button=>button.addEventListener('click',deselect));
  const fullscreen=root.querySelector('[data-fullscreen]');fullscreen.addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await root.requestFullscreen();}catch{root.querySelector('[data-workbench-status]').textContent='Full screen is unavailable in this browser.';}});
  document.addEventListener('fullscreenchange',()=>{fullscreen.textContent=document.fullscreenElement?'Exit full screen':'Full screen';fullscreen.setAttribute('aria-pressed',String(!!document.fullscreenElement));});
- document.addEventListener('keydown',event=>{if(dialog.open)return;if(event.key==='Escape'){if(root.dataset.inspector==='open'){inspect(false);inspectorButton.focus();}return;}if(/INPUT|SELECT|TEXTAREA/.test(event.target.tagName))return;if(event.key==='/'){event.preventDefault();root.querySelector('[data-find-component]').click();}if(event.key.toLowerCase()==='f'){event.preventDefault();explorer?.focusSelected();}});
+ document.addEventListener('keydown',event=>{if(dialog.open)return;if((event.code==='Space'||event.key===' ')&&explorer?.selected&&!event.altKey&&!event.ctrlKey&&!event.metaKey&&!event.target.closest('input,select,textarea,button,a,[contenteditable],.nnc-gear-drawer')&&!root.querySelector('[data-section=explore]').hidden){event.preventDefault();deselect();return;}if(event.key==='Escape'){if(root.dataset.inspector==='open'){inspect(false);inspectorButton.focus();}return;}if(/INPUT|SELECT|TEXTAREA/.test(event.target.tagName))return;if(event.key==='/'){event.preventDefault();root.querySelector('[data-find-component]').click();}if(event.key.toLowerCase()==='f'){event.preventDefault();explorer?.focusSelected();}});
  const viewSelect=root.querySelector('[data-nnc-view]');viewSelect.addEventListener('change',()=>root.querySelector(`[data-view="${viewSelect.value}"]`)?.click());
  const syncView=()=>{const active=root.querySelector('[data-view][aria-pressed="true"]');if(active)viewSelect.value=active.dataset.view;};
  new MutationObserver(syncView).observe(root.querySelector('.viewbar'),{subtree:true,attributes:true,attributeFilter:['aria-pressed']});
@@ -46,13 +59,13 @@
    part.traverse(mesh=>{if(!mesh.isMesh)return;if(mesh.material.wireframe)return;const edges=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,28),new THREE.LineBasicMaterial({color:css('--nnc-highlight'),transparent:true,opacity:Number(css('--nnc-outline-opacity')),depthTest:false,depthWrite:false}));edges.matrix.copy(mesh.matrixWorld);edges.matrixAutoUpdate=false;edges.renderOrder=5;outline.add(edges);});
    explorer.scene.add(outline);
   }
-  const component=explorer.componentMap.get(explorer.selected);root.querySelector('[data-selection-title]').textContent=component?.label||'Choose a component';root.querySelector('[data-selection-category]').textContent=component?.category||'Click the model or use Find component';
-  root.querySelector('[data-clear-selection]').hidden=!component;root.querySelector('[data-focus-selection]').disabled=!component;
+  const component=explorer.componentMap.get(explorer.selected);if(component)root.querySelector('[data-workbench-status]').textContent='';root.querySelector('[data-selection-title]').textContent=component?.label||'Choose a component';root.querySelector('[data-selection-category]').textContent=component?.category||'Click the model or use Find component';
+  root.querySelectorAll('[data-clear-selection]').forEach(button=>button.hidden=!component);root.querySelector('[data-focus-selection]').disabled=!component;
  }
  window.NNCWorkbench={mount(instance){
-  explorer=instance;
-  const view=instance.setView.bind(instance);instance.setView=function(name){view(name);if(name==='overview')NNCProduct.frame(instance);};
-  const resize=instance.resize.bind(instance);instance.resize=function(){resize();if(instance.cfg.currentView==='overview')NNCProduct.frame(instance);};
+  explorer=instance;instance.canvas.tabIndex=0;instance.canvas.addEventListener('pointerdown',()=>instance.canvas.focus({preventScroll:true}));
+  const view=instance.setView.bind(instance);const fits=name=>name==='overview'||!!instance.cfg.views[name]?.fit;instance.setView=function(name){view(name);if(fits(name))NNCProduct.frame(instance);};
+  const resize=instance.resize.bind(instance);instance.resize=function(){resize();if(fits(instance.cfg.currentView))NNCProduct.frame(instance);};
   const render=instance.cfg.renderSim;instance.cfg.renderSim=function(e){render?.(e);if(e.productShell)for(const surface of e.productExteriors||[])surface.visible=e.productShell.visible;};
   const size=Math.max(...instance.catalog.dimensions_mm)*5;grid=new THREE.GridHelper(size,24,css('--nnc-grid-colour'),css('--nnc-grid-colour'));grid.geometry.attributes.color.array.fill(1);grid.geometry.attributes.color.needsUpdate=true;grid.position.y=(instance.productFloorY??0)-2;instance.scene.add(grid);
   const original=instance.highlight.bind(instance);instance.highlight=function(){original();highlight();};

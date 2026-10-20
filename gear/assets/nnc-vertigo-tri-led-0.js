@@ -14,7 +14,7 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   const body=new T.Group();body.add(at(E.rounded(250,182,150,12,M.black),0,106,-75));
   for(const sx of [-1,1]){body.add(at(E.rounded(8,184,38,3,M.black),sx*130,179,-70));body.add(alongX(at(cy(17,17,16,M.rubber,32),sx*139,154,-70)));}body.add(at(E.rounded(268,8,38,3,M.black),0,267,-70));
   for(const sx of [-1,1])for(let i=0;i<8;i++)body.add(at(bx(3,38,10,M.rubber),sx*126,110,-110+i*13));
-  body.add(at(lab('ADJ\nVERTIGO TRI LED',140,35,{bg:'#101114',fg:'#d9dde0'}),0,88,-151));E.addPart('vert.body',body,root3);
+  const badge=rear(at(lab('ADJ\nVERTIGO TRI LED',140,35,{bg:'#101114',fg:'#d9dde0',font:'700 40px system-ui'}),0,122,-151));badge.name='vertigo-rear-badge';body.add(badge);E.addPart('vert.body',body,root3);
   const optical=(id,left)=>{const g=new T.Group();const geom=new T.SphereGeometry(137,48,24,left?-Math.PI/2:Math.PI/2,Math.PI,0,Math.PI/2);geom.rotateX(Math.PI/2);geom.scale(1,.87,.58);const m=mat(0x121b26,.2,.35);g.add(new T.Mesh(geom,m));
    for(let row=0;row<2;row++)for(let i=0;i<4;i++){const a=(left?Math.PI/2:-Math.PI/2)+.3+i*.84,r=62+row*43,x=Math.cos(a)*r,y=Math.sin(a)*r*.87;const pane=at(E.rounded(19,14,2,1,M.glass),x,y,Math.sqrt(Math.max(0,137*137-r*r))*.58+1);pane.lookAt(new T.Vector3(x*1.4,y*1.4,190));const colour=[0x356b94,0x2a4c86,0x407a96][(i+row)%3];pane.material=new T.MeshStandardMaterial({color:colour,emissive:colour,emissiveIntensity:.2,roughness:.12,metalness:.6});g.add(pane);}E.addPart(id,at(g,0,135,23),root3)};
   optical('vert.dome.left',true);optical('vert.dome.right',false);

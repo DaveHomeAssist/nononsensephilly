@@ -11,8 +11,8 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   // Rounded boxes from the runtime are centred on the origin; everything here lifts by h/2 so the unit sits on the floor.
 
   const W=102,H=112,D=102;
-  const body=new T.Group();body.add(at(E.rounded(W,H,D,8,M.black),0,H/2,0));body.add(at(bx(W-10,4,D-10,M.rubber),0,1,0));for(const sx of [-1,1]){body.add(at(E.rounded(7,112,22,3,M.black),sx*57,67,0));body.add(alongX(at(cy(11,11,9,M.rubber,24),sx*63,65,0)));}body.add(at(E.rounded(121,7,22,3,M.black),0,121,0));for(let i=0;i<8;i++)body.add(at(bx(4,1,55,M.rubber),i*9-31,H+.5,-8));E.addPart('lc.body',body,root3);
-  const ap=new T.Group();ap.add(at(bx(40,30,3,M.silver),0,0,0));ap.add(alongZ(at(cy(5,5,4,M.glass,16),0,0,1)));ap.add(at(lab('DANGER  CLASS 4',44,8),0,-22,2));E.addPart('lc.aperture',at(ap,0,70,D/2+1),root3);
+  const body=new T.Group();body.add(at(E.rounded(W,H,D,8,M.black),0,H/2,0));body.add(at(bx(W-10,4,D-10,M.rubber),0,1,0));for(let i=0;i<8;i++)body.add(at(bx(4,1,55,M.rubber),i*9-31,H+.5,-8));E.addPart('lc.body',body,root3);
+  const ap=new T.Group();ap.add(at(bx(40,30,3,M.silver),0,0,0));ap.add(alongZ(at(cy(5,5,4,M.glass,16),0,0,1)));ap.add(at(lab('DANGER / CLASS 4',72,12,{w:512,h:80,font:'700 28px system-ui'}),0,-22,2));E.addPart('lc.aperture',at(ap,0,70,D/2+1),root3);
   const ky=new T.Group();ky.add(at(cy(7,7,6,M.silver,16),0,0,0));ky.add(at(bx(3,8,10,M.black),0,4,0));E.addPart('lc.key',at(ky,-30,H+3,-20),root3);
   const z=-D/2-3;
   const usb=new T.Group();usb.add(at(bx(9,4,4,M.silver),0,0,0));usb.add(rear(at(lab('USB',24,7),0,-12,-1)));E.addPart('lc.io.usb',at(usb,-30,70,z),root3);

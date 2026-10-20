@@ -14,14 +14,15 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   const shell=at(E.rounded(W,H,D,4,M.black),0,H/2,0);root3.add(shell);refs.shell=shell;
   const ghost=new T.Mesh(new T.BoxGeometry(W,H,D),new T.MeshBasicMaterial({color:0x9a4525,wireframe:true,transparent:true,opacity:.35}));ghost.position.y=H/2;ghost.visible=false;root3.add(ghost);refs.ghost=ghost;
   const chassis=new T.Group();chassis.add(at(bx(W,H-4,2,M.dark),0,H/2,D/2+1));for(const sx of [-1,1])chassis.add(at(bx(18,H,3,M.black),sx*(W/2+9-1),H/2,D/2+1));
-  const toroid=alongX(at(cy(36,36,60,M.silver,32),-120,H/2,-20));const sink=at(bx(140,70,120,M.silver),80,H/2,-20);chassis.add(toroid,sink);
+  // QSC specifies a PowerLight supply for GX7; the board layout is illustrative.
+  const supply=new T.Group();supply.name='gx7-powerlight-supply';supply.add(at(bx(155,3,160,mat(0x244e3e)),0,0,0));supply.add(at(bx(44,36,40,mat(0x665528)),0,20,-18));for(const x of [-52,52])for(const z of [-47,47])supply.add(at(cy(13,13,36,M.black,24),x,20,z));for(let i=0;i<5;i++)supply.add(at(bx(5,35,110,M.silver),-45+i*22,20,0));chassis.add(at(supply,-110,9,-15));chassis.add(at(bx(140,65,120,M.silver),90,H/2,-20));
   for(const sx of [-1,1])for(const sy of [-1,1])chassis.add(alongZ(at(cy(4,4,4,M.silver,12),sx*(W/2+1),H/2+sy*30,D/2+2)));
   E.addPart('gx7.chassis',chassis,root3);
   const fz=D/2+3;
-  const knob=(id,x,txt)=>{const g=new T.Group();g.add(alongZ(at(cy(13,13,12,M.rubber,28),0,0,0)));g.add(at(bx(2,10,3,M.white),0,6,7));g.add(at(lab(txt,40,8),0,-22,0));E.addPart(id,at(g,x,H/2+6,fz),root3)};
-  knob('gx7.ctl.gain1',-150,'CH 1');knob('gx7.ctl.gain2',150,'CH 2');
-  const leds=new T.Group();for(const [i,m] of [[0,M.green],[1,M.red],[2,M.green],[3,M.red]])leds.add(alongZ(at(cy(2.5,2.5,3,m,10),-40+i*26,10,0)));leds.add(alongZ(at(cy(3,3,3,new T.MeshStandardMaterial({color:0x3b7cff,emissive:0x1b3c8f,emissiveIntensity:.6}),10),60,10,0)));leds.add(at(lab('SIG  CLIP  SIG  CLIP   PWR',120,8),10,-8,0));E.addPart('gx7.ctl.leds',at(leds,0,H/2,fz),root3);
-  const sw=new T.Group();sw.add(at(bx(22,16,6,M.black),0,0,0));sw.add(at(bx(8,10,4,M.silver),0,0,5));sw.add(at(lab('AC POWER',40,8),0,-18,0));E.addPart('gx7.ctl.power',at(sw,210,H/2+6,fz),root3);
+  const knob=(id,x,txt)=>{const g=new T.Group();const moving=new T.Group();moving.add(alongZ(at(cy(13,13,12,M.rubber,28),0,0,0)));moving.add(at(bx(2,10,3,M.white),0,6,7));g.add(moving);refs[id]=moving;g.add(at(lab(txt,20,7,{bg:'#15171a',fg:'#cfd3d6'}),0,-19,1.5));E.addPart(id,at(g,x,H/2+6,fz),root3)};
+  knob('gx7.ctl.gain1',-2,'CH 1');knob('gx7.ctl.gain2',52,'CH 2');
+  refs.signalLEDs=[];const leds=new T.Group();for(const [i,m] of [[0,M.green],[1,M.red],[2,M.green],[3,M.red]]){const dim=m.clone();dim.emissiveIntensity=0;const led=alongZ(at(cy(2.2,2.2,3,dim,10),19+(i%2)*10,14-Math.floor(i/2)*9,0));refs.signalLEDs.push(led);leds.add(led);}refs.powerLED=alongZ(at(cy(3,3,3,new T.MeshStandardMaterial({color:0x10203b,emissive:0x1b3c8f,emissiveIntensity:0}),10),24,25,0));leds.add(refs.powerLED);leds.add(at(lab('SIG CLIP',24,6,{bg:'#15171a',fg:'#cfd3d6'}),24,-2,1.5));E.addPart('gx7.ctl.leds',at(leds,0,H/2,fz),root3);
+  const sw=new T.Group();sw.add(at(bx(22,16,6,M.black),0,0,0));refs.power=at(bx(8,10,4,M.silver),0,0,5);sw.add(refs.power);E.addPart('gx7.ctl.power',at(sw,-62,H/2+6,fz),root3);
   const rz=-D/2-3;
   const chIn=(x)=>{const g=new T.Group();g.add(alongZ(at(cy(13,13,10,M.silver,24),0,0,0)));for(const a of [0,1,2])g.add(alongZ(at(cy(2.5,2.5,10,M.black,8),Math.cos(a*2.1+1.57)*5.5,Math.sin(a*2.1+1.57)*5.5,-6)));g.add(alongZ(at(cy(6,6,10,M.black,16),34,0,0)));g.position.x=x;return g};
   const ins=new T.Group();ins.add(chIn(-170));ins.add(chIn(-80));ins.add(rear(at(lab('CH 1 IN      CH 2 IN',130,9),-115,-24,-1)));E.addPart('gx7.io.xlr',at(ins,0,H/2+6,rz),root3);
@@ -49,4 +50,9 @@ const E=NNCWorkbench.mount(new FMPBench.Explorer({root:'#bench-root',catalog,vie
  partState(E,c){if(!c)return'';return c.action?`Local simulator action: ${c.action}. Nothing is wired, metered or driven.`:'Inspection only. No simulator action is assigned.'}}));
 const orig=E.setView.bind(E);E.setView=function(n){this.cfg.currentView=n;orig(n);E.renderSim()};
 root.querySelectorAll('[data-sim]').forEach(b=>b.addEventListener('click',()=>E.action(b.dataset.sim,b.dataset)));
+E.controls=NNCControls.mount(E,[
+ ...[1,2].map(channel=>({id:'gx7.ctl.gain'+channel,component:'gx7.ctl.gain'+channel,source:'qsc-gx-manual',label:'Channel '+channel+' gain',kind:'knob',min:0,max:100,step:1,initial:0,object:refs['gx7.ctl.gain'+channel],apply(value){refs['gx7.ctl.gain'+channel].rotation.z=(135-value*2.7)*Math.PI/180;}})),
+ {id:'gx7.ctl.power',component:'gx7.ctl.power',source:'qsc-gx-manual',label:'Power',kind:'switch',min:0,max:1,step:1,initial:0,object:refs.power,targets:[E.partObjects.get('gx7.ctl.power')],format:v=>v?'On':'Off',apply(value){refs.power.rotation.x=value?-.3:.3;refs.power.position.y=value?2:-2;const m=E.tinted.get(refs.powerLED)?.base||refs.powerLED.material;m.color.setHex(value?0x3b7cff:0x10203b);m.emissiveIntensity=value?.8:0;}},
+ {id:'gx7.ctl.crossover',component:'gx7.ctl.crossover',source:'qsc-gx-manual',label:'Crossover',kind:'switch',min:0,max:1,step:1,initial:0,object:refs.xo,targets:[E.partObjects.get('gx7.ctl.crossover')],format:v=>v?'Crossover · 100 Hz':'Full range',read:e=>e.sim.crossover==='full'?0:1,sync:(v,e)=>{e.sim.crossover=v?'crossover':'full';},apply(value){refs.xo.position.y=value?-6:6;}}
+],{view:'front',note:'QSC GX manual, pages 4–6. Gain shows approximate knob position, not calibrated dB. Power assumes simulated AC; startup transients are omitted. Signal/clip feedback uses relative demo thresholds, not measured watts or calibrated gain.',demo:{kind:'gx7',paint(e,levels){refs.signalLEDs.forEach((mesh,i)=>NNCControls.light(e,mesh,i%2?levels.channels[Math.floor(i/2)]>=1:levels.channels[Math.floor(i/2)]>0));}}});
 E.setView('overview');})();

@@ -166,6 +166,18 @@
         "label": "Overview"
       },
       {
+        "id": "front",
+        "label": "Front"
+      },
+      {
+        "id": "top",
+        "label": "Top"
+      },
+      {
+        "id": "rear",
+        "label": "Rear"
+      },
+      {
         "id": "panel",
         "label": "Control end"
       },

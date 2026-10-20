@@ -11,7 +11,7 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   // Rounded boxes from the runtime are centred on the origin; everything here lifts by h/2 so the unit sits on the floor.
 
   const W=878,H=118,D=466;
-  const body=new T.Group();const shell=at(E.rounded(W,H-8,D,10,M.black),0,(H-8)/2,0);body.add(shell);refs.shell=shell;body.add(at(E.rounded(W-6,8,D-6,8,M.dark),0,H-4,0));for(const sx of [-1,1])body.add(at(bx(20,30,120,M.rubber),sx*(W/2+2),H*.55,0));E.addPart('xz.body',body,root3);
+  const body=new T.Group();const shell=at(E.rounded(W,H-8,D,10,M.black),0,(H-8)/2,0);body.add(shell);refs.shell=shell;body.add(at(E.rounded(W-6,8,D-6,8,M.dark),0,H-4,0));for(const sx of [-1,1]){body.add(at(bx(2,40,130,M.black),sx*(W/2+1),H*.55,0));for(const z of [-57,57])body.add(at(bx(16,14,16,M.rubber),sx*(W/2+7),H*.55,z));body.add(at(bx(12,14,100,M.rubber),sx*(W/2+13),H*.55,0));}E.addPart('xz.body',body,root3);
   const ghost=new T.Mesh(new T.BoxGeometry(W,H,D),new T.MeshBasicMaterial({color:0x9a4525,wireframe:true,transparent:true,opacity:.35}));ghost.position.y=H/2;ghost.visible=false;root3.add(ghost);refs.ghost=ghost;
   const top=H+1;
   const jog=(id,x)=>{const g=new T.Group();g.add(at(cy(103,103,10,M.rubber,64),0,0,0));g.add(at(cy(95,95,4,M.black,64),0,7,0));g.add(at(cy(38,38,6,M.glass,48),0,9,0));g.add(faceUp(at(E.label('DECK',50,26,{w:200,h:104,bg:'#0b1220',fg:'#9fd2ff',font:'700 52px ui-monospace'}),0,13,0)));E.addPart(id,at(g,x,top,60),root3)};

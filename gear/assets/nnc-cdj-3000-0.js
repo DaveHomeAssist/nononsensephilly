@@ -11,8 +11,8 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   // Rounded boxes from the runtime are centred on the origin; everything here lifts by h/2 so the unit sits on the floor.
 
   const W=329,H=118,D=453;
-  const body=new T.Group();const shell=at(E.rounded(W,H-30,D,10,M.black),0,(H-30)/2,0);body.add(shell);refs.shell=shell;
-  body.add(at(E.rounded(W-6,30,D-6,8,M.silver),0,H-15,0)); // aluminium top plate
+  const body=new T.Group();const shell=at(E.rounded(W,H-4,D,10,M.black),0,(H-4)/2,0);body.add(shell);refs.shell=shell;
+  body.add(at(E.rounded(W-6,4,D-6,1,M.black),0,H-2,0)); // aluminium top plate
   body.add(at(bx(W-20,8,D-20,M.rubber),0,2,0));
   E.addPart('cdj.body',body,root3);
   const ghost=new T.Mesh(shell.geometry,new T.MeshBasicMaterial({color:0x9a4525,wireframe:true,transparent:true,opacity:.35}));ghost.position.copy(shell.position);ghost.visible=false;body.add(ghost);refs.ghost=ghost;
@@ -20,7 +20,7 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   const jog=new T.Group();jog.add(at(cy(103,103,10,M.rubber,64),0,0,0));jog.add(at(cy(96,96,4,M.black,64),0,7,0));jog.add(at(cy(40,40,6,M.glass,48),0,9,0));jog.add(faceUp(at(E.label('03:12',60,30,{w:240,h:120,bg:'#0b1220',fg:'#9fd2ff',font:'700 60px ui-monospace'}),0,13,0)));E.addPart('cdj.jog',at(jog,20,top,70),root3);
   const scr=new T.Group();scr.add(at(bx(200,4,112,M.black),0,0,0));scr.add(faceUp(at(E.label('CDJ-3000   LIBRARY\n▂▃▅▆▅▃▂▃▅▇▅▃▂',190,100,{w:760,h:400,bg:'#0d1626',fg:'#7fd4ff',font:'600 44px ui-monospace'}),0,3,0)));E.addPart('cdj.screen',at(scr,10,top,-150),root3);
   const hc=new T.Group();for(let i=0;i<8;i++)hc.add(at(bx(18,6,14,[M.red,M.amber,M.green,M.glass][i%4]),i*25-88,0,0));hc.add(faceUp(at(lab('HOT CUE  A – H',120,8),0,4,20)));E.addPart('cdj.hotcues',at(hc,10,top,-72),root3);
-  const tr=new T.Group();tr.add(at(cy(16,16,8,M.green,24),0,0,0));tr.add(at(cy(16,16,8,M.amber,24),0,0,-40));tr.add(at(bx(12,6,110,M.rubber),270,0,-30));tr.add(at(bx(16,8,10,M.silver),270,4,-10));E.addPart('cdj.transport',at(tr,-130,top,150),root3);
+  const tr=new T.Group();for(const [z,colour] of [[0,0x43cb7b],[-40,0xe6b94c]]){tr.add(at(cy(16,16,6,M.black,32),0,0,z));const ring=new T.Mesh(new T.TorusGeometry(14.5,.8,8,48),new T.MeshBasicMaterial({color:colour}));ring.rotation.x=-Math.PI/2;tr.add(at(ring,0,3.2,z));}tr.add(at(bx(12,6,110,M.rubber),270,0,-30));tr.add(at(bx(16,8,10,M.silver),270,4,-10));E.addPart('cdj.transport',at(tr,-130,top,150),root3);
   const sd=new T.Group();sd.add(at(bx(34,5,6,M.rubber),0,0,0));sd.add(at(lab('SD',30,8),0,-12,0));E.addPart('cdj.media.sd',at(sd,-110,30,D/2+1),root3);
   const usb=new T.Group();usb.add(at(bx(40,10,30,M.silver),0,0,0));usb.add(at(bx(14,6,8,M.rubber),0,0,8));usb.add(faceUp(at(lab('USB',30,8),0,6,24)));E.addPart('cdj.media.usb',at(usb,-120,top,-190),root3);
   const rz=-D/2-4,ry=45;
