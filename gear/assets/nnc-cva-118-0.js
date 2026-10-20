@@ -12,8 +12,8 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
 
   const W=533,H=635,D=597;
   const carpet=mat(0x23262a,.95,0),grilleM=mat(0x14171a,.6,.35);
-  const cab=new T.Group();const shell=at(E.rounded(W,H,D,14,carpet),0,H/2,0);cab.add(shell);refs.shell=shell;
-  cab.add(at(E.rounded(W-50,H-60,8,10,grilleM),0,H/2,D/2-1));
+  const cab=new T.Group();const shell=at(E.rounded(W,H,D,6,carpet),0,H/2,0);cab.add(shell);refs.shell=shell;
+  cab.add(at(E.rounded(W-50,H-60,8,4,grilleM),0,H/2,D/2-1));
   for(const sx of [-1,1])for(const sy of [0,1])for(const sz of [-1,1])cab.add(at(bx(40,40,40,M.black),sx*(W/2-18),sy?H-20:20,sz*(D/2-18)));
   cab.add(at(E.rounded(280,330,10,8,M.black),0,330,-D/2-1));
   E.addPart('cva.cabinet',cab,root3);

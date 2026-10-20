@@ -117,6 +117,18 @@
         "label": "Overview"
       },
       {
+        "id": "front",
+        "label": "Front"
+      },
+      {
+        "id": "top",
+        "label": "Top"
+      },
+      {
+        "id": "rear",
+        "label": "Rear"
+      },
+      {
         "id": "grille",
         "label": "Grille"
       },

@@ -51,8 +51,8 @@
  }
  window.NNCWorkbench={mount(instance){
   explorer=instance;
-  const view=instance.setView.bind(instance);instance.setView=function(name){view(name);if(name==='overview')NNCProduct.frame(instance);};
-  const resize=instance.resize.bind(instance);instance.resize=function(){resize();if(instance.cfg.currentView==='overview')NNCProduct.frame(instance);};
+  const view=instance.setView.bind(instance);const fits=name=>name==='overview'||!!instance.cfg.views[name]?.fit;instance.setView=function(name){view(name);if(fits(name))NNCProduct.frame(instance);};
+  const resize=instance.resize.bind(instance);instance.resize=function(){resize();if(fits(instance.cfg.currentView))NNCProduct.frame(instance);};
   const render=instance.cfg.renderSim;instance.cfg.renderSim=function(e){render?.(e);if(e.productShell)for(const surface of e.productExteriors||[])surface.visible=e.productShell.visible;};
   const size=Math.max(...instance.catalog.dimensions_mm)*5;grid=new THREE.GridHelper(size,24,css('--nnc-grid-colour'),css('--nnc-grid-colour'));grid.geometry.attributes.color.array.fill(1);grid.geometry.attributes.color.needsUpdate=true;grid.position.y=(instance.productFloorY??0)-2;instance.scene.add(grid);
   const original=instance.highlight.bind(instance);instance.highlight=function(){original();highlight();};
