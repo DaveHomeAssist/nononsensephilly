@@ -3,7 +3,7 @@
   "guide_id": "nnc-cva-118",
   "revision": "0.1.0",
   "model": "Cerwin-Vega CVA-118 (CVA-118X)",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     533,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -35,16 +35,16 @@
       "scope": "700 W continuous / 1400 W peak, 39–135 Hz ±3 dB, 131 dB max SPL, 18-inch SW18C with 3-inch voice coil, 25 × 21 × 23.5 in, 115–121 lb. Cerwin-Vega no longer publishes the CVA-118 page."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -58,7 +58,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "cva-retail",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Envelope and weight are retailer figures; no manufacturer sheet is published any more.",
       "action": null,
@@ -256,7 +256,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Not described in the quick reference.",
       "action": null,
@@ -268,7 +268,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "Cerwin-Vega CVA-118 | NNC Gear Guide",
@@ -313,7 +313,7 @@
       ],
       [
         "Weight",
-        "52 kg seed · retailers 115–121 lb"
+        "52 kg reported · retailers 115–121 lb"
       ],
       [
         "Driver",
@@ -342,9 +342,9 @@
     ],
     "unresolved": [
       "Official Cerwin-Vega manual or spec sheet",
-      "Weight: 52 kg (seed) against 115–121 lb retail",
-      "Whether Nick's units are CVA-118 or CVA-118X"
+      "Weight: 52 kg reported against 115–121 lb retail",
+      "Whether NNC's units are CVA-118 or CVA-118X"
     ],
-    "footer": "Cerwin-Vega CVA-118 · educational reconstruction · NNC staged"
+    "footer": "Cerwin-Vega CVA-118 · educational reconstruction"
   }
 }

@@ -3,7 +3,7 @@
   "guide_id": "nnc-tl60",
   "revision": "0.1.0",
   "model": "Godox TL60",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     48,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -35,16 +35,16 @@
       "scope": "48 × 750 mm, 730 g, 18 W max, RGB 2700–6500 K, CRI 96 / TLCI 98, 14.4 V 2600 mAh battery, 20 V 2.4 A adapter, about 2 h at full power, DMX 32 channels in 6 groups over RJ45, app and remote control."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -138,7 +138,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Thread size not confirmed from a manufacturer page.",
       "action": null,
@@ -151,7 +151,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "Godox TL60 | NNC Gear Guide",
@@ -164,6 +164,18 @@
       {
         "id": "overview",
         "label": "Overview"
+      },
+      {
+        "id": "front",
+        "label": "Front"
+      },
+      {
+        "id": "top",
+        "label": "Top"
+      },
+      {
+        "id": "rear",
+        "label": "Rear"
       },
       {
         "id": "panel",
@@ -180,7 +192,7 @@
     "practice_notice": "Readbacks repeat retailer copies of the Godox table. Colour, battery and DMX state are not simulated.",
     "practice_cards": "<div class=\"card\"><h3>Simulated TL60 state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"tl.ctl.panel\">Control panel and display</button><button data-sim=\"socket\" data-socket=\"tl.io.dc\">DC charging input</button><button data-sim=\"socket\" data-socket=\"tl.io.dmx\">DMX over RJ45</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Tube on the DMX line</h3><p>The TL60 takes DMX on RJ45, not XLR. Keep the adapter with the tube or run it from the app and leave it off the console.</p><p class=\"small\">Channel chart lives in the manual.</p></div>",
     "evidence_heading": "Godox TL60 · product page, manual and NNC record",
-    "evidence_note": "The Godox page is images and a manual link with no readable spec text, and the manual PDFs in the pack could not be machine-read, so the figures are retailer copies and are marked Reported.",
+    "evidence_note": "The Godox page is images and a manual link with no readable spec text, and the manual PDFs on file could not be machine-read, so the figures are retailer copies and are marked Reported.",
     "facts": [
       [
         "Size",
@@ -209,8 +221,8 @@
     ],
     "unresolved": [
       "Manual text for the DMX chart and thread size",
-      "Which brackets Nick uses"
+      "Which mounting brackets NNC uses"
     ],
-    "footer": "Godox TL60 · educational reconstruction · NNC staged"
+    "footer": "Godox TL60 · educational reconstruction"
   }
 }

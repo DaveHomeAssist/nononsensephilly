@@ -3,7 +3,7 @@
   "guide_id": "nnc-lasercube-2w",
   "revision": "0.1.0",
   "model": "X-Laser LaserCube 2W (LC-1000)",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     102,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "No manufacturer page survives for the 2 W LaserCube; every figure is a reseller copy. Nothing has been checked against Nick's unit, and this is a Class 4 laser that the inventory says only runs with a technician.",
+  "model_limits": "No manufacturer page survives for the 2 W LaserCube; every figure is a reseller copy. Nothing has been checked against a physical unit, and this is a Class 4 laser that the inventory says only runs with a technician.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -29,16 +29,16 @@
       "scope": "Model LC-1000, Class 4, 2 W (blue 450 nm 1200 mW, green 520 nm 400 mW, red 638 nm 400 mW), 4.0 mm / 1.0 mrad beam, 4 × 4 × 4.4 in (10 × 10 × 11 cm), 3.7 lb (1.7 kg), 14,000 mAh battery for about 3 h, micro USB control, remote interlock connector, DC input, key control. Not a manufacturer page; xlaser.com no longer lists the 2W."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     },
     {
       "source_id": "lasercube-usb-manual",
@@ -169,7 +169,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "X-Laser LaserCube 2W | NNC Gear Guide",
@@ -230,10 +230,8 @@
       ]
     ],
     "unresolved": [
-      "Manufacturer manual and exact envelope for the 2 W model",
-      "Variance paperwork for audience scanning",
-      "Interlock box wiring"
+      "Manufacturer manual and exact envelope for the 2 W model"
     ],
-    "footer": "X-Laser LaserCube 2W · educational reconstruction · NNC staged"
+    "footer": "X-Laser LaserCube 2W · educational reconstruction"
   }
 }

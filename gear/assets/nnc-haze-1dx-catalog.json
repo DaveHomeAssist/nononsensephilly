@@ -3,7 +3,7 @@
   "guide_id": "nnc-haze-1dx",
   "revision": "0.1.0",
   "model": "Chauvet DJ Hurricane Haze 1DX",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     150,
@@ -16,7 +16,7 @@
     "y": "up",
     "z": "front"
   },
-  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against Nick's unit; every placement is approximate.",
+  "model_limits": "Reconstructed from manufacturer documents and the NNC record. Nothing in this model has been checked against a physical unit; every placement is approximate.",
   "category_limits": {
     "Connections": "Connector type and function follow the manufacturer document; exact placement in this reconstruction is approximate.",
     "Controls": "Control function follows the manufacturer document; knob and button placement is approximate."
@@ -29,16 +29,16 @@
       "scope": "1 DMX channel, 3-pin XLR DMX, 2 min heat-up, 120 VAC 60 Hz, 303 W / 2.5 A, 3.3 kg, 278 × 150 × 223 mm (L × W × H), 1.5 L tank, 800 cfm, 4 ml/min, HFG / HF5 EU / HFDJ5 EU fluids, built-in display and volume knob. Copy in the NNC pack."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
       "scope": "Unit identity, quantity, and retailer-reproduced figures where the manufacturer page no longer carries them."
     },
     {
       "source_id": "nnc-inventory",
-      "label": "DOC | NNC Nick DJ Equipment Inventory",
+      "label": "NNC equipment inventory",
       "locator": "NNC inventory record, 14 October 2026",
-      "scope": "Which units Nick owns and how many."
+      "scope": "Which units NNC owns and how many."
     }
   ],
   "components": [
@@ -149,9 +149,9 @@
       "geometry_status": "approximate",
       "source_ids": [
         "haze-sheet",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
-      "limits": "Power rating conflict noted in the seed.",
+      "limits": "Power rating figures conflict between sources.",
       "action": "socket",
       "aliases": [
         "iec",
@@ -161,7 +161,7 @@
     }
   ],
   "evidence_policy": {
-    "physical_verification": "None; no dimension or placement has been checked against Nick's unit"
+    "physical_verification": "None; no dimension or placement has been checked against a physical unit"
   },
   "page": {
     "title": "Chauvet DJ Hurricane Haze 1DX | NNC Gear Guide",
@@ -190,7 +190,7 @@
     "practice_notice": "Readbacks repeat the Chauvet specification sheet. Heat, output and fluid level are not simulated.",
     "practice_cards": "<div class=\"card\"><h3>Simulated hazer state</h3><pre class=\"readout\" data-readout aria-live=\"polite\"></pre><div class=\"button-row\"></div></div>\n<div class=\"card\"><h3>Connections and controls</h3><div class=\"control-grid\"><button data-sim=\"socket\" data-socket=\"haze.tank\">1.5 L fluid tank</button><button data-sim=\"socket\" data-socket=\"haze.nozzle\">Output nozzle and fan</button><button data-sim=\"socket\" data-socket=\"haze.ctl.display\">Digital display and volume knob</button><button data-sim=\"socket\" data-socket=\"haze.io.dmx\">DMX in and out · 3-pin XLR</button><button data-sim=\"socket\" data-socket=\"haze.io.power\">Power inlet</button></div><p class=\"small\">Each button only reads back what the manufacturer document says that connector or control does.</p></div>\n<div class=\"card lesson\"><h3>Haze on a budget circuit</h3><p>At 2.5 A the hazer is the heaviest draw among the small effects. Give it two minutes before the doors and keep the DMX chain terminated if the volume knob is not in use.</p><p class=\"small\">Address and output are not simulated.</p></div>",
     "evidence_heading": "Chauvet DJ Hurricane Haze 1DX · specification sheet and NNC record",
-    "evidence_note": "The Chauvet specification sheet in the pack carries every figure here. The power rating differs between the sheet (303 W) and retailers (188 W); the sheet is the manufacturer figure.",
+    "evidence_note": "The Chauvet specification sheet on file carries every figure here. The power rating differs between the sheet (303 W) and retailers (188 W); the sheet is the manufacturer figure.",
     "facts": [
       [
         "Envelope",
@@ -223,9 +223,9 @@
     ],
     "unresolved": [
       "Power draw: 303 W sheet against 188 W retail",
-      "User manual (only the spec sheet is in the pack)",
-      "Which fluid Nick runs"
+      "User manual (only the spec sheet was available)",
+      "Which haze fluid NNC uses"
     ],
-    "footer": "Chauvet DJ Hurricane Haze 1DX · educational reconstruction · NNC staged"
+    "footer": "Chauvet DJ Hurricane Haze 1DX · educational reconstruction"
   }
 }

@@ -1,7 +1,7 @@
 (function(){'use strict';
 const root=document.getElementById('bench-root'), catalog=JSON.parse(document.getElementById('equipment-catalog').textContent);let refs={};
 const SOCKETS=Object.fromEntries(catalog.components.filter(c=>c.action==='socket').map(c=>[c.component_id,`${c.label} · ${c.purpose.split(/(?<=\.)\s/)[0]}`]));
-const views={overview:{target:[0,375,0],theta:0.72,phi:0.9,radius:1500},panel:{target:[0,80,0],theta:0.4,phi:1.1,radius:320,min:120},ports:{target:[0,80,-24],theta:3.14,phi:1.1,radius:320,min:120}};
+const views={overview:{target:[0,375,0],theta:0.72,phi:0.9,radius:1500},panel:{target:[0,80,0],theta:0.4,phi:1.1,radius:320,min:120},ports:{target:[0,80,-24],theta:3.14,phi:1.1,radius:320,min:120},front:{target:[0,375,0],theta:0.1,phi:1.35,radius:1500,fit:true},top:{target:[0,375,0],theta:0.1,phi:0.2,radius:1500,fit:true},rear:{target:[0,375,0],theta:0.1+Math.PI,phi:1.35,radius:1500,fit:true}};
 function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group();root3.rotation.y=0.1;E.scene.add(root3);
   const mesh=(g,mat)=>{const m=new T.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;return m};
   const bx=(w,h,d,mat)=>E.rounded(w,h,d,Math.min(w,h,d)*.12,mat),cy=(rt,rb,h,mat,seg=32)=>mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);

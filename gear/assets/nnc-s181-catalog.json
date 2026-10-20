@@ -3,7 +3,7 @@
   "guide_id": "nnc-s181",
   "revision": "0.1.0",
   "model": "Electro-Voice S-181 (modified, Bauder plate)",
-  "owner": "No Nonsense Collective · Nick's rig",
+  "owner": "No Nonsense Collective",
   "units": "mm",
   "dimensions_mm": [
     538,
@@ -28,15 +28,15 @@
       "scope": "Published frequency response, power handling, sensitivity, impedance, 70.1 × 53.8 × 58.2 cm envelope and 30.9 kg net weight. Pages 2 to 4 are image scans and were not machine-read."
     },
     {
-      "source_id": "nnc-seed",
-      "label": "NNC gear pack · catalog-seed.json · ev-s181-bauder",
-      "locator": "DaveHomeAssist/nnc-gear-pack, commit 62ce7f5, 17 October 2026",
-      "scope": "Unit identity, DL18MT driver, factory 1/4-inch INPUT and OUTPUT jacks, three added round NL4-style sockets, quantity planning and open gaps."
+      "source_id": "nnc-gear-record",
+      "label": "NNC gear record",
+      "locator": "NNC gear record, 17 October 2026",
+      "scope": "Unit identity, DL18MT driver, factory 1/4-inch INPUT and OUTPUT jacks, three added round NL4-style sockets, quantity and open gaps."
     },
     {
       "source_id": "nnc-bauder-record",
       "label": "Modified EV S181 (Bauder) record",
-      "locator": "NNC equipment record and Dave's cabinet photographs, October 2026",
+      "locator": "NNC equipment record and cabinet photographs, October 2026",
       "scope": "Lettering and recorded roles of the added sockets: A upper LOW, B lower LOW, C HI. The real pinout has not been metered."
     }
   ],
@@ -51,9 +51,9 @@
       "geometry_status": "approximate",
       "source_ids": [
         "ev-s181-datasheet",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
-      "limits": "Envelope and weight are published. Vent shape, corner hardware, handles and panel recesses are approximate and unverified against Nick's cabinets.",
+      "limits": "Envelope and weight are published. Vent shape, corner hardware, handles and panel recesses are approximate and unverified against a physical cabinet.",
       "action": null,
       "aliases": [
         "sub",
@@ -72,7 +72,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "ev-s181-datasheet",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "The driver is hidden inside the bandpass chamber; its position and mounting in this model are illustrative. Driver condition, recone history and the exact DL18MT variant are unknown.",
       "action": "driver",
@@ -91,7 +91,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "",
       "action": "socket",
@@ -110,7 +110,7 @@
       "confidence": "Reported",
       "geometry_status": "approximate",
       "source_ids": [
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "",
       "action": "socket",
@@ -131,7 +131,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "nnc-bauder-record",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Recorded role only. Pinout, polarity and internal wiring are unmetered.",
       "action": "socket",
@@ -152,7 +152,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "nnc-bauder-record",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Recorded role only. Pinout, polarity and internal wiring are unmetered.",
       "action": "socket",
@@ -173,7 +173,7 @@
       "geometry_status": "approximate",
       "source_ids": [
         "nnc-bauder-record",
-        "nnc-seed"
+        "nnc-gear-record"
       ],
       "limits": "Recorded role only. Whether C is isolated from the driver, and which pins it uses, is unmetered.",
       "action": "socket",
@@ -188,7 +188,7 @@
   ],
   "evidence_policy": {
     "plate_pinout": "Unknown (unmetered)",
-    "quantity": "Unconfirmed (planning: 4)",
+    "quantity": "Unconfirmed",
     "driver_condition": "Unknown",
     "physical_verification": "None; no dimension or placement has been checked against a physical cabinet"
   },
@@ -198,7 +198,7 @@
     "bench": "No Nonsense gear guide / 01 · preview",
     "heading": "Electro-Voice S-181",
     "identity_strong": "Electro-Voice · S-181 · modified, Bauder plate",
-    "description": "Explore Nick's modified Electro-Voice S-181 subwoofer. Published data-sheet facts, the NNC record of the added plate and approximate reconstructed geometry are identified separately. No equipment connection.",
+    "description": "Explore a modified Electro-Voice S-181 subwoofer. Published data-sheet facts, the NNC record of the added plate and approximate reconstructed geometry are identified separately. No equipment connection.",
     "views": [
       {
         "id": "overview",
@@ -266,12 +266,12 @@
       ]
     ],
     "unresolved": [
-      "Plate pinout, polarity and whether A and B are parallel: meter it",
+      "Plate pinout, polarity and whether A and B are parallel (not yet metered)",
       "Whether socket C is isolated from the driver",
-      "Quantity owned (planning assumes 4) and driver condition",
+      "Quantity owned and driver condition",
       "No dimension or placement has been checked against a physical cabinet"
     ],
-    "closing_notice": "This is a browser reconstruction staged for the NNC gear guide. It does not verify wiring, driver health or current equipment state. Physical inspection and metering are separate, unperformed steps.",
-    "footer": "S-181 (Bauder) · educational reconstruction · NNC staged"
+    "closing_notice": "This is a browser reconstruction for the NNC gear guide. It does not verify wiring, driver health or current equipment state. Physical inspection and metering are separate, unperformed steps.",
+    "footer": "S-181 (Bauder) · educational reconstruction"
   }
 }

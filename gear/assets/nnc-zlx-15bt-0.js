@@ -27,7 +27,7 @@ function build(E){NNCProduct.prepare(E);const T=THREE,M=E.mats,root3=new T.Group
   const z=-D/2-7;
   const lcd=new T.Group();lcd.add(at(bx(100,50,4,M.black),0,0,0));lcd.add(rear(at(E.label('ZLX  LIVE\nMASTER  0 dB',88,38,{w:352,h:152,bg:'#0d1b2a',fg:'#8ad0ff',font:'600 30px ui-monospace'}),0,0,-3)));for(const x of [-30,0,30])lcd.add(alongZ(at(cy(7,7,6,M.silver,16),x,-45,-2)));E.addPart('zlx.ctl.lcd',at(lcd,0,395,z),root3);
   const combo=(id,x,y,text)=>{const g=new T.Group();g.add(alongZ(at(cy(16,16,10,M.black,24),0,0,0)));g.add(alongZ(at(cy(9,9,12,M.rubber,16),0,0,-2)));for(const a of [0,1,2])g.add(alongZ(at(cy(2,2,13,M.silver,8),Math.cos(a*2.1+1.57)*6,Math.sin(a*2.1+1.57)*6,-3)));g.add(rear(at(lab(text,54,12),0,-26,-1)));E.addPart(id,at(g,x,y,z-3),root3)};
-  combo('zlx.io.input1',-80,300,'INPUT 1');combo('zlx.io.input2',-80,230,'INPUT 2');
+  combo('zlx.io.input1',-60,300,'INPUT 1');combo('zlx.io.input2',-60,230,'INPUT 2');
   const xlr=new T.Group();xlr.add(alongZ(at(cy(14,14,10,M.silver,24),0,0,0)));for(const a of [0,1,2])xlr.add(alongZ(at(cy(2.5,2.5,10,M.black,8),Math.cos(a*2.1+1.57)*5.5,Math.sin(a*2.1+1.57)*5.5,-6)));xlr.add(rear(at(lab('MIX OUT',54,12),0,-24,-1)));E.addPart('zlx.io.mixout',at(xlr,40,300,z-3),root3);
   const aux=new T.Group();aux.add(alongZ(at(cy(5,5,10,M.silver,16),0,0,0)));aux.add(rear(at(lab('AUX IN',40,10),0,-16,-1)));E.addPart('zlx.io.aux',at(aux,40,245,z-3),root3);
   const pw=new T.Group();pw.add(at(bx(34,26,8,M.black),0,0,0));pw.add(at(bx(26,18,3,M.silver),0,0,-5));pw.add(at(bx(18,24,8,M.red),40,0,0));pw.add(rear(at(lab('MAINS IN   POWER',70,10),20,-24,-1)));E.addPart('zlx.io.power',at(pw,-10,210,z-3),root3);
