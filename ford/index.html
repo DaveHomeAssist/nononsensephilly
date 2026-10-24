@@ -1013,7 +1013,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (hsh === '#done' && S.done.every(Boolean)) return { finished: true };
     return null;
   }
-  Object.assign(S, fromHash() || {});
+  var linked = fromHash();
+  if (linked) Object.assign(S, linked, { view: 'step' });
   function syncHash() {
     if (!steps.length) return;
     var want = S.finished ? '#done' : '#step-' + (S.cur + 1);
