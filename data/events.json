@@ -20,20 +20,8 @@
       "door": {
         "age": "21+"
       },
-      "nights": [
-        {
-          "label": "HiJinx Night 1 · Wed Dec 30",
-          "sets": [
-            [
-              "3:30",
-              "FREQ"
-            ]
-          ]
-        }
-      ],
-      "lineup": [
-        "FREQ"
-      ],
+      "lineup": [],
+      "lineupNote": "Lineup TBA.",
       "audio": [],
       "videos": []
     },
