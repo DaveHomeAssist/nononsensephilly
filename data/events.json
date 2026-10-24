@@ -60,7 +60,18 @@
       "lineup": [],
       "lineupNote": "Lineup TBA. Multi-genre video game EDM.",
       "audio": [],
-      "videos": []
+      "videos": [],
+      "splash": {
+        "theme": {
+          "bg": "#070305",
+          "line": "#3094c1",
+          "lineText": "#5fb4dd",
+          "accent": "#dd070d",
+          "accentText": "#ff4d52",
+          "warm": "#e0a35a",
+          "ok": "#10b20e"
+        }
+      }
     },
     {
       "slug": "afterbreak-2026",
