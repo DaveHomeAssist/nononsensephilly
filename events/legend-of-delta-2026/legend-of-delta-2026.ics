@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//No Nonsense Collective//nononsensephilly.com//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:legend-of-delta-2026@nononsensephilly.com
+DTSTAMP:20261114T030000Z
+DTSTART:20261114T030000Z
+DTEND:20261114T080000Z
+SUMMARY:The Legend of Delta: A Link to the Rave · No Nonsense
+LOCATION:2437 S 24th St\, Philadelphia
+DESCRIPTION:ZeldaRave VS DeltaRave. DeltaRave returns\, with a twist: worlds unite for the first ever Zelda x Deltarune rave. Collision of the dark worlds: a multi-genre video game EDM night. All cosplay welcome\; Undertale\, Deltarune and Zelda cosplay encouraged. Limited free RSVP\, then from $10\; $20 day of. See you soon\, travelers. Get the drop: https://nononsensephilly.com/events/legend-of-delta-2026/
+URL:https://nononsensephilly.com/events/legend-of-delta-2026/
+END:VEVENT
+END:VCALENDAR
