@@ -39,8 +39,8 @@ try {
  }
  const signupPage=await browser.newPage();
  await signupPage.route('**/api/signup', route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({ok:true,pending:true})}));
- await signupPage.goto(origin);
- await signupPage.locator('[data-open-news]').first().click();
+ await signupPage.goto(origin + '/#events');
+ await signupPage.locator('[data-open-news]:visible').first().click();
  await signupPage.locator('#n-email').fill('test@example.com');
  await signupPage.locator('#news-form button[type=submit]').click();
  await signupPage.waitForFunction(()=>document.getElementById('news-success-title').textContent==='Check your inbox.');

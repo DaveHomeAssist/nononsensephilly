@@ -6,20 +6,59 @@
       "title": "AfterJinx 2026",
       "category": "afterparty",
       "status": "announced",
-      "start": "2026-12-27T01:00:00-05:00",
-      "end": "2026-12-28T08:00:00-05:00",
-      "dateLabel": "Dec 26 + 27, 2026",
-      "summary": "Save the date: unofficial HiJinx Festival afterparties return. Venue and lineup go to the drop list first.",
+      "start": "2026-12-30T23:55:00-05:00",
+      "end": "2026-12-31T06:00:00-05:00",
+      "dateLabel": "Wed, Dec 30, 2026",
+      "summary": "HiJinx Night 1 unofficial afters. Doors 11:55 PM, music until 6 AM.",
       "presenters": [],
       "venue": {
-        "area": "Philadelphia",
-        "public": false
+        "name": "The Arts Loft",
+        "area": "Callowhill",
+        "public": true
       },
       "flyer": "afterjinx-2026",
       "door": {
         "age": "21+"
       },
+      "nights": [
+        {
+          "label": "HiJinx Night 1 · Wed Dec 30",
+          "sets": [
+            [
+              "3:30",
+              "FREQ"
+            ]
+          ]
+        }
+      ],
+      "lineup": [
+        "FREQ"
+      ],
+      "audio": [],
+      "videos": []
+    },
+    {
+      "slug": "legend-of-delta-2026",
+      "title": "The Legend of Delta: A Link to the Rave",
+      "category": "club",
+      "status": "on-sale",
+      "start": "2026-11-13T22:00:00-05:00",
+      "end": "2026-11-14T03:00:00-05:00",
+      "dateLabel": "Fri, Nov 13, 2026",
+      "summary": "ZeldaRave VS DeltaRave. DeltaRave returns, with a twist: worlds unite for the first ever Zelda x Deltarune rave. Collision of the dark worlds: a multi-genre video game EDM night. All cosplay welcome; Undertale, Deltarune and Zelda cosplay encouraged. Limited free RSVP, then from $10; $20 day of. See you soon, travelers.",
+      "presenters": [],
+      "venue": {
+        "name": "2437 S 24th St",
+        "area": "South Philly",
+        "public": true
+      },
+      "flyer": "legend-of-delta-2026",
+      "ticketUrl": "https://posh.vip/e/the-legend-of-delta-a-link-to-the-rave",
+      "door": {
+        "age": "18+"
+      },
       "lineup": [],
+      "lineupNote": "Lineup TBA. Multi-genre video game EDM.",
       "audio": [],
       "videos": []
     },
