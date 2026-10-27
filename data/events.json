@@ -20,8 +20,61 @@
       "door": {
         "age": "21+"
       },
-      "lineup": [],
-      "lineupNote": "Lineup TBA.",
+      "nights": [
+        {
+          "label": "HiJinx Night 1 · Wed Dec 30",
+          "sets": [
+            [
+              "11:55",
+              "Doors"
+            ],
+            [
+              "12:00",
+              "ILLIXIR"
+            ],
+            [
+              "12:30",
+              "Producer Contest Winner"
+            ],
+            [
+              "1:00",
+              "Quackz"
+            ],
+            [
+              "1:45",
+              "DusteeHD"
+            ],
+            [
+              "2:30",
+              "illGmusic"
+            ],
+            [
+              "3:30",
+              "FREQ"
+            ],
+            [
+              "4:30",
+              "SLOT_PENDING"
+            ],
+            [
+              "5:30",
+              "ILLIXIR"
+            ],
+            [
+              "6:00",
+              "Close"
+            ]
+          ]
+        }
+      ],
+      "lineup": [
+        "ILLIXIR",
+        "Quackz",
+        "DusteeHD",
+        "illGmusic",
+        "FREQ",
+        "SLOT_PENDING"
+      ],
       "audio": [],
       "videos": []
     },
