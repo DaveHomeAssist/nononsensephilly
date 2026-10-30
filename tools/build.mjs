@@ -369,7 +369,7 @@ dd{margin:0}
 <main>
 ${crumbs}${body}
 </main>
-<footer class="foot"><a href="/">Home</a><a href="/events/">Events</a><a href="/rentals/">Rentals</a><a href="/artists/">Artists</a><a href="${SOCIAL.instagram}">Instagram</a><a href="${SOCIAL.youtube}">YouTube</a><a href="mailto:${SOCIAL.email}">${SOCIAL.email}</a></footer>
+<footer class="foot"><a href="/">Home</a><a href="/events/">Events</a><a href="/rentals/">Rentals</a><a href="/artists/">Artists</a><a href="${SOCIAL.instagram}">Instagram</a><a href="${SOCIAL.youtube}">YouTube</a><a href="mailto:${SOCIAL.email}">${SOCIAL.email}</a><a href="/privacy/">Privacy</a></footer>
 </body>
 </html>
 `;
@@ -526,6 +526,24 @@ ${rentalsData.zones.map((z) => `<h2>${esc(z.ref)} · ${esc(z.name)}</h2>${rental
 <h2>How it works</h2><ol><li>Build the manifest on the <a href="/#rentals">rentals screen</a>. It adds power, video path, and rider questions to your request.</li><li>We confirm exact gear, crew, delivery, and price in writing.</li><li>You accept the quote and we lock the date.</li></ol>
 <p>Full inventory: ${owned.map((g) => esc(g.model)).join(' · ')}.</p>`
 }), '/rentals/');
+
+/* ---------- Privacy ---------- */
+writePage('privacy/index.html', shell({
+  title: 'Privacy · No Nonsense Collective',
+  desc: 'What nononsensephilly.com collects, who handles it, and how to unsubscribe or have your data deleted.',
+  pathname: '/privacy/',
+  trail: [['Home', '/'], ['Privacy', '/privacy/']],
+  body: `<p class="kicker">Privacy</p><h1>Privacy</h1>
+<p class="meta">Last updated <time datetime="2026-10-30">Oct 30, 2026</time></p>
+<p class="lede">What this site collects and who handles it.</p>
+<ul>
+<li><b>Analytics:</b> we count visits with Umami. It sets no cookies.</li>
+<li><b>Video and music:</b> YouTube thumbnails load from YouTube. Videos and SoundCloud tracks load from their servers when you play them.</li>
+<li><b>Forms:</b> the drop list keeps your email. The contact form keeps your name, email and message. Both are stored with Upstash and sent through Resend.</li>
+<li><b>Retention:</b> TBA.</li>
+<li><b>Unsubscribe or delete your data:</b> email <a href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Privacy request')}">${SOCIAL.email}</a>.</li>
+</ul>`
+}), '/privacy/');
 
 writePage('404.html', shell({
   title: 'Not found · No Nonsense Collective', desc: 'This page moved or never existed.', pathname: '/404.html', noindex: true,
