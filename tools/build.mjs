@@ -528,49 +528,21 @@ ${rentalsData.zones.map((z) => `<h2>${esc(z.ref)} · ${esc(z.name)}</h2>${rental
 }), '/rentals/');
 
 /* ---------- Privacy ---------- */
-/* Describes only the data flows in this repo (index.html, tools/build.mjs, scores-api/). Update it when they change. */
 writePage('privacy/index.html', shell({
   title: 'Privacy · No Nonsense Collective',
-  desc: 'What nononsensephilly.com collects, who handles it, and how to get off the list or have your data deleted.',
+  desc: 'What nononsensephilly.com collects, who handles it, and how to unsubscribe or have your data deleted.',
   pathname: '/privacy/',
   trail: [['Home', '/'], ['Privacy', '/privacy/']],
   body: `<p class="kicker">Privacy</p><h1>Privacy</h1>
 <p class="meta">Last updated <time datetime="2026-10-30">Oct 30, 2026</time></p>
-<p class="lede">What this site collects, why, who handles it, and how to get it removed. No ads and no ad trackers. This site sets no cookies of its own.</p>
-
-<h2>Visit stats</h2>
-<p>We count visits with <b>Umami Cloud</b> (cloud.umami.is). It uses no cookies. It records the page you open, the site that sent you, your browser, operating system, device type, screen size, language, and approximate location. It also counts some clicks: ticket links, rental packages added, artist booking buttons, social links, add-to-calendar, opening an event or artist, playing a video or track, and form submissions (the subject category only, never what you type). We use it to see which shows and pages people actually use. It only runs on nononsensephilly.com.</p>
-
-<h2>Videos and music</h2>
-<p>The video tiles on the home page show thumbnails loaded from <b>YouTube</b> (i.ytimg.com), so Google receives your IP address and browser details when those tiles load. A video only plays when you tap it, and then loads from youtube-nocookie.com, YouTube's privacy-enhanced mode.</p>
-<p>The music player loads <b>SoundCloud</b>'s player only when you press play. From then on SoundCloud handles playback under its own privacy policy.</p>
-<p>Links to Posh (tickets), Instagram, Linktree, Spotify, SoundCloud and Google Maps take you to those services. What happens there is up to them.</p>
-
-<h2>Drop list</h2>
-<p>When you join the drop list we keep your email address, where you came from (a short tag like "instagram" or "direct"), the event page you joined from, and when you signed up and confirmed. Joining takes two steps: we email you a confirmation link, and you are only added when you press Confirm. The link expires after 24 hours.</p>
-<p>We use the list to send show announcements, on-sale alerts and day-of location drops. The signup service runs on <b>Vercel</b>, the list is stored in <b>Upstash</b> (Redis), and <b>Resend</b> sends the emails and keeps the mailing list.</p>
-
-<h2>Contact and rental requests</h2>
-<p>The contact form sends your name, email, subject, message (with event date and headcount if you add them), a source tag and the time. Rental requests get a reference number. Resend emails the request to our inbox and sends you a short receipt, at most once a day per address. A copy of each request is kept in Upstash; the store holds the latest 5,000 requests.</p>
-<p>If the form service is down, the form opens your own email app instead and nothing goes through our service.</p>
-
-<h2>Arcade leaderboard</h2>
-<p>If you post a score from the home page game, we keep your three-character initials and score. The board keeps the top 100.</p>
-
-<h2>Spam protection and hosting</h2>
-<p>To stop form spam, the form service briefly holds your IP address (20 seconds at most), a scrambled (hashed) copy of your email for one hour after a signup, and your email for 24 hours after a request so we don't send repeat receipts. The site is hosted on <b>GitHub Pages</b> and the form service on <b>Vercel</b>; like any web host, they receive your IP address and browser details when you load something from them.</p>
-
-<h2>Saved on your device</h2>
-<p>The site remembers a few things in your browser's local storage, not in cookies: light or dark theme, your best game score, rental manifest progress, a draft of your contact message, where you left the music player, the sections you've visited, and whether you closed the drop-list bar. None of it is sent to us unless you submit a form. "Clear my data" in the home page footer removes saved progress, drafts and preferences. Clearing this site's data in your browser removes all of it.</p>
-
-<h2>How long we keep it</h2>
-<p class="notice"><b>Retention: TBA.</b> How long we keep drop-list emails and contact or rental requests has not been set yet. This page will say once it is.</p>
-
-<h2>Unsubscribe, access, deletion</h2>
-<p>To leave the drop list, or to get a copy of what we hold about you, correct it, or have it deleted, email <a href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Privacy request')}">${SOCIAL.email}</a> from the address you used and tell us what you want.</p>
-
-<h2>Changes</h2>
-<p>When this page changes, the date at the top changes with it.</p>`
+<p class="lede">What this site collects and who handles it.</p>
+<ul>
+<li><b>Analytics:</b> we count visits with Umami. It sets no cookies.</li>
+<li><b>Video and music:</b> YouTube thumbnails load from YouTube. Videos and SoundCloud tracks load from their servers when you play them.</li>
+<li><b>Forms:</b> the drop list keeps your email. The contact form keeps your name, email and message. Both are stored with Upstash and sent through Resend.</li>
+<li><b>Retention:</b> TBA.</li>
+<li><b>Unsubscribe or delete your data:</b> email <a href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Privacy request')}">${SOCIAL.email}</a>.</li>
+</ul>`
 }), '/privacy/');
 
 writePage('404.html', shell({
