@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · No Nonsense Collective</title>
+<meta name="description" content="What nononsensephilly.com collects, who handles it, and how to get off the list or have your data deleted.">
+<link rel="canonical" href="https://nononsensephilly.com/privacy/">
+<meta property="og:site_name" content="No Nonsense Collective">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nononsensephilly.com/privacy/">
+<meta property="og:title" content="Privacy · No Nonsense Collective">
+<meta property="og:description" content="What nononsensephilly.com collects, who handles it, and how to get off the list or have your data deleted.">
+<meta property="og:image" content="https://nononsensephilly.com/media/og-card.jpg">
+<meta property="og:image:alt" content="Privacy · No Nonsense Collective">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy · No Nonsense Collective">
+<meta name="twitter:description" content="What nononsensephilly.com collects, who handles it, and how to get off the list or have your data deleted.">
+<meta name="twitter:image" content="https://nononsensephilly.com/media/og-card.jpg">
+<meta name="theme-color" content="#07060c">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/media/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/media/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/media/fonts/unbounded-900.woff2" as="font" type="font/woff2" crossorigin>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="b366ee05-3f6a-4249-87e3-0f11c3f1e50a" data-domains="nononsensephilly.com"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://nononsensephilly.com/"},{"@type":"ListItem","position":2,"name":"Privacy","item":"https://nononsensephilly.com/privacy/"}]}</script>
+<style>
+@font-face{font-family:"Unbounded";font-weight:900;font-display:swap;src:url("/media/fonts/unbounded-900.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-weight:500;font-display:swap;src:url("/media/fonts/plex-mono-500.woff2") format("woff2")}
+:root{color-scheme:dark;--bg:#07060c;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--amber:#ffb23e;--rose:#ff4f8b;--ice:#8ab8ff;--border:#322c3e;--mono:"IBM Plex Mono",ui-monospace,monospace;--display:"Unbounded","Arial Narrow",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,"Segoe UI",sans-serif}
+a{color:var(--amber)}
+.bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 20px;max-width:1080px;margin:0 auto;padding:16px}
+.bar .brand{font:900 18px/1 var(--display);letter-spacing:-.03em;text-transform:uppercase;color:var(--amber);text-decoration:none}
+.bar nav{display:flex;flex-wrap:wrap;gap:4px 18px;font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.bar nav a{display:inline-flex;align-items:center;min-height:40px;color:var(--text);text-decoration:none}
+.bar nav a[aria-current]{color:var(--amber)}
+main{max-width:1080px;margin:0 auto;padding:8px 16px 56px}
+.crumbs ol{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:0;list-style:none;font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.crumbs li+li::before{content:"/";margin-right:6px;color:var(--border)}
+.crumbs a{color:var(--muted)}
+.kicker{margin:0 0 8px;font:500 12px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rose)}
+h1{margin:0 0 10px;font:900 clamp(2rem,1.3rem + 3vw,3.4rem)/1 var(--display);letter-spacing:-.04em;text-transform:uppercase}
+h2{margin:32px 0 10px;font:900 1.15rem/1.2 var(--display);letter-spacing:-.02em}
+.lede{max-width:64ch;color:var(--muted);font-size:1.05rem}
+.meta{margin:0 0 16px;font:500 13px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ice)}
+.notice{padding:10px 14px;border:1px solid var(--rose);border-radius:10px;color:#ffd0dd}
+.btn{display:inline-flex;align-items:center;min-height:44px;margin:6px 8px 0 0;padding:0 20px;border-radius:999px;background:var(--amber);color:#1c1204;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;align-items:start}
+.grid img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--border)}
+.x{color:var(--rose);font-size:.8em}
+.sets{list-style:none;margin:0;padding:0;border-top:1px solid var(--border)}
+.sets li{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)}
+.sets time{font:500 13px/1.6 var(--mono);color:var(--amber)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.chips li{padding:6px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface);font:500 12px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.chips a,.sets a{color:var(--text)}
+.chips small{margin-left:6px;color:var(--muted)}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0}
+dt{font:500 12px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+dd{margin:0}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin:0;padding:0;list-style:none}
+.tiles a{display:block;height:100%;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);text-decoration:none;overflow:hidden}
+.tiles a:hover,.tiles a:focus-visible{border-color:var(--amber)}
+.tiles img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+.tiles b{display:block;padding:10px 12px 2px}
+.tiles span{display:block;padding:0 12px 12px;font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gear{width:100%;border-collapse:collapse;margin:8px 0 0}
+.gear th,.gear td{padding:8px 10px 8px 0;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.gear th{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.gear td:first-child{font:500 13px/1.6 var(--mono);color:var(--amber);white-space:nowrap}
+.tag{display:inline-block;margin:2px 4px 0 0;padding:2px 7px;border:1px solid var(--border);border-radius:99px;font:500 10px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.case{margin:0 0 8px;padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.case h2{margin-top:0}
+.foot{max-width:1080px;margin:0 auto;padding:24px 16px 40px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px 20px;font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.foot a{display:inline-flex;align-items:center;min-height:40px;color:var(--muted)}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.gear td:last-child{min-width:110px}}
+</style>
+</head>
+<body>
+<header class="bar"><a class="brand" href="/">No Nonsense</a><nav aria-label="Primary"><a href="/events/">Events</a><a href="/rentals/">Rentals</a><a href="/artists/">Artists</a><a href="/#contact">Contact</a></nav></header>
+<main>
+<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li aria-current="page">Privacy</li></ol></nav><p class="kicker">Privacy</p><h1>Privacy</h1>
+<p class="meta">Last updated <time datetime="2026-10-30">Oct 30, 2026</time></p>
+<p class="lede">What this site collects, why, who handles it, and how to get it removed. No ads and no ad trackers. This site sets no cookies of its own.</p>
+
+<h2>Visit stats</h2>
+<p>We count visits with <b>Umami Cloud</b> (cloud.umami.is). It uses no cookies. It records the page you open, the site that sent you, your browser, operating system, device type, screen size, language, and approximate location. It also counts some clicks: ticket links, rental packages added, artist booking buttons, social links, add-to-calendar, opening an event or artist, playing a video or track, and form submissions (the subject category only, never what you type). We use it to see which shows and pages people actually use. It only runs on nononsensephilly.com.</p>
+
+<h2>Videos and music</h2>
+<p>The video tiles on the home page show thumbnails loaded from <b>YouTube</b> (i.ytimg.com), so Google receives your IP address and browser details when those tiles load. A video only plays when you tap it, and then loads from youtube-nocookie.com, YouTube's privacy-enhanced mode.</p>
+<p>The music player loads <b>SoundCloud</b>'s player only when you press play. From then on SoundCloud handles playback under its own privacy policy.</p>
+<p>Links to Posh (tickets), Instagram, Linktree, Spotify, SoundCloud and Google Maps take you to those services. What happens there is up to them.</p>
+
+<h2>Drop list</h2>
+<p>When you join the drop list we keep your email address, where you came from (a short tag like "instagram" or "direct"), the event page you joined from, and when you signed up and confirmed. Joining takes two steps: we email you a confirmation link, and you are only added when you press Confirm. The link expires after 24 hours.</p>
+<p>We use the list to send show announcements, on-sale alerts and day-of location drops. The signup service runs on <b>Vercel</b>, the list is stored in <b>Upstash</b> (Redis), and <b>Resend</b> sends the emails and keeps the mailing list.</p>
+
+<h2>Contact and rental requests</h2>
+<p>The contact form sends your name, email, subject, message (with event date and headcount if you add them), a source tag and the time. Rental requests get a reference number. Resend emails the request to our inbox and sends you a short receipt, at most once a day per address. A copy of each request is kept in Upstash; the store holds the latest 5,000 requests.</p>
+<p>If the form service is down, the form opens your own email app instead and nothing goes through our service.</p>
+
+<h2>Arcade leaderboard</h2>
+<p>If you post a score from the home page game, we keep your three-character initials and score. The board keeps the top 100.</p>
+
+<h2>Spam protection and hosting</h2>
+<p>To stop form spam, the form service briefly holds your IP address (20 seconds at most), a scrambled (hashed) copy of your email for one hour after a signup, and your email for 24 hours after a request so we don't send repeat receipts. The site is hosted on <b>GitHub Pages</b> and the form service on <b>Vercel</b>; like any web host, they receive your IP address and browser details when you load something from them.</p>
+
+<h2>Saved on your device</h2>
+<p>The site remembers a few things in your browser's local storage, not in cookies: light or dark theme, your best game score, rental manifest progress, a draft of your contact message, where you left the music player, the sections you've visited, and whether you closed the drop-list bar. None of it is sent to us unless you submit a form. "Clear my data" in the home page footer removes saved progress, drafts and preferences. Clearing this site's data in your browser removes all of it.</p>
+
+<h2>How long we keep it</h2>
+<p class="notice"><b>Retention: TBA.</b> How long we keep drop-list emails and contact or rental requests has not been set yet. This page will say once it is.</p>
+
+<h2>Unsubscribe, access, deletion</h2>
+<p>To leave the drop list, or to get a copy of what we hold about you, correct it, or have it deleted, email <a href="mailto:nononsensephl@gmail.com?subject=Privacy%20request">nononsensephl@gmail.com</a> from the address you used and tell us what you want.</p>
+
+<h2>Changes</h2>
+<p>When this page changes, the date at the top changes with it.</p>
+</main>
+<footer class="foot"><a href="/">Home</a><a href="/events/">Events</a><a href="/rentals/">Rentals</a><a href="/artists/">Artists</a><a href="https://instagram.com/nononsensephl">Instagram</a><a href="https://www.youtube.com/@NoNonsensePHL">YouTube</a><a href="mailto:nononsensephl@gmail.com">nononsensephl@gmail.com</a><a href="/privacy/">Privacy</a></footer>
+</body>
+</html>
