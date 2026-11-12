@@ -45,8 +45,49 @@
       "door": {
         "age": "18+"
       },
-      "lineup": [],
-      "lineupNote": "Lineup TBA. Multi-genre video game EDM.",
+      "nights": [
+        {
+          "label": "Fri Nov 13",
+          "sets": [
+            [
+              "10:00",
+              "Double Vision"
+            ],
+            [
+              "10:40",
+              "Planet"
+            ],
+            [
+              "11:20",
+              "ILLIXIR"
+            ],
+            [
+              "12:00",
+              "Acidic Dreams"
+            ],
+            [
+              "12:40",
+              "Snotbug"
+            ],
+            [
+              "1:20",
+              "Neuromancy"
+            ],
+            [
+              "2:00",
+              "TBA"
+            ]
+          ]
+        }
+      ],
+      "lineup": [
+        "Double Vision",
+        "Planet",
+        "ILLIXIR",
+        "Acidic Dreams",
+        "Snotbug",
+        "Neuromancy"
+      ],
       "audio": [],
       "videos": []
     },
