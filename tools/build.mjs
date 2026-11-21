@@ -539,13 +539,13 @@ writePage('privacy/index.html', shell({
   pathname: '/privacy/',
   trail: [['Home', '/'], ['Privacy', '/privacy/']],
   body: `<p class="kicker">Privacy</p><h1>Privacy</h1>
-<p class="meta">Last updated <time datetime="2026-10-30">Oct 30, 2026</time></p>
+<p class="meta">Last updated <time datetime="2026-11-20">Nov 20, 2026</time></p>
 <p class="lede">What this site collects and who handles it.</p>
 <ul>
 <li><b>Analytics:</b> we count visits with Umami. It sets no cookies.</li>
 <li><b>Video and music:</b> YouTube thumbnails load from YouTube. Videos and SoundCloud tracks load from their servers when you play them.</li>
 <li><b>Forms:</b> the drop list keeps your email. The contact form keeps your name, email and message. Both are stored with Upstash and sent through Resend.</li>
-<li><b>Retention:</b> TBA.</li>
+<li><b>Retention:</b> kept until you ask us to delete it.</li>
 <li><b>Unsubscribe or delete your data:</b> email <a href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Privacy request')}">${SOCIAL.email}</a>.</li>
 </ul>`
 }), '/privacy/');
