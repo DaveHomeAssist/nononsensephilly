@@ -112,12 +112,17 @@ function doorLine(e) {
 }
 /* Announced but not on sale: say so, say what the drop list sends, and how to ask about access. */
 const icsHref = (e) => `events/${e.slug}/${e.slug}.ics`;
+/* A public venue is already named on the page, so the drop list has no venue or address left to send. */
+const dropLine = (e) => {
+  if (!(e.venue && e.venue.public && e.venue.name)) return 'The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day.';
+  return (e.lineup || []).length ? 'The drop list gets the on-sale link first.' : 'The drop list gets the lineup first, then the on-sale link.';
+};
 function announcedLines(e, ph) {
   if (ph !== 'announced') return '';
   const access = e.venue && e.venue.public
     ? 'Access: ask us about stairs, seating or step-free entry before the show.'
     : 'Access: stairs, seating and step-free entry are confirmed when the venue is. Need something specific? Ask before the show.';
-  return `<p class="ev-note"><b>Announced, not on sale.</b> The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day.</p><p class="ev-access">${access} <a href="#contact" data-go="contact">Contact us</a>.</p>`;
+  return `<p class="ev-note"><b>Announced, not on sale.</b> ${dropLine(e)}</p><p class="ev-access">${access} <a href="#contact" data-go="contact">Contact us</a>.</p>`;
 }
 function eventCard(e, ph) {
   const lineupText = (e.lineup || []).filter((x) => !/mystery/i.test(x)).slice(0, 6);
@@ -369,7 +374,7 @@ dd{margin:0}
 <main>
 ${crumbs}${body}
 </main>
-<footer class="foot"><a href="/">Home</a><a href="/events/">Events</a><a href="/rentals/">Rentals</a><a href="/artists/">Artists</a><a href="${SOCIAL.instagram}">Instagram</a><a href="${SOCIAL.youtube}">YouTube</a><a href="mailto:${SOCIAL.email}">${SOCIAL.email}</a></footer>
+<footer class="foot"><a href="/">Home</a><a href="/events/">Events</a><a href="/rentals/">Rentals</a><a href="/artists/">Artists</a><a href="${SOCIAL.instagram}">Instagram</a><a href="${SOCIAL.youtube}">YouTube</a><a href="mailto:${SOCIAL.email}">${SOCIAL.email}</a><a href="/privacy/">Privacy</a></footer>
 </body>
 </html>
 `;
@@ -425,7 +430,7 @@ function eventPage(e) {
     <p class="kicker">${CAT[e.category]} · ${STATUS[ph]}</p>
     <h1>${esc(e.title)}</h1>
     <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}${where(e) === 'Philadelphia' ? '' : ', Philadelphia'}</p>
-    ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}${ph === 'announced' ? `<p class="notice">Announced, not on sale. The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day. ${e.venue && e.venue.public ? 'Ask us about stairs, seating or step-free entry before the show.' : 'Stairs, seating and step-free entry are confirmed when the venue is; ask before the show if you need something specific.'}</p>` : ''}
+    ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}${ph === 'announced' ? `<p class="notice">Announced, not on sale. ${dropLine(e)} ${e.venue && e.venue.public ? 'Ask us about stairs, seating or step-free entry before the show.' : 'Stairs, seating and step-free entry are confirmed when the venue is; ask before the show if you need something specific.'}</p>` : ''}
     <p>${esc(e.summary)}${(e.presenters || []).length ? ` With ${esc(e.presenters.join(' and '))}.` : ''}</p>
     ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}${ph !== 'past' && ph !== 'cancelled' ? `<a class="btn${ph === 'on-sale' && e.ticketUrl ? ' ghost' : ''}" href="/#drop" data-umami-event="drop-list-open" data-umami-event-from="event-page" data-umami-event-event="${e.slug}">${(e.lineup || []).length ? 'Get the drop' : 'Get the lineup drop'}</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>${ph !== 'past' && ph !== 'cancelled' && e.start ? `<a class="btn ghost" href="/${icsHref(e)}" download>Add to calendar</a>` : ''}
     ${acts.length ? `<h2>Lineup</h2><ul class="chips">${e.lineup.map((a) => `<li>${actLinks(a)}</li>`).join('')}</ul>` : ''}
@@ -526,6 +531,24 @@ ${rentalsData.zones.map((z) => `<h2>${esc(z.ref)} · ${esc(z.name)}</h2>${rental
 <h2>How it works</h2><ol><li>Build the manifest on the <a href="/#rentals">rentals screen</a>. It adds power, video path, and rider questions to your request.</li><li>We confirm exact gear, crew, delivery, and price in writing.</li><li>You accept the quote and we lock the date.</li></ol>
 <p>Full inventory: ${owned.map((g) => esc(g.model)).join(' · ')}.</p>`
 }), '/rentals/');
+
+/* ---------- Privacy ---------- */
+writePage('privacy/index.html', shell({
+  title: 'Privacy · No Nonsense Collective',
+  desc: 'What nononsensephilly.com collects, who handles it, and how to unsubscribe or have your data deleted.',
+  pathname: '/privacy/',
+  trail: [['Home', '/'], ['Privacy', '/privacy/']],
+  body: `<p class="kicker">Privacy</p><h1>Privacy</h1>
+<p class="meta">Last updated <time datetime="2026-10-30">Oct 30, 2026</time></p>
+<p class="lede">What this site collects and who handles it.</p>
+<ul>
+<li><b>Analytics:</b> we count visits with Umami. It sets no cookies.</li>
+<li><b>Video and music:</b> YouTube thumbnails load from YouTube. Videos and SoundCloud tracks load from their servers when you play them.</li>
+<li><b>Forms:</b> the drop list keeps your email. The contact form keeps your name, email and message. Both are stored with Upstash and sent through Resend.</li>
+<li><b>Retention:</b> TBA.</li>
+<li><b>Unsubscribe or delete your data:</b> email <a href="mailto:${SOCIAL.email}?subject=${encodeURIComponent('Privacy request')}">${SOCIAL.email}</a>.</li>
+</ul>`
+}), '/privacy/');
 
 writePage('404.html', shell({
   title: 'Not found · No Nonsense Collective', desc: 'This page moved or never existed.', pathname: '/404.html', noindex: true,
