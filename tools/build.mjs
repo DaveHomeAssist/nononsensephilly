@@ -112,12 +112,17 @@ function doorLine(e) {
 }
 /* Announced but not on sale: say so, say what the drop list sends, and how to ask about access. */
 const icsHref = (e) => `events/${e.slug}/${e.slug}.ics`;
+/* A public venue is already named on the page, so the drop list has no venue or address left to send. */
+const dropLine = (e) => {
+  if (!(e.venue && e.venue.public && e.venue.name)) return 'The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day.';
+  return (e.lineup || []).length ? 'The drop list gets the on-sale link first.' : 'The drop list gets the lineup first, then the on-sale link.';
+};
 function announcedLines(e, ph) {
   if (ph !== 'announced') return '';
   const access = e.venue && e.venue.public
     ? 'Access: ask us about stairs, seating or step-free entry before the show.'
     : 'Access: stairs, seating and step-free entry are confirmed when the venue is. Need something specific? Ask before the show.';
-  return `<p class="ev-note"><b>Announced, not on sale.</b> The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day.</p><p class="ev-access">${access} <a href="#contact" data-go="contact">Contact us</a>.</p>`;
+  return `<p class="ev-note"><b>Announced, not on sale.</b> ${dropLine(e)}</p><p class="ev-access">${access} <a href="#contact" data-go="contact">Contact us</a>.</p>`;
 }
 function eventCard(e, ph) {
   const lineupText = (e.lineup || []).filter((x) => !/mystery/i.test(x)).slice(0, 6);
@@ -425,7 +430,7 @@ function eventPage(e) {
     <p class="kicker">${CAT[e.category]} · ${STATUS[ph]}</p>
     <h1>${esc(e.title)}</h1>
     <p class="meta">${e.start ? `<time datetime="${esc(e.start)}">${esc(e.dateLabel)}</time>` : esc(e.dateLabel)} · ${esc(where(e))}${where(e) === 'Philadelphia' ? '' : ', Philadelphia'}</p>
-    ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}${ph === 'announced' ? `<p class="notice">Announced, not on sale. The drop list gets the venue and lineup, then the on-sale link, then the address at 6 PM on show day. ${e.venue && e.venue.public ? 'Ask us about stairs, seating or step-free entry before the show.' : 'Stairs, seating and step-free entry are confirmed when the venue is; ask before the show if you need something specific.'}</p>` : ''}
+    ${e.notice ? `<p class="notice">${esc(e.notice)}</p>` : ''}${ph === 'announced' ? `<p class="notice">Announced, not on sale. ${dropLine(e)} ${e.venue && e.venue.public ? 'Ask us about stairs, seating or step-free entry before the show.' : 'Stairs, seating and step-free entry are confirmed when the venue is; ask before the show if you need something specific.'}</p>` : ''}
     <p>${esc(e.summary)}${(e.presenters || []).length ? ` With ${esc(e.presenters.join(' and '))}.` : ''}</p>
     ${ph === 'on-sale' && e.ticketUrl ? `<a class="btn" href="${esc(e.ticketUrl)}" data-umami-event="ticket-click" data-umami-event-event="${e.slug}">Tickets</a>` : ''}${ph !== 'past' && ph !== 'cancelled' ? `<a class="btn${ph === 'on-sale' && e.ticketUrl ? ' ghost' : ''}" href="/#drop" data-umami-event="drop-list-open" data-umami-event-from="event-page" data-umami-event-event="${e.slug}">${(e.lineup || []).length ? 'Get the drop' : 'Get the lineup drop'}</a>` : ''}<a class="btn ghost" href="/#event/${e.slug}">Open on the site</a>${ph !== 'past' && ph !== 'cancelled' && e.start ? `<a class="btn ghost" href="/${icsHref(e)}" download>Add to calendar</a>` : ''}
     ${acts.length ? `<h2>Lineup</h2><ul class="chips">${e.lineup.map((a) => `<li>${actLinks(a)}</li>`).join('')}</ul>` : ''}
