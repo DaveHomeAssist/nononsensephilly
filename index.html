@@ -800,6 +800,7 @@ header{--bg:#050505;--surface:#14121c;--text:#f4efe6;--muted:#c8c0d4;--accent:#f
 .mp-sweep{transform-box:fill-box;transform-origin:center;animation:mpSweep 5s linear infinite}
 @keyframes mpSweep{to{transform:rotate(360deg)}}
 .mp-xmark{fill:none;stroke:#ff4f8b;stroke-width:8;stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,79,139,.8))}
+#mp-x.is-pinned .mp-zone,#mp-x.is-pinned .mp-sweep{display:none}
 .mp-offmap path{fill:none;stroke:#ff4f8b;stroke-width:2;stroke-dasharray:3 6;opacity:.7}
 
 @media (max-width:899px),(orientation:portrait){
@@ -1292,7 +1293,7 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
           <text class="mp-sub mp-sub--cy" x="1146" y="352" text-anchor="middle">5 min from The Met</text>
           <path class="mp-route" mask="url(#mp-route-mask)" d="M1150 700 C1159 695 1190 684 1205 668 C1220 652 1239 631 1240 606 C1241 581 1224 547 1212 520 C1200 493 1159 469 1170 442 C1181 415 1237 385 1280 360 C1323 335 1383 294 1430 292 C1477 290 1532 319 1560 345 C1588 371 1602 408 1600 450 C1598 492 1567 555 1545 600 C1523 645 1491 683 1470 720 C1449 757 1428 803 1420 820"/>
           <g class="mp-offmap"><path d="M1000 985H880"/><path d="M892 975L880 985L892 995"/><text class="mp-sub mp-sub--pink" x="1012" y="990" text-anchor="start">Outdoor spots · off the map</text></g>
-          <g class="mp-pin" transform="translate(1240 606)"><circle class="ring" r="7"/><circle class="core" r="6"/></g>
+          <g class="mp-pin" data-venue="The Arts Loft" transform="translate(1240 606)"><circle class="ring" r="7"/><circle class="core" r="6"/></g>
           <text class="mp-label" x="1262" y="603" text-anchor="start">The Arts Loft</text><text class="mp-sub" x="1262" y="622" text-anchor="start">Endpoint Connections</text>
           <g class="mp-pin" transform="translate(1158 448)"><circle class="ring" r="7"/><circle class="core" r="6"/></g><g class="mp-pin" transform="translate(1180 436)"><circle class="ring" r="7"/><circle class="core" r="6"/></g>
           <text class="mp-label" x="1204" y="430" text-anchor="start">North Broad rooms</text><text class="mp-sub" x="1204" y="449" text-anchor="start">City Rave · AfterJinx</text><text class="mp-sub" x="1204" y="466" text-anchor="start">Justin Hawkes</text>
@@ -2467,6 +2468,28 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
   }
   /* "Dec 26 + 27, 2026" -> "Dec 26 + 27" for the one-line hero on short screens. */
   function shortDate(label){ return String(label||'').replace(/, \d{4}$/,''); }
+  /* A public venue with a pin on the map (data-venue) gets the X on that pin instead of a search zone. */
+  function venuePin(nx){
+    var v=nx && nx.venue; if(!v || !v.public || !v.name) return null;
+    var want=String(v.name).toLowerCase(), pins=document.querySelectorAll('#rave-map .mp-pin[data-venue]');
+    for(var i=0;i<pins.length;i++){
+      if(String(pins[i].getAttribute('data-venue')).toLowerCase()!==want) continue;
+      var m=/translate\(\s*([\d.]+)[\s,]+([\d.]+)/.exec(pins[i].getAttribute('transform')||'');
+      if(m) return {x:+m[1], y:+m[2]};
+    }
+    return null;
+  }
+  /* Keep the pinned label inside the screen: long titles get an ellipsis instead of running off the edge. */
+  function fitXLabel(){
+    var t=document.getElementById('mp-x-label'); if(!t || !t.hasAttribute('data-full')) return;
+    t.textContent=t.getAttribute('data-full');
+    var max=(document.documentElement.clientWidth||window.innerWidth||0)-8, r=t.getBoundingClientRect(), s=t.textContent;
+    if(max<120) return;
+    while(r.width>0 && r.right>max && s.length>10){ s=s.slice(0,-1); t.textContent=s.replace(/[\s·:,]+$/,'')+'…'; r=t.getBoundingClientRect(); }
+  }
+  function soonFitXLabel(){ requestAnimationFrame(fitXLabel); }
+  window.addEventListener('resize',soonFitXLabel);
+  window.addEventListener('nn:panel',function(e){ if(e.detail==='home') setTimeout(soonFitXLabel,40); });
   function renderNext(){
     var el=document.querySelector('[data-next]'), nx=nextEvent(), drop=liveDrop(nx && nx.slug);
     if(el){
@@ -2477,7 +2500,25 @@ button:not(:disabled):active,.btn:active,a.btn:active,[role="button"]:active,.ca
     }
     var g=document.getElementById('mp-x'), lab=document.getElementById('mp-x-label'), sub=document.getElementById('mp-x-sub');
     if(g && lab && sub){
-      if(drop){
+      /* Start every render from the search-zone layout the page shipped with, then move it if needed. */
+      if(!g.hasAttribute('data-base')) g.setAttribute('data-base',[g.getAttribute('transform'),lab.getAttribute('x'),lab.getAttribute('y'),sub.getAttribute('x'),sub.getAttribute('y')].join('|'));
+      var base=g.getAttribute('data-base').split('|'), pin=!drop && nx ? venuePin(nx) : null;
+      g.setAttribute('transform',base[0]); lab.setAttribute('x',base[1]); lab.setAttribute('y',base[2]); sub.setAttribute('x',base[3]); sub.setAttribute('y',base[4]);
+      lab.setAttribute('text-anchor','end'); sub.setAttribute('text-anchor','end'); lab.removeAttribute('data-full');
+      g.classList.toggle('is-pinned',!!pin);
+      /* The dotted route ends where the X is: its last two curves are redrawn to finish on the pin. */
+      [].forEach.call(document.querySelectorAll('#rave-map .mp-route, #rave-map .mp-route-draw'),function(rt){
+        if(!rt.hasAttribute('data-base')) rt.setAttribute('data-base',rt.getAttribute('d'));
+        var d=rt.getAttribute('data-base'), cut=d.replace(/\s*C[^C]*C[^C]*$/,''), end=/(-?[\d.]+)\s+(-?[\d.]+)\s*$/.exec(cut);
+        rt.setAttribute('d',pin && end ? cut+' C'+end[1]+' '+(+end[2]+45)+' '+(pin.x+120)+' '+(pin.y+60)+' '+pin.x+' '+pin.y : d);
+      });
+      if(pin){
+        g.setAttribute('transform','translate('+pin.x+' '+pin.y+')');
+        lab.setAttribute('text-anchor','start'); sub.setAttribute('text-anchor','start');
+        lab.setAttribute('x',pin.x+22); lab.setAttribute('y',pin.y+42); sub.setAttribute('x',pin.x+22); sub.setAttribute('y',pin.y+61);
+        lab.setAttribute('data-full','Next · '+nx.title); lab.textContent=lab.getAttribute('data-full'); sub.textContent=shortDate(nx.dateLabel);
+        fitXLabel();
+      } else if(drop){
         if(drop.mapX!=null && drop.mapY!=null){
           g.setAttribute('transform','translate('+drop.mapX+' '+drop.mapY+')');
           lab.setAttribute('x',drop.mapX-120); lab.setAttribute('y',drop.mapY-8); sub.setAttribute('x',drop.mapX-120); sub.setAttribute('y',drop.mapY+11);
