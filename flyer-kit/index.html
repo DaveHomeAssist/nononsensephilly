@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>No Nonsense Flyer Prompt Kit</title>
+<style>
+:root{color-scheme:light;--bg:#eae8df;--surface:#fcfaf3;--ink:#201e1a;--muted:#555047;--line:#aaa293;--accent:#bfed55;--link:#36540b}
+:root[data-theme=dark]{color-scheme:dark;--bg:#141512;--surface:#21231d;--ink:#f4f3e9;--muted:#c2c3b6;--line:#75766a;--accent:#bfed55;--link:#c7ed79}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:1rem/1.55 system-ui,sans-serif}
+.shell{height:100dvh;display:grid;grid-template-rows:auto auto minmax(0,1fr);max-width:2400px;margin:auto;padding-inline:clamp(1rem,4vw,5rem)}
+header{padding-block:clamp(.8rem,3vh,2rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line)}
+h1,h2,h3,p,blockquote{margin:0}
+h1{font-size:clamp(1.45rem,4vw,3.2rem);letter-spacing:-.055em;line-height:1}
+h2{font-size:clamp(1.35rem,3vw,2.35rem);line-height:1.1;letter-spacing:-.04em;margin-bottom:1rem}
+h3{font-size:1.1rem;line-height:1.2}
+p+*,h3+*,blockquote+*{margin-top:.75rem}
+a{color:var(--link);text-underline-offset:.2em;overflow-wrap:anywhere}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,section:focus-visible{outline:2px solid var(--link);outline-offset:-2px}
+.theme{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.35rem .75rem}
+nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem;padding-block:.55rem}
+nav button{border:1px solid var(--line);background:var(--surface);border-radius:.4rem;padding:.45rem .15rem;font-weight:650}
+nav button[aria-selected=true]{background:var(--accent);color:#1d2312;border-color:#647e28}
+main{min-height:0;min-width:0;position:relative}
+section{height:100%;overflow:auto;overscroll-behavior:contain;padding:clamp(.7rem,2.7vh,1.8rem) .2rem 1.25rem;scrollbar-gutter:stable}
+section[hidden]{display:none}
+.intro{max-width:58ch;color:var(--muted);margin-bottom:1rem}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;align-items:start;margin-top:0}
+.card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:.65rem;padding:clamp(.8rem,2vw,1.4rem);overflow-wrap:anywhere}
+.card p{max-width:64ch}
+pre{margin:.75rem 0;white-space:pre-wrap;overflow-wrap:anywhere;padding:.85rem;background:var(--bg);border-left:3px solid #849e3d;font: .875rem/1.5 ui-monospace,monospace}
+pre code{font:inherit}
+blockquote{color:var(--muted);padding-left:.8rem;border-left:2px solid var(--line)}
+ol,ul{margin:.8rem 0 0;padding-left:1.3rem}
+li+li{margin-top:.45rem}
+.refs{font-size:.9rem}
+@media(min-width:1800px){.references{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.shell{grid-template-rows:auto minmax(0,1fr) auto}.grid{grid-template-columns:1fr}nav{grid-row:3;padding-bottom:max(.7rem,env(safe-area-inset-bottom))}main{grid-row:2}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header><h1>No Nonsense Flyer Prompt Kit</h1><button type="button" class="theme" aria-label="Use dark theme">Dark</button></header>
+<nav aria-label="Guide sections" role="tablist">
+<button type="button" role="tab" id="tab-start" aria-controls="start" aria-selected="true">Start here</button>
+<button type="button" role="tab" id="tab-examples" aria-controls="examples" aria-selected="false" tabindex="-1">Examples</button>
+<button type="button" role="tab" id="tab-references" aria-controls="references" aria-selected="false" tabindex="-1">References</button>
+</nav>
+<main>
+<section role="tabpanel" id="start" aria-labelledby="tab-start" tabindex="0">
+<h2>Your first flyer prompt</h2>
+<p class="intro">Give Codex one sentence and an optional reference. You’ll get a prompt for your image generator plus a placement guide for the real artist logos and show info.</p>
+<div class="grid">
+<article class="card"><h3>Try it now</h3><p>Download and unzip the skill from this guide. Open its parent folder as a Codex project, or attach the two Markdown files to a chat that accepts uploads.</p>
+<pre><code>Use SKILL.md and Flyer References.md from the no-nonsense-flyer-prompts folder.
+AfterBreak lineup reveal, same mystery headliner treatment as 2026.
+Make it icier, leave room for six support logos, and give me feed and story.</code></pre>
+<p>Paste the reply’s image prompt into your generator. Then add the real logos and confirmed show information in your layout editor.</p>
+<h3>Ask for a quick revision</h3>
+<pre><code>More icy blue around the edges. Same layout and lineup order.
+Keep the footer dark and give me just the updated prompt.</code></pre>
+</article>
+<article class="card"><h3>Set it up once in Codex</h3><p>Put the whole <code>no-nonsense-flyer-prompts</code> folder in your project’s <code>.agents/skills/</code> directory. Keep its references folder inside it. Open a new Codex chat and try this.</p>
+<pre><code>$no-nonsense-flyer-prompts
+AfterJinx save the date. Big title, small octopus, clear space for the date. Story.</code></pre>
+<ul>
+<li><a href="no-nonsense-flyer-prompts.zip" download>Download the skill and flyer reference sheet</a></li>
+<li><a href="https://developers.openai.com/codex/skills/">Codex skills guide</a></li>
+</ul>
+</article>
+</div>
+</section>
+<section role="tabpanel" id="examples" aria-labelledby="tab-examples" tabindex="0" hidden>
+<h2>From a short brief to a usable prompt</h2>
+<div class="grid"><article class="card"><h3>AfterJinx · a lineup reveal with billing still open</h3><blockquote>AfterJinx lineup drop. More tentacles around the edges. I’m still waiting on the final lineup.</blockquote><p><strong>Image prompt</strong></p><pre><code>Create a 4:5 artwork plate for an underground bass afterparty flyer.
+Frame the edges with curled deep-sea tentacles with hot orange
+highlights against black and inky teal. Keep the top center clear
+for a supplied event title. Leave a wide dark zone below it for one
+headliner mark and a calm middle area for rows of support marks.
+Keep the bottom low-detail for the event information. Artwork only,
+without lettering or logos.</code></pre><p><strong>Placement</strong><br>Top: No Nonsense wordmark and supplied AfterJinx title. Middle: headliner and support marks. Footer: approved night/date, hours, public venue wording, age, and CTA.</p><p><strong>Confirm</strong><br>Final billing and event copy before layout.</p></article><article class="card"><h3>AfterBreak · keep the layout, change the temperature</h3><blockquote>Make this icier. Same layout and mystery headliner. Need a story too.</blockquote><p><strong>Edit prompt</strong></p><pre><code>Shift the background accents to ice blue and cool chrome. Keep
+the black base, existing title, question mark, artist marks,
+billing order, and footer in place. Apply the new color to the
+background linework and edge texture. Keep contrast behind the
+artist marks and text.</code></pre><p><strong>Story adjustment</strong><br>Rebuild at 9:16. Keep the mystery mark near the top, stack support marks in the middle, and pull the date and CTA inward so interface overlays leave them visible. Use the same approved copy and supplied files.</p></article><article class="card"><h3>Justin Hawkes · use a supplied portrait</h3><blockquote>Use the Justin Hawkes flyer for layout. I have an approved artist photo. Make this one warm and smoky.</blockquote><p><strong>Image prompt</strong></p><pre><code>Create a 4:5 background for a portrait-led drum and bass flyer.
+Reserve a centered chest-up silhouette area for the supplied cutout.
+Wrap smoke, curved metallic shapes, and warm amber rim light around
+the portrait zone. Fade the lower third to dark charcoal for the
+headliner and support billing. Keep an open band near the bottom
+for event details. Artwork only, without faces, lettering, or logos.</code></pre><p><strong>Placement</strong><br>Add the supplied photo at center. Put the headliner directly below the portrait, followed by the supplied support marks and the event details.</p></article></div>
+</section>
+<section role="tabpanel" id="references" aria-labelledby="tab-references" tabindex="0" hidden>
+<h2>Pick a flyer reference</h2>
+<p class="intro">Match the event series and the job of the graphic. Use the current approved lineup and show details for the new design.</p>
+<div class="grid references"><article class="card"><h3>An AfterJinx save the date</h3><p>Deep blue and black, a quiet water texture, one octopus silhouette off to the side, and generous dark space for the title and date.</p><p class="refs"><a href="https://nononsensephilly.com/media/flyers/afterjinx-2026-card.webp">AfterJinx 2026 teaser</a></p></article><article class="card"><h3>An AfterJinx lineup reveal</h3><p>Saturated tentacle forms framing a darker center. Keep a large headliner zone, tiers for support, and a separate details footer.</p><p class="refs"><a href="https://nononsensephilly.com/media/flyers/afterjinx-2025-card.webp">AfterJinx 2025</a></p></article><article class="card"><h3>An AfterBreak mystery bill</h3><p>A dark ground, abrasive edges, and an obvious space for a big question mark graphic. Keep the support rows and public location wording easy to find.</p><p class="refs"><a href="https://nononsensephilly.com/media/flyers/afterbreak-2025-card.webp">AfterBreak 2025</a> and <a href="https://nononsensephilly.com/media/flyers/afterbreak-2026-card.webp">2026</a></p></article><article class="card"><h3>An Endpoint Connections edition</h3><p>A bright geometric axis, symmetrical circuit or laser lines, and dark zones behind artist marks. Shift the accent color or intensity to distinguish the edition.</p><p class="refs"><a href="https://nononsensephilly.com/media/flyers/endpoint-connections-1-card.webp">Endpoint 1.0</a> and <a href="https://nononsensephilly.com/media/flyers/endpoint-connections-2-card.webp">2.0</a></p></article><article class="card"><h3>An artist-led show</h3><p>Make the approved artist photo the focal point. The reference uses warm light and metallic shapes around the portrait, with billing stacked below.</p><p class="refs"><a href="https://nononsensephilly.com/media/flyers/justin-hawkes-2026-card.webp">Justin Hawkes</a></p></article><article class="card"><h3>A playful illustrated world</h3><p>Choose an event-specific hook. Kandi Island uses beaded type and palms. Park Rave uses a psychedelic bicycle scene and comic bursts. Off the Hook uses an oversized, thick-outlined fish and a big title and date.</p><p class="refs"><a href="https://nononsensephilly.com/media/flyers/kandi-island-2025-card.webp">Kandi Island</a>, <a href="https://nononsensephilly.com/media/flyers/park-rave-005-2026-card.webp">Park Rave 005</a>, and Off the Hook draft</p></article><article class="card"><h3>An FAQ story</h3><p>Carry over one small campaign motif. Build a dark, low-detail text area for a question and a short answer. Give dates, hours, and location their own slides when that clarifies the message.</p><p class="refs">AfterJinx FAQ story copy</p></article><article class="card"><h3>Format notes</h3><ul><li><strong>4:5 feed</strong> keeps the title, focal image, and first billing tier visible at thumbnail size. Use a clearly defined footer.</li><li><strong>9:16 story</strong> gives the layout more height. Reflow the billing or split a dense announcement across slides. Keep key text clear of top and bottom interface overlays.</li><li><strong>4 × 6 in print</strong> is a 2:3 trim ratio. Confirm the printer&#x27;s bleed and safe area, extend edge artwork through the bleed, and keep type and any real QR code inside the safe area.</li><li><strong>FAQ story</strong> uses editable type over a simple plate. Keep one answer per slide and verify midnight date wording against current event copy.</li></ul></article></div>
+</section>
+</main>
+</div>
+<script>
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function selectTab(index, focus) {
+  tabs.forEach((tab, position) => {
+    const selected = index === position;
+    tab.setAttribute('aria-selected', String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    document.getElementById(tab.getAttribute('aria-controls')).hidden = !selected;
+  });
+  if (focus) tabs[index].focus();
+}
+tabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => selectTab(index, false));
+  tab.addEventListener('keydown', (event) => {
+    const moves = {
+      ArrowLeft: (index + tabs.length - 1) % tabs.length,
+      ArrowRight: (index + 1) % tabs.length,
+      Home: 0,
+      End: tabs.length - 1
+    };
+    if (!Object.hasOwn(moves, event.key)) return;
+    event.preventDefault();
+    selectTab(moves[event.key], true);
+  });
+});
+const theme = document.querySelector('.theme');
+theme.addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme !== 'dark';
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  theme.textContent = dark ? 'Light' : 'Dark';
+  theme.setAttribute('aria-label', dark ? 'Use light theme' : 'Use dark theme');
+});
+</script>
+</body>
+</html>
